@@ -43,5 +43,5 @@ java {
 
 application {
     // Define the main class for the application.
-    mainClass = "com.github.alphameo.App"
+    mainClass = "com.github.alphameo.railways.App"
 }
