@@ -5,13 +5,13 @@ import java.util.Optional;
 
 public interface Repository<T, ID> {
 
-    Optional<T> add(final T entity);
+    T add(final T entity) throws IllegalArgumentException;
 
-    Optional<T> getById(final ID id);
+    Optional<T> getById(final ID id) throws IllegalArgumentException;
 
     List<T> getAll();
 
-    Optional<T> update(final T entity);
+    boolean update(final T entity) throws IllegalArgumentException;
 
-    boolean deleteById(final ID id);
+    boolean deleteById(final ID id) throws IllegalArgumentException;
 }
