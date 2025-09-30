@@ -12,8 +12,8 @@ import lombok.NoArgsConstructor;
 public class Schedule {
 
     private Long id;
-    private Long train_id;
-    private Long station_id;
+    private Long trainId;
+    private Long stationId;
     private LocalDateTime arrivalTime;
     private LocalDateTime departureTime;
 }
