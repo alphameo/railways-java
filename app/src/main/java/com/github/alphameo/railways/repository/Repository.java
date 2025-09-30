@@ -5,7 +5,7 @@ import java.util.Optional;
 
 public interface Repository<T, ID> {
 
-    T add(final T entity);
+    Optional<T> add(final T entity);
 
     Optional<T> getById(final ID id);
 
