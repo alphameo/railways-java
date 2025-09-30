@@ -5,10 +5,10 @@ import java.util.Optional;
 
 import com.github.alphameo.railways.domain.TrainCompositionCarriage;
 import com.github.alphameo.railways.domain.TrainCompositionCarriage.TrainCompositionCarriageId;
-import com.github.alphameo.railways.repository.Repository;
+import com.github.alphameo.railways.repository.TrainCompositionCarriageRepository;
 
 public class InMemoryTrainCompositionCarriageRepository
-        implements Repository<TrainCompositionCarriage, TrainCompositionCarriageId> {
+        implements TrainCompositionCarriageRepository {
 
     private final InMemoryStorage<TrainCompositionCarriage, TrainCompositionCarriageId> storage = new InMemoryStorage<>();
 

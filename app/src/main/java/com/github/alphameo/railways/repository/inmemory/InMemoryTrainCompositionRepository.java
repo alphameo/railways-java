@@ -5,9 +5,9 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 
 import com.github.alphameo.railways.domain.TrainComposition;
-import com.github.alphameo.railways.repository.Repository;
+import com.github.alphameo.railways.repository.TrainCompositionRepository;
 
-public class InMemoryTrainCompositionRepository implements Repository<TrainComposition, Long> {
+public class InMemoryTrainCompositionRepository implements TrainCompositionRepository {
 
     private final InMemoryStorage<TrainComposition, Long> storage = new InMemoryStorage<>();
     private final AtomicLong idGenerator = new AtomicLong(0);
@@ -22,7 +22,7 @@ public class InMemoryTrainCompositionRepository implements Repository<TrainCompo
             long id = idGenerator.incrementAndGet();
             trainComposition.setId(id);
         }
-        
+
         storage.add(trainComposition.getId(), trainComposition);
         return trainComposition;
     }

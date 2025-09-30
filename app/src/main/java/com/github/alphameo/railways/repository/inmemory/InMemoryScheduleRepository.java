@@ -5,9 +5,9 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 
 import com.github.alphameo.railways.domain.Schedule;
-import com.github.alphameo.railways.repository.Repository;
+import com.github.alphameo.railways.repository.ScheduleRepository;
 
-public class InMemoryScheduleRepository implements Repository<Schedule, Long> {
+public class InMemoryScheduleRepository implements ScheduleRepository {
 
     private final InMemoryStorage<Schedule, Long> storage = new InMemoryStorage<>();
     private final AtomicLong idGenerator = new AtomicLong(0);

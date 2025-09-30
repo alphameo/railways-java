@@ -5,9 +5,9 @@ import java.util.Optional;
 
 import com.github.alphameo.railways.domain.LineStation;
 import com.github.alphameo.railways.domain.LineStation.LineStationId;
-import com.github.alphameo.railways.repository.Repository;
+import com.github.alphameo.railways.repository.LineStationRepository;
 
-public class InMemoryLineStationRepository implements Repository<LineStation, LineStationId> {
+public class InMemoryLineStationRepository implements LineStationRepository {
 
     private final InMemoryStorage<LineStation, LineStationId> storage = new InMemoryStorage<>();
 
