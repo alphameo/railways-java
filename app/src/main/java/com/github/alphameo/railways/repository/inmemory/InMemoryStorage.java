@@ -14,6 +14,9 @@ public class InMemoryStorage<T, ID> {
         if (id == null) {
             throw new IllegalArgumentException("Invalid id: id cannot be null");
         }
+        if (entity == null) {
+            throw new IllegalArgumentException("Invalid entity: entity cannot be null");
+        }
         if (storage.containsKey(id)) {
             throw new IllegalArgumentException(String.format("Entity with id=%s already exists", id));
         }
@@ -22,7 +25,7 @@ public class InMemoryStorage<T, ID> {
 
     public Optional<T> getById(ID id) throws IllegalArgumentException {
         if (id == null) {
-            throw new IllegalArgumentException("id cannot be null");
+            throw new IllegalArgumentException("Invalid id: id cannot be null");
         }
         return Optional.ofNullable(storage.get(id));
     }
@@ -33,7 +36,10 @@ public class InMemoryStorage<T, ID> {
 
     public boolean update(ID id, T entity) throws IllegalArgumentException {
         if (id == null) {
-            throw new IllegalArgumentException("id cannot be null");
+            throw new IllegalArgumentException("Invalid id: id cannot be null");
+        }
+        if (entity == null) {
+            throw new IllegalArgumentException("Invalid entity: entity cannot be null");
         }
         if (!storage.containsKey(id)) {
             return false;
@@ -44,7 +50,7 @@ public class InMemoryStorage<T, ID> {
 
     public T deleteById(ID id) throws IllegalArgumentException {
         if (id == null) {
-            throw new IllegalArgumentException("id cannot be null");
+            throw new IllegalArgumentException("Invalid id: id cannot be null");
         }
         return storage.remove(id);
     }
