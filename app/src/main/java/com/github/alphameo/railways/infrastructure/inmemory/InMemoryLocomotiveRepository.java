@@ -14,7 +14,7 @@ public class InMemoryLocomotiveRepository implements LocomotiveRepository {
     private final HashSet<String> uniqueNumbers = new HashSet<>();
 
     @Override
-    public Locomotive add(Locomotive locomotive) throws IllegalArgumentException {
+    public Locomotive create(Locomotive locomotive) throws IllegalArgumentException {
         if (locomotive == null) {
             throw new IllegalArgumentException("Invalid locomotive: object is null");
         }
@@ -28,7 +28,7 @@ public class InMemoryLocomotiveRepository implements LocomotiveRepository {
             locomotive.setId(id);
         }
 
-        storage.add(locomotive.getId(), locomotive);
+        storage.create(locomotive.getId(), locomotive);
         uniqueNumbers.add(number);
         return locomotive;
     }

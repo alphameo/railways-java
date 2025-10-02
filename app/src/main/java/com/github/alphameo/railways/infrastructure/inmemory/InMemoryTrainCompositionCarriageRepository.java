@@ -13,7 +13,7 @@ public class InMemoryTrainCompositionCarriageRepository
     private final InMemoryStorage<TrainCompositionCarriage, TrainCompositionCarriageId> storage = new InMemoryStorage<>();
 
     @Override
-    public TrainCompositionCarriage add(TrainCompositionCarriage trainCompositionCarriage)
+    public TrainCompositionCarriage create(TrainCompositionCarriage trainCompositionCarriage)
             throws IllegalArgumentException {
         if (trainCompositionCarriage == null) {
             throw new IllegalArgumentException("Invalid trainComposition: object is null");
@@ -23,7 +23,7 @@ public class InMemoryTrainCompositionCarriageRepository
             throw new IllegalArgumentException("Invalid trainComposition: id is null");
         }
 
-        storage.add(trainCompositionCarriage.getId(), trainCompositionCarriage);
+        storage.create(trainCompositionCarriage.getId(), trainCompositionCarriage);
         return trainCompositionCarriage;
     }
 

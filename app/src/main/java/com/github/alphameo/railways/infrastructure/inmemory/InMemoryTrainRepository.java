@@ -14,7 +14,7 @@ public class InMemoryTrainRepository implements TrainRepository {
     private final HashSet<String> uniqueNumbers = new HashSet<>();
 
     @Override
-    public Train add(Train train) throws IllegalArgumentException {
+    public Train create(Train train) throws IllegalArgumentException {
         if (train == null) {
             throw new IllegalArgumentException("Invalid train: object is null");
         }
@@ -28,7 +28,7 @@ public class InMemoryTrainRepository implements TrainRepository {
             train.setId(id);
         }
 
-        storage.add(train.getId(), train);
+        storage.create(train.getId(), train);
         uniqueNumbers.add(number);
         return train;
     }

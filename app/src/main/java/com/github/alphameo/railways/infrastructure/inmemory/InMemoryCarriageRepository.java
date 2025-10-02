@@ -15,7 +15,7 @@ public class InMemoryCarriageRepository implements CarriageRepository {
     private final HashMap<String, Long> uniqueNumbers = new HashMap<>();
 
     @Override
-    public Carriage add(Carriage carriage) throws InMemoryException {
+    public Carriage create(Carriage carriage) throws InMemoryException {
         validate(carriage);
         var number = carriage.getNumber();
         if (uniqueNumbers.containsKey(number)) {
@@ -27,7 +27,7 @@ public class InMemoryCarriageRepository implements CarriageRepository {
         }
         var id = carriage.getId();
         uniqueNumbers.put(number, id);
-        storage.add(id, carriage);
+        storage.create(id, carriage);
         return carriage;
     }
 

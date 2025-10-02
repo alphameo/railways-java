@@ -5,7 +5,7 @@ import java.util.Optional;
 
 public interface Repository<T, ID> {
 
-    T add(final T entity) throws IllegalArgumentException;
+    T create(final T entity) throws IllegalArgumentException;
 
     Optional<T> findById(final ID id) throws IllegalArgumentException;
 

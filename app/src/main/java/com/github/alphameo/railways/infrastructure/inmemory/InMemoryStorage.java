@@ -10,7 +10,7 @@ public class InMemoryStorage<T, ID> {
 
     private final Map<ID, T> storage = new HashMap<>();
 
-    public void add(ID id, T entity) throws IllegalArgumentException {
+    public void create(ID id, T entity) throws IllegalArgumentException {
         if (id == null) {
             throw new IllegalArgumentException("Invalid id: id cannot be null");
         }

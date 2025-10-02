@@ -12,7 +12,7 @@ public class InMemoryScheduleRepository implements ScheduleRepository {
     private Long idGenerator = 0L;
 
     @Override
-    public Schedule add(Schedule schedule) throws IllegalArgumentException {
+    public Schedule create(Schedule schedule) throws IllegalArgumentException {
         if (schedule == null) {
             throw new IllegalArgumentException("Invalid schedule: object is null");
         }
@@ -22,7 +22,7 @@ public class InMemoryScheduleRepository implements ScheduleRepository {
             schedule.setId(id);
         }
 
-        storage.add(schedule.getId(), schedule);
+        storage.create(schedule.getId(), schedule);
         return schedule;
     }
 

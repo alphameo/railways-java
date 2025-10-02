@@ -12,7 +12,7 @@ public class InMemoryTrainCompositionRepository implements TrainCompositionRepos
     private Long idGenerator = 0L;
 
     @Override
-    public TrainComposition add(TrainComposition trainComposition) throws IllegalArgumentException {
+    public TrainComposition create(TrainComposition trainComposition) throws IllegalArgumentException {
         if (trainComposition == null) {
             throw new IllegalArgumentException("Invalid trainComposition: object is null");
         }
@@ -22,7 +22,7 @@ public class InMemoryTrainCompositionRepository implements TrainCompositionRepos
             trainComposition.setId(id);
         }
 
-        storage.add(trainComposition.getId(), trainComposition);
+        storage.create(trainComposition.getId(), trainComposition);
         return trainComposition;
     }
 

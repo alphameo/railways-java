@@ -12,7 +12,7 @@ public class InMemoryStationRepository implements StationRepository {
     private Long idGenerator = 0L;
 
     @Override
-    public Station add(Station station) throws IllegalArgumentException {
+    public Station create(Station station) throws IllegalArgumentException {
         if (station == null) {
             throw new IllegalArgumentException("Invalid station: object is null");
         }
@@ -22,7 +22,7 @@ public class InMemoryStationRepository implements StationRepository {
             station.setId(id);
         }
 
-        storage.add(station.getId(), station);
+        storage.create(station.getId(), station);
         return station;
     }
 

@@ -12,7 +12,7 @@ public class InMemoryLineStationRepository implements LineStationRepository {
     private final InMemoryStorage<LineStation, LineStationId> storage = new InMemoryStorage<>();
 
     @Override
-    public LineStation add(LineStation lineStaion)
+    public LineStation create(LineStation lineStaion)
             throws IllegalArgumentException {
         if (lineStaion == null) {
             throw new IllegalArgumentException("Invalid lineStaion: object is null");
@@ -22,7 +22,7 @@ public class InMemoryLineStationRepository implements LineStationRepository {
             throw new IllegalArgumentException("Invalid lineStaion: id is null");
         }
 
-        storage.add(lineStaion.getId(), lineStaion);
+        storage.create(lineStaion.getId(), lineStaion);
         return lineStaion;
     }
 

@@ -12,7 +12,7 @@ public class InMemoryLineRepository implements LineRepository {
     private Long idGenerator = 0L;
 
     @Override
-    public Line add(Line line) throws IllegalArgumentException {
+    public Line create(Line line) throws IllegalArgumentException {
         if (line == null) {
             throw new IllegalArgumentException("Invalid line: object is null");
         }
@@ -22,7 +22,7 @@ public class InMemoryLineRepository implements LineRepository {
             line.setId(id);
         }
 
-        storage.add(line.getId(), line);
+        storage.create(line.getId(), line);
         return line;
     }
 
