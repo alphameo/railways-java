@@ -3,7 +3,6 @@ package com.github.alphameo.railways.repository.inmemory;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicLong;
 
 import com.github.alphameo.railways.domain.Carriage;
 import com.github.alphameo.railways.repository.CarriageRepository;
@@ -11,8 +10,8 @@ import com.github.alphameo.railways.repository.CarriageRepository;
 public class InMemoryCarriageRepository implements CarriageRepository {
 
     private final InMemoryStorage<Carriage, Long> storage = new InMemoryStorage<>();
-    private final AtomicLong idGenerator = new AtomicLong(0);
     private final HashSet<String> uniqueNumbers = new HashSet<>();
+    private Long idGenerator = 0L;
 
     @Override
     public Carriage add(Carriage carriage) throws IllegalArgumentException {
@@ -25,7 +24,7 @@ public class InMemoryCarriageRepository implements CarriageRepository {
             throw new IllegalArgumentException("carriage number is not unique");
         }
         if (carriage.getId() == null) {
-            long id = idGenerator.incrementAndGet();
+            long id = ++idGenerator;
             carriage.setId(id);
         }
         var id = carriage.getId();

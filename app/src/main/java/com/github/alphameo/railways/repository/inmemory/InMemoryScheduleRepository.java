@@ -2,7 +2,6 @@ package com.github.alphameo.railways.repository.inmemory;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicLong;
 
 import com.github.alphameo.railways.domain.Schedule;
 import com.github.alphameo.railways.repository.ScheduleRepository;
@@ -10,7 +9,7 @@ import com.github.alphameo.railways.repository.ScheduleRepository;
 public class InMemoryScheduleRepository implements ScheduleRepository {
 
     private final InMemoryStorage<Schedule, Long> storage = new InMemoryStorage<>();
-    private final AtomicLong idGenerator = new AtomicLong(0);
+    private Long idGenerator = 0L;
 
     @Override
     public Schedule add(Schedule schedule) throws IllegalArgumentException {
@@ -19,7 +18,7 @@ public class InMemoryScheduleRepository implements ScheduleRepository {
         }
         validate(schedule);
         if (schedule.getId() == null) {
-            long id = idGenerator.incrementAndGet();
+            long id = ++idGenerator;
             schedule.setId(id);
         }
 

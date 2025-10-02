@@ -2,7 +2,6 @@ package com.github.alphameo.railways.repository.inmemory;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicLong;
 
 import com.github.alphameo.railways.domain.Line;
 import com.github.alphameo.railways.repository.LineRepository;
@@ -10,7 +9,7 @@ import com.github.alphameo.railways.repository.LineRepository;
 public class InMemoryLineRepository implements LineRepository {
 
     private final InMemoryStorage<Line, Long> storage = new InMemoryStorage<>();
-    private final AtomicLong idGenerator = new AtomicLong(0);
+    private Long idGenerator = 0L;
 
     @Override
     public Line add(Line line) throws IllegalArgumentException {
@@ -19,7 +18,7 @@ public class InMemoryLineRepository implements LineRepository {
         }
         validate(line);
         if (line.getId() == null) {
-            long id = idGenerator.incrementAndGet();
+            long id = ++idGenerator;
             line.setId(id);
         }
 

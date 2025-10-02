@@ -3,7 +3,6 @@ package com.github.alphameo.railways.repository.inmemory;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicLong;
 
 import com.github.alphameo.railways.domain.Train;
 import com.github.alphameo.railways.repository.TrainRepository;
@@ -11,7 +10,7 @@ import com.github.alphameo.railways.repository.TrainRepository;
 public class InMemoryTrainRepository implements TrainRepository {
 
     private final InMemoryStorage<Train, Long> storage = new InMemoryStorage<>();
-    private final AtomicLong idGenerator = new AtomicLong(0);
+    private Long idGenerator = 0L;
     private final HashSet<String> uniqueNumbers = new HashSet<>();
 
     @Override
@@ -25,7 +24,7 @@ public class InMemoryTrainRepository implements TrainRepository {
             throw new IllegalArgumentException("Invalid train: number is not unique");
         }
         if (train.getId() == null) {
-            long id = idGenerator.incrementAndGet();
+            long id = ++idGenerator;
             train.setId(id);
         }
 
