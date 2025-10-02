@@ -1,0 +1,19 @@
+package com.github.alphameo.railways.domain.entities;
+
+import java.time.LocalDateTime;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class Schedule {
+
+    private Long id;
+    private Long trainId;
+    private Long stationId;
+    private LocalDateTime arrivalTime;
+    private LocalDateTime departureTime;
+}
