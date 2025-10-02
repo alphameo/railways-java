@@ -28,13 +28,13 @@ public class InMemoryLineRepository implements LineRepository {
     }
 
     @Override
-    public Optional<Line> getById(Long id) throws IllegalArgumentException {
+    public Optional<Line> findById(Long id) throws IllegalArgumentException {
         return storage.getById(id);
     }
 
     @Override
-    public List<Line> getAll() {
-        return storage.getAll();
+    public List<Line> findAll() {
+        return storage.findAll();
     }
 
     @Override

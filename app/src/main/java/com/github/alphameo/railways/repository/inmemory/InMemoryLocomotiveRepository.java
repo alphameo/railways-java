@@ -35,13 +35,13 @@ public class InMemoryLocomotiveRepository implements LocomotiveRepository {
     }
 
     @Override
-    public Optional<Locomotive> getById(Long id) throws IllegalArgumentException {
+    public Optional<Locomotive> findById(Long id) throws IllegalArgumentException {
         return storage.getById(id);
     }
 
     @Override
-    public List<Locomotive> getAll() {
-        return storage.getAll();
+    public List<Locomotive> findAll() {
+        return storage.findAll();
     }
 
     @Override

@@ -28,13 +28,13 @@ public class InMemoryTrainCompositionCarriageRepository
     }
 
     @Override
-    public Optional<TrainCompositionCarriage> getById(TrainCompositionCarriageId id) throws IllegalArgumentException {
+    public Optional<TrainCompositionCarriage> findById(TrainCompositionCarriageId id) throws IllegalArgumentException {
         return storage.getById(id);
     }
 
     @Override
-    public List<TrainCompositionCarriage> getAll() {
-        return storage.getAll();
+    public List<TrainCompositionCarriage> findAll() {
+        return storage.findAll();
     }
 
     @Override

@@ -28,13 +28,13 @@ public class InMemoryScheduleRepository implements ScheduleRepository {
     }
 
     @Override
-    public Optional<Schedule> getById(Long id) throws IllegalArgumentException {
+    public Optional<Schedule> findById(Long id) throws IllegalArgumentException {
         return storage.getById(id);
     }
 
     @Override
-    public List<Schedule> getAll() {
-        return storage.getAll();
+    public List<Schedule> findAll() {
+        return storage.findAll();
     }
 
     @Override

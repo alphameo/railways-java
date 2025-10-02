@@ -28,13 +28,13 @@ public class InMemoryTrainCompositionRepository implements TrainCompositionRepos
     }
 
     @Override
-    public Optional<TrainComposition> getById(Long id) throws IllegalArgumentException {
+    public Optional<TrainComposition> findById(Long id) throws IllegalArgumentException {
         return storage.getById(id);
     }
 
     @Override
-    public List<TrainComposition> getAll() {
-        return storage.getAll();
+    public List<TrainComposition> findAll() {
+        return storage.findAll();
     }
 
     @Override

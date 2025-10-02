@@ -30,7 +30,7 @@ public class InMemoryStorage<T, ID> {
         return Optional.ofNullable(storage.get(id));
     }
 
-    public List<T> getAll() {
+    public List<T> findAll() {
         return new ArrayList<>(storage.values());
     }
 

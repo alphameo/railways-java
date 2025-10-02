@@ -35,13 +35,13 @@ public class InMemoryCarriageRepository implements CarriageRepository {
     }
 
     @Override
-    public Optional<Carriage> getById(Long id) {
+    public Optional<Carriage> findById(Long id) {
         return storage.getById(id);
     }
 
     @Override
-    public List<Carriage> getAll() {
-        return storage.getAll();
+    public List<Carriage> findAll() {
+        return storage.findAll();
     }
 
     @Override

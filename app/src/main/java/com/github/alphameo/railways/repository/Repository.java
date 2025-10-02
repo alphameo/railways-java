@@ -7,9 +7,9 @@ public interface Repository<T, ID> {
 
     T add(final T entity) throws IllegalArgumentException;
 
-    Optional<T> getById(final ID id) throws IllegalArgumentException;
+    Optional<T> findById(final ID id) throws IllegalArgumentException;
 
-    List<T> getAll();
+    List<T> findAll();
 
     boolean update(final T entity) throws IllegalArgumentException;
 
