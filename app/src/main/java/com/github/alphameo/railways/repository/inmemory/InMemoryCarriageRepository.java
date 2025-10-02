@@ -1,34 +1,32 @@
 package com.github.alphameo.railways.repository.inmemory;
 
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
 import com.github.alphameo.railways.domain.Carriage;
+import com.github.alphameo.railways.exception.InMemoryException;
 import com.github.alphameo.railways.repository.CarriageRepository;
 
 public class InMemoryCarriageRepository implements CarriageRepository {
 
     private final InMemoryStorage<Carriage, Long> storage = new InMemoryStorage<>();
-    private final HashSet<String> uniqueNumbers = new HashSet<>();
     private Long idGenerator = 0L;
+    private final HashMap<String, Long> uniqueNumbers = new HashMap<>();
 
     @Override
-    public Carriage add(Carriage carriage) throws IllegalArgumentException {
-        if (carriage == null) {
-            throw new IllegalArgumentException("carriage is null");
-        }
+    public Carriage add(Carriage carriage) throws InMemoryException {
         validate(carriage);
         var number = carriage.getNumber();
-        if (uniqueNumbers.contains(number)) {
-            throw new IllegalArgumentException("carriage number is not unique");
+        if (uniqueNumbers.containsKey(number)) {
+            throw new InMemoryException("carriage number is not unique");
         }
         if (carriage.getId() == null) {
             long id = ++idGenerator;
             carriage.setId(id);
         }
         var id = carriage.getId();
-        uniqueNumbers.add(number);
+        uniqueNumbers.put(number, id);
         storage.add(id, carriage);
         return carriage;
     }
@@ -44,15 +42,17 @@ public class InMemoryCarriageRepository implements CarriageRepository {
     }
 
     @Override
-    public boolean update(Carriage carriage) throws IllegalArgumentException {
-        if (carriage == null) {
-            throw new IllegalArgumentException("Invalid carriage: object is null");
-        }
+    public boolean update(Carriage carriage) throws InMemoryException {
         validate(carriage);
+        var number = carriage.getNumber();
         var oldNumber = storage.getById(carriage.getId()).get().getNumber();
-        if (oldNumber != carriage.getNumber()) {
-            uniqueNumbers.remove(oldNumber);
-            uniqueNumbers.add(carriage.getNumber());
+        if (oldNumber != number) {
+            if (uniqueNumbers.containsKey(number)) {
+                throw new InMemoryException("carriage number is not unique");
+            } else {
+                uniqueNumbers.remove(oldNumber);
+            }
+            uniqueNumbers.put(carriage.getNumber(), carriage.getId());
         }
 
         return storage.update(carriage.getId(), carriage);
@@ -69,12 +69,28 @@ public class InMemoryCarriageRepository implements CarriageRepository {
         return true;
     }
 
-    private void validate(Carriage carriage) throws IllegalArgumentException {
+    @Override
+    public Optional<Carriage> findByNumber(String number) {
+        var id = uniqueNumbers.get(number);
+        var carriage = storage.getById(id);
+        if (carriage == null) {
+            return Optional.empty();
+        }
+        return carriage;
+    }
+
+    private void validate(Carriage carriage) throws InMemoryException {
+        if (carriage == null) {
+            throw new IllegalArgumentException("carriage is null");
+        }
+        if (carriage.getId() == null) {
+            throw new InMemoryException("Invalid carriage: id is null");
+        }
         if (carriage.getNumber() == null) {
-            throw new IllegalArgumentException("Invalid carriage: number is null");
+            throw new InMemoryException("Invalid carriage: number is null");
         }
         if (carriage.getCapacity() < 0) {
-            throw new IllegalArgumentException("Invalid carriage: capacity < 0");
+            throw new InMemoryException("Invalid carriage: capacity < 0");
         }
     }
 }
