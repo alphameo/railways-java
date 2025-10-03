@@ -4,29 +4,28 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
+
+import com.github.alphameo.railways.exceptions.InMemoryException;
 
 public class InMemoryStorage<T, ID> {
 
     private final Map<ID, T> storage = new HashMap<>();
 
-    public void create(ID id, T entity) throws IllegalArgumentException {
-        if (id == null) {
-            throw new IllegalArgumentException("Invalid id: id cannot be null");
-        }
-        if (entity == null) {
-            throw new IllegalArgumentException("Invalid entity: entity cannot be null");
-        }
+    public void create(final ID id, final T entity) {
+        Objects.requireNonNull(id, "id cannot be null");
+        Objects.requireNonNull(entity, "entity cannot be null");
+
         if (storage.containsKey(id)) {
-            throw new IllegalArgumentException(String.format("Entity with id=%s already exists", id));
+            throw new InMemoryException(String.format("Entity with id=%s already exist", id));
         }
         storage.put(id, entity);
     }
 
-    public Optional<T> getById(ID id) throws IllegalArgumentException {
-        if (id == null) {
-            throw new IllegalArgumentException("Invalid id: id cannot be null");
-        }
+    public Optional<T> getById(final ID id) {
+        Objects.requireNonNull(id, "id cannot be null");
+
         return Optional.ofNullable(storage.get(id));
     }
 
@@ -34,24 +33,19 @@ public class InMemoryStorage<T, ID> {
         return new ArrayList<>(storage.values());
     }
 
-    public boolean update(ID id, T entity) throws IllegalArgumentException {
-        if (id == null) {
-            throw new IllegalArgumentException("Invalid id: id cannot be null");
-        }
-        if (entity == null) {
-            throw new IllegalArgumentException("Invalid entity: entity cannot be null");
-        }
+    public void update(final ID id, final T entity) {
+        Objects.requireNonNull(id, "id cannot be null");
+        Objects.requireNonNull(entity, "entity cannot be null");
+
         if (!storage.containsKey(id)) {
-            return false;
+            throw new InMemoryException(String.format("Entity with id=%s does not exist", id));
         }
         storage.put(id, entity);
-        return true;
     }
 
-    public T deleteById(ID id) throws IllegalArgumentException {
-        if (id == null) {
-            throw new IllegalArgumentException("Invalid id: id cannot be null");
-        }
-        return storage.remove(id);
+    public void deleteById(final ID id) {
+        Objects.requireNonNull(id, "id cannot be null");
+
+        storage.remove(id);
     }
 }
