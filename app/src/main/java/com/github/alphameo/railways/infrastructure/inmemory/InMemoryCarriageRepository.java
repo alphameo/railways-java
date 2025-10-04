@@ -15,23 +15,23 @@ public class InMemoryCarriageRepository implements CarriageRepository {
     private final HashMap<String, Long> uniqueNumberIds = new HashMap<>();
 
     @Override
-    public Carriage create(Carriage carriage) {
+    public Carriage create(final Carriage carriage) {
         validate(carriage);
-        var number = carriage.getNumber();
+        final var number = carriage.getNumber();
         if (uniqueNumberIds.containsKey(number)) {
             throw new InMemoryException("Carriage.number is not unique");
         }
         if (carriage.getId() == null) {
-            long id = ++idGenerator;
+            final long id = ++idGenerator;
             carriage.setId(id);
         }
-        var id = carriage.getId();
+        final var id = carriage.getId();
         uniqueNumberIds.put(number, id);
         return storage.create(id, carriage);
     }
 
     @Override
-    public Optional<Carriage> findById(Long id) {
+    public Optional<Carriage> findById(final Long id) {
         return storage.getById(id);
     }
 
@@ -41,10 +41,10 @@ public class InMemoryCarriageRepository implements CarriageRepository {
     }
 
     @Override
-    public Carriage update(Carriage carriage) {
+    public Carriage update(final Carriage carriage) {
         validate(carriage);
-        var number = carriage.getNumber();
-        var oldNumber = storage.getById(carriage.getId()).get().getNumber();
+        final var number = carriage.getNumber();
+        final var oldNumber = storage.getById(carriage.getId()).get().getNumber();
         if (oldNumber != number) {
             if (uniqueNumberIds.containsKey(number)) {
                 throw new InMemoryException("Carriage.number is not unique");
@@ -58,24 +58,24 @@ public class InMemoryCarriageRepository implements CarriageRepository {
     }
 
     @Override
-    public void deleteById(Long id) {
-        var delCandidate = storage.getById(id);
+    public void deleteById(final Long id) {
+        final var delCandidate = storage.getById(id);
         storage.deleteById(id);
-        var number = delCandidate.get().getNumber();
+        final var number = delCandidate.get().getNumber();
         uniqueNumberIds.remove(number);
     }
 
     @Override
-    public Optional<Carriage> findByNumber(String number) {
-        var id = uniqueNumberIds.get(number);
-        var carriage = storage.getById(id);
+    public Optional<Carriage> findByNumber(final String number) {
+        final var id = uniqueNumberIds.get(number);
+        final var carriage = storage.getById(id);
         if (carriage == null) {
             return Optional.empty();
         }
         return carriage;
     }
 
-    private void validate(Carriage carriage) {
+    private void validate(final Carriage carriage) {
         if (carriage == null) {
             throw new InMemoryException("Carriage cannot be null");
         }
