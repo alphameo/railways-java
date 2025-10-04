@@ -13,13 +13,13 @@ public class InMemoryLineStationRepository implements LineStationRepository {
     private final InMemoryStorage<LineStation, LineStationId> storage = new InMemoryStorage<>();
 
     @Override
-    public LineStation create(LineStation lineStaion) {
+    public LineStation create(final LineStation lineStaion) {
         validate(lineStaion);
         return storage.create(lineStaion.getId(), lineStaion);
     }
 
     @Override
-    public Optional<LineStation> findById(LineStationId id) {
+    public Optional<LineStation> findById(final LineStationId id) {
         return storage.getById(id);
     }
 
@@ -29,17 +29,17 @@ public class InMemoryLineStationRepository implements LineStationRepository {
     }
 
     @Override
-    public LineStation update(LineStation lineStaion) {
+    public LineStation update(final LineStation lineStaion) {
         validate(lineStaion);
         return storage.update(lineStaion.getId(), lineStaion);
     }
 
     @Override
-    public void deleteById(LineStationId id) {
+    public void deleteById(final LineStationId id) {
         storage.deleteById(id);
     }
 
-    public void validate(LineStation lineStaion) {
+    public void validate(final LineStation lineStaion) {
         if (lineStaion == null) {
             throw new InMemoryException("LineStaion cannot be null");
         }
