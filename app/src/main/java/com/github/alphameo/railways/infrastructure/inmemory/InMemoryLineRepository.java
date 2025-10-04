@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import com.github.alphameo.railways.domain.entities.Line;
 import com.github.alphameo.railways.domain.repositories.LineRepository;
+import com.github.alphameo.railways.exceptions.infrastructure.InMemoryException;
 
 public class InMemoryLineRepository implements LineRepository {
 
@@ -12,22 +13,21 @@ public class InMemoryLineRepository implements LineRepository {
     private Long idGenerator = 0L;
 
     @Override
-    public Line create(Line line) throws IllegalArgumentException {
+    public Line create(final Line line) {
         if (line == null) {
-            throw new IllegalArgumentException("Invalid line: object is null");
+            throw new InMemoryException("Line cannot be null");
         }
         validate(line);
         if (line.getId() == null) {
-            long id = ++idGenerator;
+            final long id = ++idGenerator;
             line.setId(id);
         }
 
-        storage.create(line.getId(), line);
-        return line;
+        return storage.create(line.getId(), line);
     }
 
     @Override
-    public Optional<Line> findById(Long id) throws IllegalArgumentException {
+    public Optional<Line> findById(final Long id) {
         return storage.getById(id);
     }
 
@@ -37,23 +37,19 @@ public class InMemoryLineRepository implements LineRepository {
     }
 
     @Override
-    public boolean update(Line line) throws IllegalArgumentException {
-        if (line == null) {
-            throw new IllegalArgumentException("Invalid line: object is null");
-        }
+    public Line update(final Line line) {
         validate(line);
-
         return storage.update(line.getId(), line);
     }
 
     @Override
-    public boolean deleteById(Long id) throws IllegalArgumentException {
-        return storage.deleteById(id) != null;
+    public void deleteById(final Long id) {
+        storage.deleteById(id);
     }
 
-    public void validate(Line line) throws IllegalArgumentException {
+    public void validate(final Line line) {
         if (line.getName() == null) {
-            throw new IllegalArgumentException("Invalid line: name is null");
+            throw new InMemoryException("Line.name cannot be null");
         }
     }
 }
