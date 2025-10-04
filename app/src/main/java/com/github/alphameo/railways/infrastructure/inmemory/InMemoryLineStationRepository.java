@@ -6,28 +6,20 @@ import java.util.Optional;
 import com.github.alphameo.railways.domain.entities.LineStation;
 import com.github.alphameo.railways.domain.entities.LineStation.LineStationId;
 import com.github.alphameo.railways.domain.repositories.LineStationRepository;
+import com.github.alphameo.railways.exceptions.infrastructure.InMemoryException;
 
 public class InMemoryLineStationRepository implements LineStationRepository {
 
     private final InMemoryStorage<LineStation, LineStationId> storage = new InMemoryStorage<>();
 
     @Override
-    public LineStation create(LineStation lineStaion)
-            throws IllegalArgumentException {
-        if (lineStaion == null) {
-            throw new IllegalArgumentException("Invalid lineStaion: object is null");
-        }
+    public LineStation create(LineStation lineStaion) {
         validate(lineStaion);
-        if (lineStaion.getId() == null) {
-            throw new IllegalArgumentException("Invalid lineStaion: id is null");
-        }
-
-        storage.create(lineStaion.getId(), lineStaion);
-        return lineStaion;
+        return storage.create(lineStaion.getId(), lineStaion);
     }
 
     @Override
-    public Optional<LineStation> findById(LineStationId id) throws IllegalArgumentException {
+    public Optional<LineStation> findById(LineStationId id) {
         return storage.getById(id);
     }
 
@@ -37,32 +29,31 @@ public class InMemoryLineStationRepository implements LineStationRepository {
     }
 
     @Override
-    public boolean update(LineStation lineStaion) throws IllegalArgumentException {
-        if (lineStaion == null) {
-            throw new IllegalArgumentException("Invalid lineStaion: object is null");
-        }
+    public LineStation update(LineStation lineStaion) {
         validate(lineStaion);
-
         return storage.update(lineStaion.getId(), lineStaion);
     }
 
     @Override
-    public boolean deleteById(LineStationId id) throws IllegalArgumentException {
-        return storage.deleteById(id) != null;
+    public void deleteById(LineStationId id) {
+        storage.deleteById(id);
     }
 
     public void validate(LineStation lineStaion) {
+        if (lineStaion == null) {
+            throw new InMemoryException("LineStaion cannot be null");
+        }
         if (lineStaion.getLineId() == null) {
-            throw new IllegalArgumentException("Invalid lineStaion: lineId is null");
+            throw new InMemoryException("LineStaion.lineId cannot be null");
         }
         if (lineStaion.getStationId() == null) {
-            throw new IllegalArgumentException("Invalid lineStaion: stationId is null");
+            throw new InMemoryException("LineStaion.stationId cannot be null");
         }
         if (lineStaion.getPosition() == null) {
-            throw new IllegalArgumentException("Invalid lineStaion: position is null");
+            throw new InMemoryException("LineStaion.position cannot be null");
         }
         if (lineStaion.getPosition() < 0) {
-            throw new IllegalArgumentException("Invalid lineStaion: position < 0");
+            throw new InMemoryException("LineStaion.position should be >= 0");
         }
     }
 }
