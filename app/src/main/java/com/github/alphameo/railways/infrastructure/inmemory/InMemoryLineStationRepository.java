@@ -15,11 +15,22 @@ public class InMemoryLineStationRepository implements LineStationRepository {
     @Override
     public LineStation create(final LineStation lineStaion) {
         validate(lineStaion);
+
         return storage.create(lineStaion.getId(), lineStaion);
     }
 
     @Override
     public Optional<LineStation> findById(final LineStationId id) {
+        if (id == null) {
+            throw new InMemoryException("LineStaionId cannot be null");
+        }
+        if (id.getLineId() == null) {
+            throw new InMemoryException("LineStaionId.lineId cannot be null");
+        }
+        if (id.getStationId() == null) {
+            throw new InMemoryException("LineStaionId.stationId cannot be null");
+        }
+
         return storage.getById(id);
     }
 
@@ -31,11 +42,22 @@ public class InMemoryLineStationRepository implements LineStationRepository {
     @Override
     public LineStation update(final LineStation lineStaion) {
         validate(lineStaion);
+
         return storage.update(lineStaion.getId(), lineStaion);
     }
 
     @Override
     public void deleteById(final LineStationId id) {
+        if (id == null) {
+            throw new InMemoryException("LineStaionId cannot be null");
+        }
+        if (id.getLineId() == null) {
+            throw new InMemoryException("LineStaionId.lineId cannot be null");
+        }
+        if (id.getStationId() == null) {
+            throw new InMemoryException("LineStaionId.stationId cannot be null");
+        }
+
         storage.deleteById(id);
     }
 
