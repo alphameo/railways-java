@@ -13,10 +13,10 @@ public class InMemoryScheduleRepository implements ScheduleRepository {
     private Long idGenerator = 0L;
 
     @Override
-    public Schedule create(Schedule schedule) throws IllegalArgumentException {
+    public Schedule create(final Schedule schedule) throws IllegalArgumentException {
         validate(schedule);
         if (schedule.getId() == null) {
-            long id = ++idGenerator;
+            final long id = ++idGenerator;
             schedule.setId(id);
         }
 
@@ -25,7 +25,7 @@ public class InMemoryScheduleRepository implements ScheduleRepository {
     }
 
     @Override
-    public Optional<Schedule> findById(Long id) throws IllegalArgumentException {
+    public Optional<Schedule> findById(final Long id) throws IllegalArgumentException {
         return storage.getById(id);
     }
 
@@ -35,18 +35,18 @@ public class InMemoryScheduleRepository implements ScheduleRepository {
     }
 
     @Override
-    public Schedule update(Schedule schedule) throws IllegalArgumentException {
+    public Schedule update(final Schedule schedule) throws IllegalArgumentException {
         validate(schedule);
 
         return storage.update(schedule.getId(), schedule);
     }
 
     @Override
-    public void deleteById(Long id) throws IllegalArgumentException {
+    public void deleteById(final Long id) throws IllegalArgumentException {
         storage.deleteById(id);
     }
 
-    public void validate(Schedule schedule) throws IllegalArgumentException {
+    public void validate(final Schedule schedule) throws IllegalArgumentException {
         if (schedule == null) {
             throw new IllegalArgumentException("Schedul cannot be null");
         }
@@ -56,8 +56,8 @@ public class InMemoryScheduleRepository implements ScheduleRepository {
         if (schedule.getStationId() == null) {
             throw new InMemoryException("Schedule.stationId cannot be null");
         }
-        var arrT = schedule.getArrivalTime();
-        var depT = schedule.getDepartureTime();
+        final var arrT = schedule.getArrivalTime();
+        final var depT = schedule.getDepartureTime();
         if (!(arrT == null || depT == null
                 || arrT.isBefore(depT)
                 || arrT.isEqual(depT))) {
