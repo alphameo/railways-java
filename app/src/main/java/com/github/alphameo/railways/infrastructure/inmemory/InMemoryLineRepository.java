@@ -14,9 +14,6 @@ public class InMemoryLineRepository implements LineRepository {
 
     @Override
     public Line create(final Line line) {
-        if (line == null) {
-            throw new InMemoryException("Line cannot be null");
-        }
         validate(line);
         if (line.getId() == null) {
             final long id = ++idGenerator;
@@ -48,6 +45,9 @@ public class InMemoryLineRepository implements LineRepository {
     }
 
     public void validate(final Line line) {
+        if (line == null) {
+            throw new InMemoryException("Line cannot be null");
+        }
         if (line.getName() == null) {
             throw new InMemoryException("Line.name cannot be null");
         }
