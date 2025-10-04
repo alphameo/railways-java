@@ -48,10 +48,9 @@ public class InMemoryCarriageRepository implements CarriageRepository {
         if (oldNumber != number) {
             if (uniqueNumberIds.containsKey(number)) {
                 throw new InMemoryException("Carriage.number is not unique");
-            } else {
-                uniqueNumberIds.remove(oldNumber);
             }
-            uniqueNumberIds.put(carriage.getNumber(), carriage.getId());
+            uniqueNumberIds.remove(oldNumber);
+            uniqueNumberIds.put(number, carriage.getId());
         }
 
         return storage.update(carriage.getId(), carriage);
