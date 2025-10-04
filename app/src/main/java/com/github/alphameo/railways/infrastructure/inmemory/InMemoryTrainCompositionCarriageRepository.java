@@ -14,14 +14,14 @@ public class InMemoryTrainCompositionCarriageRepository
     private final InMemoryStorage<TrainCompositionCarriage, TrainCompositionCarriageId> storage = new InMemoryStorage<>();
 
     @Override
-    public TrainCompositionCarriage create(TrainCompositionCarriage trainCompositionCarriage) {
+    public TrainCompositionCarriage create(final TrainCompositionCarriage trainCompositionCarriage) {
         validate(trainCompositionCarriage);
 
         return storage.create(trainCompositionCarriage.getId(), trainCompositionCarriage);
     }
 
     @Override
-    public Optional<TrainCompositionCarriage> findById(TrainCompositionCarriageId id) {
+    public Optional<TrainCompositionCarriage> findById(final TrainCompositionCarriageId id) {
         if (id == null) {
             throw new InMemoryException("TrainCompositionCarriageId cannot be null");
         }
@@ -41,14 +41,14 @@ public class InMemoryTrainCompositionCarriageRepository
     }
 
     @Override
-    public TrainCompositionCarriage update(TrainCompositionCarriage trainCompositionCarriage) {
+    public TrainCompositionCarriage update(final TrainCompositionCarriage trainCompositionCarriage) {
         validate(trainCompositionCarriage);
 
         return storage.update(trainCompositionCarriage.getId(), trainCompositionCarriage);
     }
 
     @Override
-    public void deleteById(TrainCompositionCarriageId id) {
+    public void deleteById(final TrainCompositionCarriageId id) {
         if (id == null) {
             throw new InMemoryException("TrainCompositionCarriageId cannot be null");
         }
@@ -62,7 +62,7 @@ public class InMemoryTrainCompositionCarriageRepository
         storage.deleteById(id);
     }
 
-    public void validate(TrainCompositionCarriage trainCompositionCarriage) {
+    public void validate(final TrainCompositionCarriage trainCompositionCarriage) {
         if (trainCompositionCarriage == null) {
             throw new InMemoryException("Invalid trainComposition: object is null");
         }
