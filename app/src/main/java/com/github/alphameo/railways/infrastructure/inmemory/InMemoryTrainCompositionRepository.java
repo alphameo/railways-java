@@ -13,10 +13,10 @@ public class InMemoryTrainCompositionRepository implements TrainCompositionRepos
     private Long idGenerator = 0L;
 
     @Override
-    public TrainComposition create(TrainComposition trainComposition) {
+    public TrainComposition create(final TrainComposition trainComposition) {
         validate(trainComposition);
         if (trainComposition.getId() == null) {
-            long id = ++idGenerator;
+            final long id = ++idGenerator;
             trainComposition.setId(id);
         }
 
@@ -25,7 +25,7 @@ public class InMemoryTrainCompositionRepository implements TrainCompositionRepos
     }
 
     @Override
-    public Optional<TrainComposition> findById(Long id) {
+    public Optional<TrainComposition> findById(final Long id) {
         return storage.getById(id);
     }
 
@@ -35,18 +35,18 @@ public class InMemoryTrainCompositionRepository implements TrainCompositionRepos
     }
 
     @Override
-    public TrainComposition update(TrainComposition trainComposition) {
+    public TrainComposition update(final TrainComposition trainComposition) {
         validate(trainComposition);
 
         return storage.update(trainComposition.getId(), trainComposition);
     }
 
     @Override
-    public void deleteById(Long id) {
+    public void deleteById(final Long id) {
         storage.deleteById(id);
     }
 
-    private void validate(TrainComposition trainComposition) {
+    private void validate(final TrainComposition trainComposition) {
         if (trainComposition == null) {
             throw new InMemoryException("TrainComposition.object cannot be null");
         }
