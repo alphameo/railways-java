@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import com.github.alphameo.railways.domain.entities.Schedule;
 import com.github.alphameo.railways.domain.repositories.ScheduleRepository;
+import com.github.alphameo.railways.exceptions.infrastructure.InMemoryException;
 
 public class InMemoryScheduleRepository implements ScheduleRepository {
 
@@ -13,9 +14,6 @@ public class InMemoryScheduleRepository implements ScheduleRepository {
 
     @Override
     public Schedule create(Schedule schedule) throws IllegalArgumentException {
-        if (schedule == null) {
-            throw new IllegalArgumentException("Invalid schedule: object is null");
-        }
         validate(schedule);
         if (schedule.getId() == null) {
             long id = ++idGenerator;
@@ -37,33 +35,33 @@ public class InMemoryScheduleRepository implements ScheduleRepository {
     }
 
     @Override
-    public boolean update(Schedule schedule) throws IllegalArgumentException {
-        if (schedule == null) {
-            throw new IllegalArgumentException("Invalid schedule: object is null");
-        }
+    public Schedule update(Schedule schedule) throws IllegalArgumentException {
         validate(schedule);
 
         return storage.update(schedule.getId(), schedule);
     }
 
     @Override
-    public boolean deleteById(Long id) throws IllegalArgumentException {
-        return storage.deleteById(id) != null;
+    public void deleteById(Long id) throws IllegalArgumentException {
+        storage.deleteById(id);
     }
 
     public void validate(Schedule schedule) throws IllegalArgumentException {
+        if (schedule == null) {
+            throw new IllegalArgumentException("Schedul cannot be null");
+        }
         if (schedule.getTrainId() == null) {
-            throw new IllegalArgumentException("Invalid schedule: trainId is null");
+            throw new InMemoryException("Schedule.trainId cannot be null");
         }
         if (schedule.getStationId() == null) {
-            throw new IllegalArgumentException("Invalid schedule: stationId is null");
+            throw new InMemoryException("Schedule.stationId cannot be null");
         }
         var arrT = schedule.getArrivalTime();
         var depT = schedule.getDepartureTime();
         if (!(arrT == null || depT == null
                 || arrT.isBefore(depT)
                 || arrT.isEqual(depT))) {
-            throw new IllegalArgumentException("Invalid schedule: getArrivalTime <= getDepartureTime");
+            throw new InMemoryException("Schedule.arrival_time should be <= Schedule.departure_time");
         }
     }
 }
