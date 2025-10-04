@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import com.github.alphameo.railways.domain.entities.Station;
 import com.github.alphameo.railways.domain.repositories.StationRepository;
+import com.github.alphameo.railways.exceptions.infrastructure.InMemoryException;
 
 public class InMemoryStationRepository implements StationRepository {
 
@@ -12,13 +13,10 @@ public class InMemoryStationRepository implements StationRepository {
     private Long idGenerator = 0L;
 
     @Override
-    public Station create(Station station) throws IllegalArgumentException {
-        if (station == null) {
-            throw new IllegalArgumentException("Invalid station: object is null");
-        }
+    public Station create(final Station station) {
         validate(station);
         if (station.getId() == null) {
-            long id = ++idGenerator;
+            final long id = ++idGenerator;
             station.setId(id);
         }
 
@@ -27,7 +25,7 @@ public class InMemoryStationRepository implements StationRepository {
     }
 
     @Override
-    public Optional<Station> findById(Long id) throws IllegalArgumentException {
+    public Optional<Station> findById(final Long id) {
         return storage.getById(id);
     }
 
@@ -37,26 +35,26 @@ public class InMemoryStationRepository implements StationRepository {
     }
 
     @Override
-    public boolean update(Station station) throws IllegalArgumentException {
-        if (station == null) {
-            throw new IllegalArgumentException("Invalid station: object is null");
-        }
+    public Station update(final Station station) {
         validate(station);
 
         return storage.update(station.getId(), station);
     }
 
     @Override
-    public boolean deleteById(Long id) throws IllegalArgumentException {
-        return storage.deleteById(id) != null;
+    public void deleteById(final Long id) {
+        storage.deleteById(id);
     }
 
-    public void validate(Station station) throws IllegalArgumentException {
+    public void validate(final Station station) {
+        if (station == null) {
+            throw new InMemoryException("Station cannot be null");
+        }
         if (station.getName() == null) {
-            throw new IllegalArgumentException("Invalid station: name is null");
+            throw new InMemoryException("Station.name cannot be null");
         }
         if (station.getLocation() == null) {
-            throw new IllegalArgumentException("Invalid station: location is null");
+            throw new InMemoryException("Station.location cannot be null");
         }
     }
 }
