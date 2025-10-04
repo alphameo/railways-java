@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import com.github.alphameo.railways.domain.entities.TrainComposition;
 import com.github.alphameo.railways.domain.repositories.TrainCompositionRepository;
+import com.github.alphameo.railways.exceptions.infrastructure.InMemoryException;
 
 public class InMemoryTrainCompositionRepository implements TrainCompositionRepository {
 
@@ -12,10 +13,7 @@ public class InMemoryTrainCompositionRepository implements TrainCompositionRepos
     private Long idGenerator = 0L;
 
     @Override
-    public TrainComposition create(TrainComposition trainComposition) throws IllegalArgumentException {
-        if (trainComposition == null) {
-            throw new IllegalArgumentException("Invalid trainComposition: object is null");
-        }
+    public TrainComposition create(TrainComposition trainComposition) {
         validate(trainComposition);
         if (trainComposition.getId() == null) {
             long id = ++idGenerator;
@@ -27,7 +25,7 @@ public class InMemoryTrainCompositionRepository implements TrainCompositionRepos
     }
 
     @Override
-    public Optional<TrainComposition> findById(Long id) throws IllegalArgumentException {
+    public Optional<TrainComposition> findById(Long id) {
         return storage.getById(id);
     }
 
@@ -37,23 +35,23 @@ public class InMemoryTrainCompositionRepository implements TrainCompositionRepos
     }
 
     @Override
-    public boolean update(TrainComposition trainComposition) throws IllegalArgumentException {
-        if (trainComposition == null) {
-            throw new IllegalArgumentException("Invalid trainComposition: object is null");
-        }
+    public TrainComposition update(TrainComposition trainComposition) {
         validate(trainComposition);
 
         return storage.update(trainComposition.getId(), trainComposition);
     }
 
     @Override
-    public boolean deleteById(Long id) throws IllegalArgumentException {
-        return storage.deleteById(id) != null;
+    public void deleteById(Long id) {
+        storage.deleteById(id);
     }
 
-    private void validate(TrainComposition trainComposition) throws IllegalArgumentException {
-        if (trainComposition.getTrain_id() == null) {
-            throw new IllegalArgumentException("invalid trainComposition: trainId is null");
+    private void validate(TrainComposition trainComposition) {
+        if (trainComposition == null) {
+            throw new InMemoryException("TrainComposition.object cannot be null");
+        }
+        if (trainComposition.getTrainId() == null) {
+            throw new InMemoryException("TrainComposition.trainId cannot be null");
         }
     }
 }
