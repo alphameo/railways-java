@@ -1,40 +1,37 @@
 package com.github.alphameo.railways.infrastructure.inmemory;
 
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
 import com.github.alphameo.railways.domain.entities.Locomotive;
 import com.github.alphameo.railways.domain.repositories.LocomotiveRepository;
+import com.github.alphameo.railways.exceptions.infrastructure.InMemoryException;
 
 public class InMemoryLocomotiveRepository implements LocomotiveRepository {
 
     private final InMemoryStorage<Locomotive, Long> storage = new InMemoryStorage<Locomotive, Long>();
     private Long idGenerator = 0L;
-    private final HashSet<String> uniqueNumbers = new HashSet<>();
+    private final HashMap<String, Long> uniqueNumberIds = new HashMap<>();
 
     @Override
-    public Locomotive create(Locomotive locomotive) throws IllegalArgumentException {
-        if (locomotive == null) {
-            throw new IllegalArgumentException("Invalid locomotive: object is null");
-        }
+    public Locomotive create(final Locomotive locomotive) throws IllegalArgumentException {
         validate(locomotive);
-        var number = locomotive.getNumber();
-        if (uniqueNumbers.contains(number)) {
-            throw new IllegalArgumentException("Invalid locomotive: number is not unique");
+        final var number = locomotive.getNumber();
+        if (uniqueNumberIds.containsKey(number)) {
+            throw new InMemoryException("Locomotive.number is not unique");
         }
         if (locomotive.getId() == null) {
-            long id = ++idGenerator;
+            final long id = ++idGenerator;
             locomotive.setId(id);
         }
-
-        storage.create(locomotive.getId(), locomotive);
-        uniqueNumbers.add(number);
-        return locomotive;
+        final var id = locomotive.getId();
+        uniqueNumberIds.put(number, id);
+        return storage.create(locomotive.getId(), locomotive);
     }
 
     @Override
-    public Optional<Locomotive> findById(Long id) throws IllegalArgumentException {
+    public Optional<Locomotive> findById(final Long id) throws IllegalArgumentException {
         return storage.getById(id);
     }
 
@@ -44,37 +41,48 @@ public class InMemoryLocomotiveRepository implements LocomotiveRepository {
     }
 
     @Override
-    public boolean update(Locomotive locomotive) throws IllegalArgumentException {
-        if (locomotive == null) {
-            throw new IllegalArgumentException("Invalid locomotive: object is null");
-        }
+    public Locomotive update(final Locomotive locomotive) throws IllegalArgumentException {
         validate(locomotive);
-        var oldNumber = storage.getById(locomotive.getId()).get().getNumber();
-        if (oldNumber != locomotive.getNumber()) {
-            uniqueNumbers.remove(oldNumber);
-            uniqueNumbers.add(locomotive.getNumber());
+        final var number = locomotive.getNumber();
+        final var oldNumber = storage.getById(locomotive.getId()).get().getNumber();
+        if (oldNumber != number) {
+            if (uniqueNumberIds.containsKey(number)) {
+                throw new InMemoryException("Locomotive.number is not unique");
+            }
+            uniqueNumberIds.remove(oldNumber);
+            uniqueNumberIds.put(number, locomotive.getId());
         }
 
         return storage.update(locomotive.getId(), locomotive);
     }
 
     @Override
-    public boolean deleteById(Long id) throws IllegalArgumentException {
-        var deleted = storage.deleteById(id);
-        if (deleted == null) {
-            return false;
-        }
-        var number = deleted.getNumber();
-        uniqueNumbers.remove(number);
-        return true;
+    public void deleteById(final Long id) throws IllegalArgumentException {
+        final var delCandidate = storage.getById(id);
+        storage.deleteById(id);
+        final var number = delCandidate.get().getNumber();
+        uniqueNumberIds.remove(number);
     }
 
-    private void validate(Locomotive locomotive) {
+    @Override
+    public Optional<Locomotive> findByNumber(final String number) {
+        final var id = uniqueNumberIds.get(number);
+        final var locomotive = storage.getById(id);
+        if (locomotive == null) {
+            return Optional.empty();
+        }
+        return locomotive;
+    }
+
+    private void validate(final Locomotive locomotive) {
+        if (locomotive == null) {
+            throw new IllegalArgumentException("Locomotive cannot be null");
+        }
         if (locomotive.getNumber() == null) {
-            throw new IllegalArgumentException("Invalid locomotive: number is null");
+            throw new IllegalArgumentException("Locomotive.number cannot be null");
         }
         if (locomotive.getModel() == null) {
-            throw new IllegalArgumentException("Invalid locomotive: model is null");
+            throw new IllegalArgumentException("Locomotive.model cannot be null");
         }
     }
 }
