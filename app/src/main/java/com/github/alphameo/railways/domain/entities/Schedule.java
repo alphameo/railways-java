@@ -40,18 +40,22 @@ public class Schedule {
     }
 
     public void setArrivalTime(final LocalDateTime arrivalTime) {
-        if (arrivalTime != null && this.departureTime != null && arrivalTime.isAfter(this.departureTime)) {
-            throw new ValidationException("Schedule.arrival_time should be <= schedule.departure_time");
-        }
+        validateTime(this.arrivalTime, departureTime);
 
         this.arrivalTime = arrivalTime;
     }
 
     public void setDepartureTime(final LocalDateTime departureTime) {
-        if (this.arrivalTime != null && departureTime != null && this.arrivalTime.isAfter(departureTime)) {
-            throw new ValidationException("Schedule.arrival_time should be <= schedule.departure_time");
-        }
+        validateTime(this.arrivalTime, departureTime);
 
         this.departureTime = departureTime;
+    }
+
+    private static void validateTime(final LocalDateTime arrT, final LocalDateTime depT) {
+        if (!(arrT == null || depT == null
+                || arrT.isBefore(depT)
+                || arrT.isEqual(depT))) {
+            throw new ValidationException("Schedule.arrival_time should be <= Schedule.departure_time");
+        }
     }
 }
