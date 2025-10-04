@@ -15,7 +15,7 @@ public class InMemoryLocomotiveRepository implements LocomotiveRepository {
     private final HashMap<String, Long> uniqueNumberIds = new HashMap<>();
 
     @Override
-    public Locomotive create(final Locomotive locomotive) throws IllegalArgumentException {
+    public Locomotive create(final Locomotive locomotive) {
         validate(locomotive);
         final var number = locomotive.getNumber();
         if (uniqueNumberIds.containsKey(number)) {
@@ -31,7 +31,7 @@ public class InMemoryLocomotiveRepository implements LocomotiveRepository {
     }
 
     @Override
-    public Optional<Locomotive> findById(final Long id) throws IllegalArgumentException {
+    public Optional<Locomotive> findById(final Long id) {
         return storage.getById(id);
     }
 
@@ -41,7 +41,7 @@ public class InMemoryLocomotiveRepository implements LocomotiveRepository {
     }
 
     @Override
-    public Locomotive update(final Locomotive locomotive) throws IllegalArgumentException {
+    public Locomotive update(final Locomotive locomotive) {
         validate(locomotive);
         final var number = locomotive.getNumber();
         final var oldNumber = storage.getById(locomotive.getId()).get().getNumber();
@@ -57,7 +57,7 @@ public class InMemoryLocomotiveRepository implements LocomotiveRepository {
     }
 
     @Override
-    public void deleteById(final Long id) throws IllegalArgumentException {
+    public void deleteById(final Long id) {
         final var delCandidate = storage.getById(id);
         storage.deleteById(id);
         final var number = delCandidate.get().getNumber();
