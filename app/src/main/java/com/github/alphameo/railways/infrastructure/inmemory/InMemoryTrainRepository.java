@@ -1,40 +1,38 @@
 package com.github.alphameo.railways.infrastructure.inmemory;
 
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
 import com.github.alphameo.railways.domain.entities.Train;
 import com.github.alphameo.railways.domain.repositories.TrainRepository;
+import com.github.alphameo.railways.exceptions.infrastructure.InMemoryException;
 
 public class InMemoryTrainRepository implements TrainRepository {
 
     private final InMemoryStorage<Train, Long> storage = new InMemoryStorage<>();
     private Long idGenerator = 0L;
-    private final HashSet<String> uniqueNumbers = new HashSet<>();
+    private final HashMap<String, Long> uniqueNumberIds = new HashMap<>();
 
     @Override
-    public Train create(Train train) throws IllegalArgumentException {
-        if (train == null) {
-            throw new IllegalArgumentException("Invalid train: object is null");
-        }
+    public Train create(Train train) {
         validate(train);
-        var number = train.getNumber();
-        if (uniqueNumbers.contains(number)) {
-            throw new IllegalArgumentException("Invalid train: number is not unique");
-        }
-        if (train.getId() == null) {
-            long id = ++idGenerator;
-            train.setId(id);
+        final var number = train.getNumber();
+        if (uniqueNumberIds.containsKey(number)) {
+            throw new InMemoryException("Train.number is not unique");
         }
 
-        storage.create(train.getId(), train);
-        uniqueNumbers.add(number);
-        return train;
+        if (train.getId() == null) {
+            final long id = ++idGenerator;
+            train.setId(id);
+        }
+        final var id = train.getId();
+        uniqueNumberIds.put(number, id);
+        return storage.create(id, train);
     }
 
     @Override
-    public Optional<Train> findById(Long id) throws IllegalArgumentException {
+    public Optional<Train> findById(Long id) {
         return storage.getById(id);
     }
 
@@ -44,34 +42,47 @@ public class InMemoryTrainRepository implements TrainRepository {
     }
 
     @Override
-    public boolean update(Train train) throws IllegalArgumentException {
-        if (train == null) {
-            throw new IllegalArgumentException("Invalid train: object is null");
-        }
+    public Train update(Train train) {
         validate(train);
-        var oldNumber = storage.getById(train.getId()).get().getNumber();
-        if (oldNumber != train.getNumber()) {
-            uniqueNumbers.remove(oldNumber);
-            uniqueNumbers.add(train.getNumber());
+        final var number = train.getNumber();
+        final var oldNumber = storage.getById(train.getId()).get().getNumber();
+        if (oldNumber != number) {
+            if (uniqueNumberIds.containsKey(number)) {
+                throw new InMemoryException("Train.number is not unique");
+            }
+            uniqueNumberIds.remove(oldNumber);
+            uniqueNumberIds.put(number, train.getId());
         }
 
         return storage.update(train.getId(), train);
     }
 
     @Override
-    public boolean deleteById(Long id) throws IllegalArgumentException {
-        var deleted = storage.deleteById(id);
-        if (deleted == null) {
-            return false;
+    public void deleteById(Long id) {
+        final var delCandidate = storage.getById(id);
+        storage.deleteById(id);
+        final var number = delCandidate.get().getNumber();
+        uniqueNumberIds.remove(number);
+    }
+
+    public Optional<Train> findByNumber(final String number) {
+        final var id = uniqueNumberIds.get(number);
+        final var train = storage.getById(id);
+        if (train == null) {
+            return Optional.empty();
         }
-        var number = deleted.getNumber();
-        uniqueNumbers.remove(number);
-        return true;
+        return train;
     }
 
     private void validate(Train train) {
+        if (train == null) {
+            throw new InMemoryException("Train cannot be null");
+        }
+        if (train.getId() == null) {
+            throw new InMemoryException("Train.id cannot be null");
+        }
         if (train.getNumber() == null) {
-            throw new IllegalArgumentException("Invalid train: number is null");
+            throw new InMemoryException("Train.number cannot be null");
         }
     }
 }
