@@ -5,13 +5,13 @@ import java.util.Optional;
 
 public interface Repository<T, ID> {
 
-    T create(final T entity);
+    T create(T entity);
 
-    Optional<T> findById(final ID id);
+    Optional<T> findById(ID id);
 
     List<T> findAll();
 
-    T update(final T entity);
+    T update(T entity);
 
-    void deleteById(final ID id);
+    void deleteById(ID id);
 }
