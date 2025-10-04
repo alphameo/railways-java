@@ -15,11 +15,11 @@ public class InMemoryTrainCompositionRepository implements TrainCompositionRepos
     @Override
     public TrainComposition create(final TrainComposition trainComposition) {
         validate(trainComposition);
+
         if (trainComposition.getId() == null) {
             final long id = ++idGenerator;
             trainComposition.setId(id);
         }
-
         storage.create(trainComposition.getId(), trainComposition);
         return trainComposition;
     }

@@ -15,11 +15,11 @@ public class InMemoryLineRepository implements LineRepository {
     @Override
     public Line create(final Line line) {
         validate(line);
+
         if (line.getId() == null) {
             final long id = ++idGenerator;
             line.setId(id);
         }
-
         return storage.create(line.getId(), line);
     }
 
@@ -36,6 +36,7 @@ public class InMemoryLineRepository implements LineRepository {
     @Override
     public Line update(final Line line) {
         validate(line);
+
         return storage.update(line.getId(), line);
     }
 

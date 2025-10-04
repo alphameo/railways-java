@@ -21,6 +21,7 @@ public class InMemoryLocomotiveRepository implements LocomotiveRepository {
         if (uniqueNumberIds.containsKey(number)) {
             throw new InMemoryException("Locomotive.number is not unique");
         }
+
         if (locomotive.getId() == null) {
             final long id = ++idGenerator;
             locomotive.setId(id);

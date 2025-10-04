@@ -44,6 +44,7 @@ public class InMemoryTrainRepository implements TrainRepository {
     @Override
     public Train update(Train train) {
         validate(train);
+
         final var number = train.getNumber();
         final var oldNumber = storage.getById(train.getId()).get().getNumber();
         if (oldNumber != number) {

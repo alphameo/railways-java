@@ -21,6 +21,7 @@ public class InMemoryCarriageRepository implements CarriageRepository {
         if (uniqueNumberIds.containsKey(number)) {
             throw new InMemoryException("Carriage.number is not unique");
         }
+
         if (carriage.getId() == null) {
             final long id = ++idGenerator;
             carriage.setId(id);
@@ -79,10 +80,10 @@ public class InMemoryCarriageRepository implements CarriageRepository {
             throw new InMemoryException("Carriage cannot be null");
         }
         if (carriage.getId() == null) {
-            throw new InMemoryException("Carriage.id cannot null");
+            throw new InMemoryException("Carriage.id cannot be null");
         }
         if (carriage.getNumber() == null) {
-            throw new InMemoryException("Carriage.number cannot null");
+            throw new InMemoryException("Carriage.number cannot be null");
         }
         if (carriage.getCapacity() < 0) {
             throw new InMemoryException("Carriage.capacity should be >= 0");

@@ -15,11 +15,11 @@ public class InMemoryScheduleRepository implements ScheduleRepository {
     @Override
     public Schedule create(final Schedule schedule) throws IllegalArgumentException {
         validate(schedule);
+
         if (schedule.getId() == null) {
             final long id = ++idGenerator;
             schedule.setId(id);
         }
-
         storage.create(schedule.getId(), schedule);
         return schedule;
     }
