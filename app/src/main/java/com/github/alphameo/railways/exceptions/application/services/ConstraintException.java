@@ -2,11 +2,9 @@ package com.github.alphameo.railways.exceptions.application.services;
 
 public class ConstraintException extends ServiceException {
 
-    public ConstraintException(final String msg) {
-        super(msg);
-    }
+    private static final String MSG_FMT = "Constraint of entity %s broken: %s";
 
-    public ConstraintException(String msg, Throwable cause) {
-        super(msg, cause);
+    public ConstraintException(final String entity, final String constraint) {
+        super(String.format(MSG_FMT, entity, constraint));
     }
 }
