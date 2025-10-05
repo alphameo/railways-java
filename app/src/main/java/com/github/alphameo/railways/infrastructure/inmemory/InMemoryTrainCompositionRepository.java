@@ -46,7 +46,7 @@ public class InMemoryTrainCompositionRepository implements TrainCompositionRepos
         storage.deleteById(id);
     }
 
-    private void validate(final TrainComposition trainComposition) {
+    private static void validate(final TrainComposition trainComposition) {
         if (trainComposition == null) {
             throw new IllegalArgumentException("TrainComposition cannot be null");
         }

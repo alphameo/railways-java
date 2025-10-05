@@ -46,7 +46,7 @@ public class InMemoryStationRepository implements StationRepository {
         storage.deleteById(id);
     }
 
-    public void validate(final Station station) {
+    private static void validate(final Station station) {
         if (station == null) {
             throw new IllegalArgumentException("Station cannot be null");
         }

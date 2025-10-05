@@ -47,7 +47,7 @@ public class InMemoryTrainCompositionCarriageRepository
         storage.deleteById(id);
     }
 
-    private void validateId(TrainCompositionCarriageId id) {
+    private static void validateId(TrainCompositionCarriageId id) {
         if (id == null) {
             throw new InMemoryNotNullConstraintException("TrainCompositionCarriageId");
         }
@@ -59,7 +59,7 @@ public class InMemoryTrainCompositionCarriageRepository
         }
     }
 
-    public void validate(final TrainCompositionCarriage trainCompositionCarriage) {
+    private static void validate(final TrainCompositionCarriage trainCompositionCarriage) {
         if (trainCompositionCarriage == null) {
             throw new IllegalArgumentException("TrainComposition cannot be null");
         }

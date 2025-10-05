@@ -47,7 +47,7 @@ public class InMemoryScheduleRepository implements ScheduleRepository {
         storage.deleteById(id);
     }
 
-    public void validate(final Schedule schedule) throws IllegalArgumentException {
+    private static void validate(final Schedule schedule) throws IllegalArgumentException {
         if (schedule == null) {
             throw new IllegalArgumentException("Schedul cannot be null");
         }

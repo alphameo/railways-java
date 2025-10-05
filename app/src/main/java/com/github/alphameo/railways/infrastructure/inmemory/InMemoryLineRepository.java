@@ -45,7 +45,7 @@ public class InMemoryLineRepository implements LineRepository {
         storage.deleteById(id);
     }
 
-    public void validate(final Line line) {
+    private static void validate(final Line line) {
         if (line == null) {
             throw new IllegalArgumentException("Line cannot be null");
         }

@@ -77,7 +77,7 @@ public class InMemoryLocomotiveRepository implements LocomotiveRepository {
         return locomotive;
     }
 
-    private void validate(final Locomotive locomotive) {
+    private static void validate(final Locomotive locomotive) {
         if (locomotive == null) {
             throw new IllegalArgumentException("Locomotive cannot be null");
         }

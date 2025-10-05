@@ -46,7 +46,7 @@ public class InMemoryLineStationRepository implements LineStationRepository {
         storage.deleteById(id);
     }
 
-    private void validateId(LineStationId id) {
+    private static void validateId(LineStationId id) {
         if (id == null) {
             throw new InMemoryNotNullConstraintException("LineStaionId");
         }
@@ -58,7 +58,7 @@ public class InMemoryLineStationRepository implements LineStationRepository {
         }
     }
 
-    public void validate(final LineStation lineStaion) {
+    private static void validate(final LineStation lineStaion) {
         if (lineStaion == null) {
             throw new InMemoryNotNullConstraintException("LineStaion");
         }

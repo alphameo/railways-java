@@ -77,7 +77,7 @@ public class InMemoryCarriageRepository implements CarriageRepository {
         return carriage;
     }
 
-    private void validate(final Carriage carriage) {
+    private static void validate(final Carriage carriage) {
         if (carriage == null) {
             throw new IllegalArgumentException("Carriage cannot be null");
         }

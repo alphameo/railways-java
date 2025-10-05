@@ -76,7 +76,7 @@ public class InMemoryTrainRepository implements TrainRepository {
         return train;
     }
 
-    private void validate(Train train) {
+    private static void validate(Train train) {
         if (train == null) {
             throw new IllegalArgumentException("Train cannot be null");
         }
