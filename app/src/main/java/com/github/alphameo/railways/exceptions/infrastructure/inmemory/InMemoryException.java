@@ -1,4 +1,6 @@
-package com.github.alphameo.railways.exceptions.infrastructure;
+package com.github.alphameo.railways.exceptions.infrastructure.inmemory;
+
+import com.github.alphameo.railways.exceptions.infrastructure.InfrastructureException;
 
 public class InMemoryException extends InfrastructureException {
 
