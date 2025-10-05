@@ -5,7 +5,7 @@ import java.util.Optional;
 
 import com.github.alphameo.railways.domain.entities.Line;
 import com.github.alphameo.railways.domain.repositories.LineRepository;
-import com.github.alphameo.railways.exceptions.infrastructure.InMemoryException;
+import com.github.alphameo.railways.exceptions.infrastructure.inmemory.InMemoryNotNullConstraintException;
 
 public class InMemoryLineRepository implements LineRepository {
 
@@ -47,10 +47,10 @@ public class InMemoryLineRepository implements LineRepository {
 
     public void validate(final Line line) {
         if (line == null) {
-            throw new InMemoryException("Line cannot be null");
+            throw new IllegalArgumentException("Line cannot be null");
         }
         if (line.getName() == null) {
-            throw new InMemoryException("Line.name cannot be null");
+            throw new InMemoryNotNullConstraintException("Line.name");
         }
     }
 }

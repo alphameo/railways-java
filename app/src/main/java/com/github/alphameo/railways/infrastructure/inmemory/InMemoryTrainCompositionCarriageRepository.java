@@ -6,7 +6,8 @@ import java.util.Optional;
 import com.github.alphameo.railways.domain.entities.TrainCompositionCarriage;
 import com.github.alphameo.railways.domain.entities.TrainCompositionCarriage.TrainCompositionCarriageId;
 import com.github.alphameo.railways.domain.repositories.TrainCompositionCarriageRepository;
-import com.github.alphameo.railways.exceptions.infrastructure.InMemoryException;
+import com.github.alphameo.railways.exceptions.infrastructure.inmemory.InMemoryConstraintException;
+import com.github.alphameo.railways.exceptions.infrastructure.inmemory.InMemoryNotNullConstraintException;
 
 public class InMemoryTrainCompositionCarriageRepository
         implements TrainCompositionCarriageRepository {
@@ -22,15 +23,7 @@ public class InMemoryTrainCompositionCarriageRepository
 
     @Override
     public Optional<TrainCompositionCarriage> findById(final TrainCompositionCarriageId id) {
-        if (id == null) {
-            throw new InMemoryException("TrainCompositionCarriageId cannot be null");
-        }
-        if (id.getTrainCompositionId() == null) {
-            throw new InMemoryException("TrainCompositionCarriageId.trainCompositionId cannot be null");
-        }
-        if (id.getCarriageId() == null) {
-            throw new InMemoryException("TrainCompositionCarriageId.carriageId cannot be null");
-        }
+        validateId(id);
 
         return storage.getById(id);
     }
@@ -49,34 +42,33 @@ public class InMemoryTrainCompositionCarriageRepository
 
     @Override
     public void deleteById(final TrainCompositionCarriageId id) {
-        if (id == null) {
-            throw new InMemoryException("TrainCompositionCarriageId cannot be null");
-        }
-        if (id.getTrainCompositionId() == null) {
-            throw new InMemoryException("TrainCompositionCarriageId.trainCompositionId cannot be null");
-        }
-        if (id.getCarriageId() == null) {
-            throw new InMemoryException("TrainCompositionCarriageId.carriageId cannot be null");
-        }
+        validateId(id);
 
         storage.deleteById(id);
     }
 
+    private void validateId(TrainCompositionCarriageId id) {
+        if (id == null) {
+            throw new InMemoryNotNullConstraintException("TrainCompositionCarriageId");
+        }
+        if (id.getTrainCompositionId() == null) {
+            throw new InMemoryNotNullConstraintException("TrainCompositionCarriageId.trainCompositionId");
+        }
+        if (id.getCarriageId() == null) {
+            throw new InMemoryNotNullConstraintException("TrainCompositionCarriageId.carriageId");
+        }
+    }
+
     public void validate(final TrainCompositionCarriage trainCompositionCarriage) {
         if (trainCompositionCarriage == null) {
-            throw new InMemoryException("Invalid trainComposition: object is null");
+            throw new IllegalArgumentException("TrainComposition cannot be null");
         }
-        if (trainCompositionCarriage.getTrainCompositionId() == null) {
-            throw new InMemoryException("Invalid trainCompositionCarriage: trainCompositionId is null");
-        }
-        if (trainCompositionCarriage.getCarriageId() == null) {
-            throw new InMemoryException("Invalid trainCompositionCarriage: carriageId is null");
-        }
+        validateId(trainCompositionCarriage.getId());
         if (trainCompositionCarriage.getPosition() == null) {
-            throw new InMemoryException("Invalid trainCompositionCarriage: position is null");
+            throw new InMemoryConstraintException("Invalid trainCompositionCarriage: position is null");
         }
         if (trainCompositionCarriage.getPosition() < 0) {
-            throw new InMemoryException("Invalid trainCompositionCarriage: position < 0");
+            throw new InMemoryConstraintException("Invalid trainCompositionCarriage: position < 0");
         }
     }
 }

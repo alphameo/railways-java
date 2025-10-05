@@ -5,7 +5,7 @@ import java.util.Optional;
 
 import com.github.alphameo.railways.domain.entities.Station;
 import com.github.alphameo.railways.domain.repositories.StationRepository;
-import com.github.alphameo.railways.exceptions.infrastructure.InMemoryException;
+import com.github.alphameo.railways.exceptions.infrastructure.inmemory.InMemoryNotNullConstraintException;
 
 public class InMemoryStationRepository implements StationRepository {
 
@@ -48,13 +48,13 @@ public class InMemoryStationRepository implements StationRepository {
 
     public void validate(final Station station) {
         if (station == null) {
-            throw new InMemoryException("Station cannot be null");
+            throw new IllegalArgumentException("Station cannot be null");
         }
         if (station.getName() == null) {
-            throw new InMemoryException("Station.name cannot be null");
+            throw new InMemoryNotNullConstraintException("Station.name");
         }
         if (station.getLocation() == null) {
-            throw new InMemoryException("Station.location cannot be null");
+            throw new InMemoryNotNullConstraintException("Station.location");
         }
     }
 }

@@ -6,7 +6,8 @@ import java.util.Optional;
 import com.github.alphameo.railways.domain.entities.LineStation;
 import com.github.alphameo.railways.domain.entities.LineStation.LineStationId;
 import com.github.alphameo.railways.domain.repositories.LineStationRepository;
-import com.github.alphameo.railways.exceptions.infrastructure.InMemoryException;
+import com.github.alphameo.railways.exceptions.infrastructure.inmemory.InMemoryConstraintException;
+import com.github.alphameo.railways.exceptions.infrastructure.inmemory.InMemoryNotNullConstraintException;
 
 public class InMemoryLineStationRepository implements LineStationRepository {
 
@@ -21,15 +22,7 @@ public class InMemoryLineStationRepository implements LineStationRepository {
 
     @Override
     public Optional<LineStation> findById(final LineStationId id) {
-        if (id == null) {
-            throw new InMemoryException("LineStaionId cannot be null");
-        }
-        if (id.getLineId() == null) {
-            throw new InMemoryException("LineStaionId.lineId cannot be null");
-        }
-        if (id.getStationId() == null) {
-            throw new InMemoryException("LineStaionId.stationId cannot be null");
-        }
+        validateId(id);
 
         return storage.getById(id);
     }
@@ -48,34 +41,33 @@ public class InMemoryLineStationRepository implements LineStationRepository {
 
     @Override
     public void deleteById(final LineStationId id) {
-        if (id == null) {
-            throw new InMemoryException("LineStaionId cannot be null");
-        }
-        if (id.getLineId() == null) {
-            throw new InMemoryException("LineStaionId.lineId cannot be null");
-        }
-        if (id.getStationId() == null) {
-            throw new InMemoryException("LineStaionId.stationId cannot be null");
-        }
+        validateId(id);
 
         storage.deleteById(id);
     }
 
+    private void validateId(LineStationId id) {
+        if (id == null) {
+            throw new InMemoryNotNullConstraintException("LineStaionId");
+        }
+        if (id.getLineId() == null) {
+            throw new InMemoryNotNullConstraintException("LineStaionId.lineId");
+        }
+        if (id.getStationId() == null) {
+            throw new InMemoryNotNullConstraintException("LineStaionId.stationId");
+        }
+    }
+
     public void validate(final LineStation lineStaion) {
         if (lineStaion == null) {
-            throw new InMemoryException("LineStaion cannot be null");
+            throw new InMemoryNotNullConstraintException("LineStaion");
         }
-        if (lineStaion.getLineId() == null) {
-            throw new InMemoryException("LineStaion.lineId cannot be null");
-        }
-        if (lineStaion.getStationId() == null) {
-            throw new InMemoryException("LineStaion.stationId cannot be null");
-        }
+        validateId(lineStaion.getId());
         if (lineStaion.getPosition() == null) {
-            throw new InMemoryException("LineStaion.position cannot be null");
+            throw new InMemoryNotNullConstraintException("LineStaion.position");
         }
         if (lineStaion.getPosition() < 0) {
-            throw new InMemoryException("LineStaion.position should be >= 0");
+            throw new InMemoryConstraintException("LineStaion.position", ">= 0");
         }
     }
 }

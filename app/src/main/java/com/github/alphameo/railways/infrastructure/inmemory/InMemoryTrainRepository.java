@@ -6,7 +6,8 @@ import java.util.Optional;
 
 import com.github.alphameo.railways.domain.entities.Train;
 import com.github.alphameo.railways.domain.repositories.TrainRepository;
-import com.github.alphameo.railways.exceptions.infrastructure.InMemoryException;
+import com.github.alphameo.railways.exceptions.infrastructure.inmemory.InMemoryNotNullConstraintException;
+import com.github.alphameo.railways.exceptions.infrastructure.inmemory.InMemoryUniqueCounstraintException;
 
 public class InMemoryTrainRepository implements TrainRepository {
 
@@ -19,7 +20,7 @@ public class InMemoryTrainRepository implements TrainRepository {
         validate(train);
         final var number = train.getNumber();
         if (uniqueNumberIds.containsKey(number)) {
-            throw new InMemoryException("Train.number is not unique");
+            throw new InMemoryUniqueCounstraintException("Train.number");
         }
 
         if (train.getId() == null) {
@@ -49,7 +50,7 @@ public class InMemoryTrainRepository implements TrainRepository {
         final var oldNumber = storage.getById(train.getId()).get().getNumber();
         if (oldNumber != number) {
             if (uniqueNumberIds.containsKey(number)) {
-                throw new InMemoryException("Train.number is not unique");
+                throw new InMemoryUniqueCounstraintException("Train.number");
             }
             uniqueNumberIds.remove(oldNumber);
             uniqueNumberIds.put(number, train.getId());
@@ -77,13 +78,13 @@ public class InMemoryTrainRepository implements TrainRepository {
 
     private void validate(Train train) {
         if (train == null) {
-            throw new InMemoryException("Train cannot be null");
+            throw new IllegalArgumentException("Train cannot be null");
         }
         if (train.getId() == null) {
-            throw new InMemoryException("Train.id cannot be null");
+            throw new InMemoryNotNullConstraintException("Train.id");
         }
         if (train.getNumber() == null) {
-            throw new InMemoryException("Train.number cannot be null");
+            throw new InMemoryNotNullConstraintException("Train.number");
         }
     }
 }

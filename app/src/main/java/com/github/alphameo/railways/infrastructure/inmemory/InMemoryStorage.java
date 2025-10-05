@@ -6,7 +6,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import com.github.alphameo.railways.exceptions.infrastructure.InMemoryException;
+import com.github.alphameo.railways.exceptions.infrastructure.inmemory.InMemoryConstraintException;
+import com.github.alphameo.railways.exceptions.infrastructure.inmemory.InMemoryEntityNotExistsException;
+import com.github.alphameo.railways.exceptions.infrastructure.inmemory.InMemoryNotNullConstraintException;
 
 public class InMemoryStorage<T, ID> {
 
@@ -14,14 +16,14 @@ public class InMemoryStorage<T, ID> {
 
     public T create(final ID id, final T entity) {
         if (entity == null) {
-            throw new InMemoryException("Entity cannot be null");
+            throw new IllegalArgumentException("Entity cannot be null");
         }
         if (id == null) {
-            throw new InMemoryException("Entity.id cannot be null");
+            throw new InMemoryNotNullConstraintException(String.format("%s.id", entity.getClass().toString()));
         }
 
         if (storage.containsKey(id)) {
-            throw new InMemoryException(String.format("Entity with id=%s already exist", id));
+            throw new InMemoryConstraintException(String.format("Entity with id=%s already exist", id));
         }
         storage.put(id, entity);
         var created = storage.get(id);
@@ -30,7 +32,7 @@ public class InMemoryStorage<T, ID> {
 
     public Optional<T> getById(final ID id) {
         if (id == null) {
-            throw new InMemoryException("Entity.id cannot be null");
+            throw new IllegalArgumentException("id cannot be null");
         }
 
         return Optional.ofNullable(storage.get(id));
@@ -42,14 +44,14 @@ public class InMemoryStorage<T, ID> {
 
     public T update(final ID id, final T entity) {
         if (entity == null) {
-            throw new InMemoryException("Entity cannot be null");
+            throw new IllegalArgumentException("Entity cannot be null");
         }
         if (id == null) {
-            throw new InMemoryException("Entity.id cannot be null");
+            throw new InMemoryNotNullConstraintException(String.format("%s.id", entity.getClass().toString()));
         }
 
         if (!storage.containsKey(id)) {
-            throw new InMemoryException(String.format("Entity with id=%s does not exist", id));
+            throw new InMemoryEntityNotExistsException(entity.getClass().toString(), id);
         }
         storage.put(id, entity);
         var updated = storage.get(id);
@@ -58,7 +60,7 @@ public class InMemoryStorage<T, ID> {
 
     public void deleteById(final ID id) {
         if (id == null) {
-            throw new InMemoryException("Entity.id cannot be null");
+            throw new IllegalArgumentException("id cannot be null");
         }
 
         storage.remove(id);

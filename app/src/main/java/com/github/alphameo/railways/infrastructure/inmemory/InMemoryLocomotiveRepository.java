@@ -6,7 +6,9 @@ import java.util.Optional;
 
 import com.github.alphameo.railways.domain.entities.Locomotive;
 import com.github.alphameo.railways.domain.repositories.LocomotiveRepository;
-import com.github.alphameo.railways.exceptions.infrastructure.InMemoryException;
+import com.github.alphameo.railways.exceptions.infrastructure.inmemory.InMemoryConstraintException;
+import com.github.alphameo.railways.exceptions.infrastructure.inmemory.InMemoryNotNullConstraintException;
+import com.github.alphameo.railways.exceptions.infrastructure.inmemory.InMemoryUniqueCounstraintException;
 
 public class InMemoryLocomotiveRepository implements LocomotiveRepository {
 
@@ -19,7 +21,7 @@ public class InMemoryLocomotiveRepository implements LocomotiveRepository {
         validate(locomotive);
         final var number = locomotive.getNumber();
         if (uniqueNumberIds.containsKey(number)) {
-            throw new InMemoryException("Locomotive.number is not unique");
+            throw new InMemoryConstraintException("Locomotive.number is not unique");
         }
 
         if (locomotive.getId() == null) {
@@ -48,7 +50,7 @@ public class InMemoryLocomotiveRepository implements LocomotiveRepository {
         final var oldNumber = storage.getById(locomotive.getId()).get().getNumber();
         if (oldNumber != number) {
             if (uniqueNumberIds.containsKey(number)) {
-                throw new InMemoryException("Locomotive.number is not unique");
+                throw new InMemoryUniqueCounstraintException("Locomotive.number");
             }
             uniqueNumberIds.remove(oldNumber);
             uniqueNumberIds.put(number, locomotive.getId());
@@ -80,10 +82,10 @@ public class InMemoryLocomotiveRepository implements LocomotiveRepository {
             throw new IllegalArgumentException("Locomotive cannot be null");
         }
         if (locomotive.getNumber() == null) {
-            throw new IllegalArgumentException("Locomotive.number cannot be null");
+            throw new InMemoryNotNullConstraintException("Locomotive.number");
         }
         if (locomotive.getModel() == null) {
-            throw new IllegalArgumentException("Locomotive.model cannot be null");
+            throw new InMemoryNotNullConstraintException("Locomotive.model");
         }
     }
 }

@@ -5,7 +5,8 @@ import java.util.Optional;
 
 import com.github.alphameo.railways.domain.entities.Schedule;
 import com.github.alphameo.railways.domain.repositories.ScheduleRepository;
-import com.github.alphameo.railways.exceptions.infrastructure.InMemoryException;
+import com.github.alphameo.railways.exceptions.infrastructure.inmemory.InMemoryConstraintException;
+import com.github.alphameo.railways.exceptions.infrastructure.inmemory.InMemoryNotNullConstraintException;
 
 public class InMemoryScheduleRepository implements ScheduleRepository {
 
@@ -51,17 +52,18 @@ public class InMemoryScheduleRepository implements ScheduleRepository {
             throw new IllegalArgumentException("Schedul cannot be null");
         }
         if (schedule.getTrainId() == null) {
-            throw new InMemoryException("Schedule.trainId cannot be null");
+            throw new InMemoryNotNullConstraintException("Schedule.trainId");
         }
         if (schedule.getStationId() == null) {
-            throw new InMemoryException("Schedule.stationId cannot be null");
+            throw new InMemoryNotNullConstraintException("Schedule.stationId");
         }
         final var arrT = schedule.getArrivalTime();
         final var depT = schedule.getDepartureTime();
         if (!(arrT == null || depT == null
                 || arrT.isBefore(depT)
                 || arrT.isEqual(depT))) {
-            throw new InMemoryException("Schedule.arrival_time should be <= Schedule.departure_time");
+            throw new InMemoryConstraintException("Schedule.arrival_time & Schedule.departure_time",
+                    "Schedule.arrival_time <= Schedule.departure_time");
         }
     }
 }

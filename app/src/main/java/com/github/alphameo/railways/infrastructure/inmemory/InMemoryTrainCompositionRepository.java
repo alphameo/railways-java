@@ -5,7 +5,7 @@ import java.util.Optional;
 
 import com.github.alphameo.railways.domain.entities.TrainComposition;
 import com.github.alphameo.railways.domain.repositories.TrainCompositionRepository;
-import com.github.alphameo.railways.exceptions.infrastructure.InMemoryException;
+import com.github.alphameo.railways.exceptions.infrastructure.inmemory.InMemoryNotNullConstraintException;
 
 public class InMemoryTrainCompositionRepository implements TrainCompositionRepository {
 
@@ -48,10 +48,10 @@ public class InMemoryTrainCompositionRepository implements TrainCompositionRepos
 
     private void validate(final TrainComposition trainComposition) {
         if (trainComposition == null) {
-            throw new InMemoryException("TrainComposition.object cannot be null");
+            throw new IllegalArgumentException("TrainComposition cannot be null");
         }
         if (trainComposition.getTrainId() == null) {
-            throw new InMemoryException("TrainComposition.trainId cannot be null");
+            throw new InMemoryNotNullConstraintException("TrainComposition.trainId");
         }
     }
 }
