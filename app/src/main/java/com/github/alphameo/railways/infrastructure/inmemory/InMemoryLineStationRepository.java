@@ -1,5 +1,6 @@
 package com.github.alphameo.railways.infrastructure.inmemory;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,6 +45,30 @@ public class InMemoryLineStationRepository implements LineStationRepository {
         validateId(id);
 
         storage.deleteById(id);
+    }
+
+    @Override
+    public List<Long> findLineIdsByStationId(Long stationId) {
+        final var lineIds = new ArrayList<Long>();
+        for (final var lineStation : storage.findAll()) {
+            final var lsId = lineStation.getId();
+            if (stationId.equals(lsId.getStationId())) {
+                lineIds.add(lsId.getLineId());
+            }
+        }
+        return lineIds;
+    }
+
+    @Override
+    public List<Long> findStationsByLineId(Long lineId) {
+        final var stationIds = new ArrayList<Long>();
+        for (final var lineStation : storage.findAll()) {
+            final var lsId = lineStation.getId();
+            if (lineId.equals(lsId.getLineId())) {
+                stationIds.add(lsId.getStationId());
+            }
+        }
+        return stationIds;
     }
 
     private static void validateId(LineStationId id) {

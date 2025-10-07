@@ -1,5 +1,6 @@
 package com.github.alphameo.railways.infrastructure.inmemory;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,6 +46,30 @@ public class InMemoryTrainCompositionCarriageRepository
         validateId(id);
 
         storage.deleteById(id);
+    }
+
+    @Override
+    public List<Long> findCarriageIdsByTrainCompositionId(Long trainCompositionId) {
+        final var carriageIds = new ArrayList<Long>();
+        for (final var trainCompoCarriage : storage.findAll()) {
+            final var tccId = trainCompoCarriage.getId();
+            if (trainCompositionId.equals(tccId.getTrainCompositionId())) {
+                carriageIds.add(tccId.getCarriageId());
+            }
+        }
+        return carriageIds;
+    }
+
+    @Override
+    public List<Long> findTrainCompositionIdsByCarriageId(Long carriageId) {
+        final var carriageIds = new ArrayList<Long>();
+        for (final var trainCompoCarriage : storage.findAll()) {
+            final var tccId = trainCompoCarriage.getId();
+            if (carriageId.equals(tccId.getCarriageId())) {
+                carriageIds.add(tccId.getTrainCompositionId());
+            }
+        }
+        return carriageIds;
     }
 
     private static void validateId(TrainCompositionCarriageId id) {
