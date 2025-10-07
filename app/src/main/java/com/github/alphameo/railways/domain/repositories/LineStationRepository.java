@@ -7,7 +7,7 @@ import com.github.alphameo.railways.domain.entities.LineStation.LineStationId;
 
 public interface LineStationRepository extends Repository<LineStation, LineStationId> {
 
-    List<Long> findStationsByLineId(Long lineId);
+    List<Long> findStationIdsByLineId(Long lineId);
 
     List<Long> findLineIdsByStationId(Long stationId);
 }

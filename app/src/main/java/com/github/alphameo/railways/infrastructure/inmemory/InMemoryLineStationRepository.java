@@ -60,7 +60,7 @@ public class InMemoryLineStationRepository implements LineStationRepository {
     }
 
     @Override
-    public List<Long> findStationsByLineId(Long lineId) {
+    public List<Long> findStationIdsByLineId(Long lineId) {
         final var stationIds = new ArrayList<Long>();
         for (final var lineStation : storage.findAll()) {
             final var lsId = lineStation.getId();
