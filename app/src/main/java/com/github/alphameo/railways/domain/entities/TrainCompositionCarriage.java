@@ -59,7 +59,7 @@ public class TrainCompositionCarriage {
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
-    public class TrainCompositionCarriageId {
+    public static class TrainCompositionCarriageId {
 
         private Long trainCompositionId;
         private Long carriageId;

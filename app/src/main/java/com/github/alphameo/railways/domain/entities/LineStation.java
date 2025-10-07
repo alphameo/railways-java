@@ -59,7 +59,7 @@ public class LineStation {
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
-    public class LineStationId {
+    public static class LineStationId {
 
         private Long lineId;
         private Long stationId;
