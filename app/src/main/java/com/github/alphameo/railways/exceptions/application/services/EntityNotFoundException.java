@@ -7,4 +7,12 @@ public class EntityNotFoundException extends ServiceException {
     public EntityNotFoundException(String entity, Object id) {
         super(String.format(MSG_FMT, entity, id.toString()));
     }
+
+    public EntityNotFoundException(String msg) {
+        super(msg);
+    }
+
+    public EntityNotFoundException(String msg, Throwable cause) {
+        super(msg, cause);
+    }
 }
