@@ -19,7 +19,7 @@ public class ScheduleEntry {
         if (stationId == null) {
             throw new ValidationException("Schedule.stationId cannot be null");
         }
-        validateTime(this.arrivalTime, departureTime);
+        validateTime(arrivalTime, departureTime);
 
         this.stationId = stationId;
         this.departureTime = departureTime;
@@ -28,9 +28,14 @@ public class ScheduleEntry {
     }
 
     private static void validateTime(final LocalDateTime arrT, final LocalDateTime depT) {
-        if (!(arrT == null || depT == null
-                || arrT.isBefore(depT)
-                || arrT.isEqual(depT))) {
+        if (depT == null) {
+            return;
+        }
+        if (arrT == null) {
+            throw new ValidationException(
+                    "Schedule.arrival_time should be set if Schedule.departure_time already been set");
+        }
+        if (arrT.isAfter(depT)) {
             throw new ValidationException("Schedule.arrival_time should be <= Schedule.departure_time");
         }
     }
