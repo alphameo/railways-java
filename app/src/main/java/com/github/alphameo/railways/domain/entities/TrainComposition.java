@@ -37,8 +37,8 @@ public class TrainComposition {
     }
 
     public void setCarriages(@NonNull List<Long> carriageIds) {
-        if (carriageIds.size() == 0) {
-            throw new ValidationException("TrainComposition.carriageIds size should be >= 1");
+        if (carriageIds == null | carriageIds.isEmpty()) {
+            throw new ValidationException("TrainComposition.carriageIds should not be empty or null");
         }
 
         var newIds = new ArrayList<Long>();
