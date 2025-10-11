@@ -50,7 +50,7 @@ public class Line {
 
     public void addStation(@NonNull final Long id, final int position) {
         try {
-            this.stationIdOrder.add(position, id);
+            this.stationIdOrder.add(position - 1, id);
         } catch (Exception e) {
             throw new ValidationException(
                     String.format("Cannot insert station on position=%s: %s", position, e.getMessage()));
@@ -64,7 +64,7 @@ public class Line {
 
     public void removeCarriageByPosition(final int position) {
         try {
-            this.stationIdOrder.remove(position);
+            this.stationIdOrder.remove(position - 1);
         } catch (Exception e) {
             throw new ValidationException(
                     String.format("Cannot remove station on position=%s: %s", position, e.getMessage()));

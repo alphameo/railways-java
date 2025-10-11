@@ -53,7 +53,7 @@ public class TrainComposition {
 
     public void addCarriage(@NonNull final Long id, final int position) {
         try {
-            this.carriageIds.add(position, id);
+            this.carriageIds.add(position - 1, id);
         } catch (Exception e) {
             throw new ValidationException(
                     String.format("Cannot insert carriage on position=%s: %s", position, e.getMessage()));
@@ -67,7 +67,7 @@ public class TrainComposition {
 
     public void removeCarriageByPosition(final int position) {
         try {
-            this.carriageIds.remove(position);
+            this.carriageIds.remove(position - 1);
         } catch (Exception e) {
             throw new ValidationException(
                     String.format("Cannot remove carriage on position=%s: %s", position, e.getMessage()));
