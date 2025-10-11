@@ -25,6 +25,14 @@ public class Station {
         this.setLineIds(lineIds);
     }
 
+    public Station(Station station) {
+        new Station(
+                station.id,
+                station.name,
+                station.location,
+                station.lineIds);
+    }
+
     public void setName(final ObjectName name) {
         if (name == null) {
             throw new ValidationException("Station.name cannot be null");
