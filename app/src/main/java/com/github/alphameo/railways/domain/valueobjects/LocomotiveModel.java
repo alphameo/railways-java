@@ -9,6 +9,8 @@ import lombok.Getter;
 @EqualsAndHashCode
 public class LocomotiveModel {
 
+    private static int MAX_NUMBER_LENGTH = 50;
+
     private String value;
 
     public LocomotiveModel(final String number) {
@@ -22,8 +24,9 @@ public class LocomotiveModel {
             throw new ValidationException("LocomotiveModel.value cannot be blank");
         }
 
-        if (trimmedNumber.length() > 50) {
-            throw new ValidationException("LocomotiveModel.value length should be <= 50");
+        if (trimmedNumber.length() > MAX_NUMBER_LENGTH) {
+            throw new ValidationException(
+                    String.format("LocomotiveModel.value length should be <= %s", MAX_NUMBER_LENGTH));
         }
 
         this.value = trimmedNumber;

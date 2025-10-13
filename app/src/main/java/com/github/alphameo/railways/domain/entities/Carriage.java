@@ -9,6 +9,8 @@ import lombok.Data;
 @Data
 public class Carriage {
 
+    private static int MIN_CAPACITY = 0;
+
     private Long id;
     private MachineNumber number;
     private CarriageContentType contentType;
@@ -42,8 +44,8 @@ public class Carriage {
         if (capacity == null) {
             throw new ValidationException("Carriage.capacity cannot be null");
         }
-        if (capacity <= 0) {
-            throw new ValidationException("Carriage.capacity must be > 0");
+        if (capacity <= MIN_CAPACITY) {
+            throw new ValidationException(String.format("Carriage.capacity must be > %s", MIN_CAPACITY));
         }
 
         this.capacity = capacity;

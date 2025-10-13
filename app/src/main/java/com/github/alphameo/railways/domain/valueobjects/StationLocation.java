@@ -10,6 +10,8 @@ import lombok.Getter;
 @EqualsAndHashCode
 public class StationLocation {
 
+    private static int MAX_NAME_LENGTH = 255;
+
     private String value;
 
     public StationLocation(final String location) {
@@ -23,8 +25,9 @@ public class StationLocation {
             throw new ValidationException("StationLocation.value cannot be blank");
         }
 
-        if (trimmedName.length() > 255) {
-            throw new ValidationException("StationLocation.value length should be <= 100");
+        if (trimmedName.length() > MAX_NAME_LENGTH) {
+            throw new ValidationException(
+                    String.format("StationLocation.value length should be <= %s", MAX_NAME_LENGTH));
         }
 
         this.value = trimmedName;

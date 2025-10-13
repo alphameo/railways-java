@@ -9,6 +9,8 @@ import lombok.Getter;
 @EqualsAndHashCode
 public class MachineNumber {
 
+    private static int MAX_NUMBER_LENGTH = 20;
+
     private String value;
 
     public MachineNumber(final String number) {
@@ -22,8 +24,9 @@ public class MachineNumber {
             throw new ValidationException("MachineNumber.value cannot be blank");
         }
 
-        if (trimmedNumber.length() > 20) {
-            throw new ValidationException("MachineNumber.value length should be <= 20");
+        if (trimmedNumber.length() > MAX_NUMBER_LENGTH) {
+            throw new ValidationException(
+                    String.format("MachineNumber.value length should be <= %s", MAX_NUMBER_LENGTH));
         }
 
         this.value = trimmedNumber;

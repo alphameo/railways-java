@@ -9,6 +9,8 @@ import lombok.Getter;
 @EqualsAndHashCode
 public class ObjectName {
 
+    private static int MAX_NUMBER_LENGTH = 100;
+
     private String value;
 
     public ObjectName(final String name) {
@@ -22,8 +24,8 @@ public class ObjectName {
             throw new ValidationException("ObjectName.value cannot be blank");
         }
 
-        if (trimmedName.length() > 100) {
-            throw new ValidationException("ObjectName.value length should be <= 100");
+        if (trimmedName.length() > MAX_NUMBER_LENGTH) {
+            throw new ValidationException(String.format("ObjectName.value length should be <= %s", MAX_NUMBER_LENGTH));
         }
 
         this.value = trimmedName;
