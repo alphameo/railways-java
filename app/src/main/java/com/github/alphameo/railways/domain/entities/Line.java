@@ -6,23 +6,33 @@ import java.util.List;
 import com.github.alphameo.railways.domain.valueobjects.ObjectName;
 import com.github.alphameo.railways.exceptions.domain.ValidationException;
 
-import lombok.Data;
+import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NonNull;
 
-@Data
+@EqualsAndHashCode
+@Getter
 public class Line {
 
     private Long id;
+
     private ObjectName name;
-    private List<Long> stationIdOrder;
+
+    @Getter(AccessLevel.NONE)
+    private List<Long> stationIds;
 
     public Line(final Long id, final ObjectName name, final List<Long> stationOrder) {
         this.id = id;
-        this.setName(name);
-        this.setStationIdOrder(stationIdOrder);
+        this.rename(name);
+        this.updateStationIds(stationIds);
     }
 
-    public void setName(final ObjectName name) {
+    public List<Long> listStationIds() {
+        return List.copyOf(this.stationIds);
+    }
+
+    public void rename(final ObjectName name) {
         if (name == null) {
             throw new ValidationException("Line.name cannot be null");
         }
@@ -30,14 +40,14 @@ public class Line {
         this.name = name;
     }
 
-    public void setStationIdOrder(List<Long> stationInOrder) {
-        if (stationInOrder == null | stationInOrder.isEmpty()) {
-            throw new ValidationException("Line.stationsInOrder cannot be null or empty");
+    public void updateStationIds(List<Long> stationIds) {
+        if (stationIds == null | stationIds.isEmpty()) {
+            throw new ValidationException("Line.stationsIds cannot be null or empty");
         }
 
         final var newIds = new ArrayList<Long>();
 
-        for (Long id : stationInOrder) {
+        for (Long id : stationIds) {
             if (id == null) {
                 throw new ValidationException("stationId cannot be null");
             }
@@ -45,12 +55,12 @@ public class Line {
             newIds.add(id);
         }
 
-        this.stationIdOrder = newIds;
+        this.stationIds = newIds;
     }
 
-    public void addStation(@NonNull final Long id, final int position) {
+    public void registerStation(@NonNull final Long stationId, final int position) {
         try {
-            this.stationIdOrder.add(position - 1, id);
+            this.stationIds.add(position - 1, stationId);
         } catch (Exception e) {
             throw new ValidationException(
                     String.format("Cannot insert station on position=%s: %s", position, e.getMessage()));
@@ -58,20 +68,20 @@ public class Line {
 
     }
 
-    public void removeStationById(@NonNull final Long id) {
-        this.stationIdOrder.remove(id);
+    public void unregisterStationById(@NonNull final Long id) {
+        this.stationIds.remove(id);
     }
 
-    public void removeCarriageByPosition(final int position) {
+    public void unregisterStationOnPosition(final int position) {
         try {
-            this.stationIdOrder.remove(position - 1);
+            this.stationIds.remove(position - 1);
         } catch (Exception e) {
             throw new ValidationException(
                     String.format("Cannot remove station on position=%s: %s", position, e.getMessage()));
         }
     }
 
-    public int getCarriageCount() {
-        return this.stationIdOrder.size();
+    public int stationCount() {
+        return this.stationIds.size();
     }
 }
