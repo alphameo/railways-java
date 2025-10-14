@@ -4,9 +4,13 @@ import com.github.alphameo.railways.domain.valueobjects.ObjectName;
 import com.github.alphameo.railways.domain.valueobjects.StationLocation;
 import com.github.alphameo.railways.exceptions.domain.ValidationException;
 
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.ToString;
 
-@Data
+@EqualsAndHashCode
+@ToString
+@Getter
 public class Station {
 
     private Long id;
@@ -15,8 +19,8 @@ public class Station {
 
     public Station(final Long id, final ObjectName name, final StationLocation location) {
         this.id = id;
-        this.setName(name);
-        this.setLocation(location);
+        this.changeName(name);
+        this.changeLocation(location);
     }
 
     public Station(Station station) {
@@ -26,7 +30,7 @@ public class Station {
                 station.location);
     }
 
-    public void setName(final ObjectName name) {
+    public void changeName(final ObjectName name) {
         if (name == null) {
             throw new ValidationException("Station.name cannot be null");
         }
@@ -34,7 +38,7 @@ public class Station {
         this.name = name;
     }
 
-    public void setLocation(final StationLocation location) {
+    public void changeLocation(final StationLocation location) {
         if (location == null) {
             throw new ValidationException("Station.location cannot be null");
         }

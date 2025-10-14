@@ -5,20 +5,24 @@ import java.util.List;
 
 import com.github.alphameo.railways.exceptions.domain.ValidationException;
 
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NonNull;
+import lombok.ToString;
 
-@Data
+@EqualsAndHashCode
+@ToString
+@Getter
 public class TrainComposition {
 
     private Long id;
     private Long locomotiveId;
-    private ArrayList<Long> carriageIds;
+    private List<Long> carriageIds;
 
     public TrainComposition(final Long id, Long locomotiveId, @NonNull List<Long> carriageIds) {
         this.id = id;
         this.setLocomotiveId(locomotiveId);
-        this.setCarriages(carriageIds);
+        this.updateCarriages(carriageIds);
     }
 
     public TrainComposition(final TrainComposition trainComposition) {
@@ -26,6 +30,10 @@ public class TrainComposition {
                 trainComposition.id,
                 trainComposition.locomotiveId,
                 trainComposition.carriageIds);
+    }
+
+    public List<Long> getCarriageIds() {
+        return List.copyOf(this.carriageIds);
     }
 
     public void setLocomotiveId(Long locomotive) {
@@ -36,7 +44,7 @@ public class TrainComposition {
         this.locomotiveId = locomotive;
     }
 
-    public void setCarriages(@NonNull List<Long> carriageIds) {
+    public void updateCarriages(@NonNull List<Long> carriageIds) {
         if (carriageIds == null | carriageIds.isEmpty()) {
             throw new ValidationException("TrainComposition.carriageIds should not be empty or null");
         }
@@ -51,7 +59,7 @@ public class TrainComposition {
         this.carriageIds = newIds;
     }
 
-    public void addCarriage(@NonNull final Long id, final int position) {
+    public void attachCarriage(@NonNull final Long id, final int position) {
         try {
             this.carriageIds.add(position - 1, id);
         } catch (Exception e) {
@@ -61,11 +69,11 @@ public class TrainComposition {
 
     }
 
-    public void removeCarriageById(@NonNull final Long id) {
+    public void unattachCarriageWithId(@NonNull final Long id) {
         this.carriageIds.remove(id);
     }
 
-    public void removeCarriageByPosition(final int position) {
+    public void unattachCarriageOnPosition(final int position) {
         try {
             this.carriageIds.remove(position - 1);
         } catch (Exception e) {
@@ -74,7 +82,7 @@ public class TrainComposition {
         }
     }
 
-    public int getCarriageCount() {
+    public int carriageCount() {
         return this.carriageIds.size();
     }
 }

@@ -6,12 +6,13 @@ import java.util.List;
 import com.github.alphameo.railways.domain.valueobjects.ObjectName;
 import com.github.alphameo.railways.exceptions.domain.ValidationException;
 
-import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NonNull;
+import lombok.ToString;
 
 @EqualsAndHashCode
+@ToString
 @Getter
 public class Line {
 
@@ -19,7 +20,6 @@ public class Line {
 
     private ObjectName name;
 
-    @Getter(AccessLevel.NONE)
     private List<Long> stationIds;
 
     public Line(final Long id, final ObjectName name, final List<Long> stationOrder) {
@@ -28,7 +28,7 @@ public class Line {
         this.updateStationIds(stationIds);
     }
 
-    public List<Long> listStationIds() {
+    public List<Long> getStationIds() {
         return List.copyOf(this.stationIds);
     }
 

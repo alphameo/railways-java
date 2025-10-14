@@ -4,9 +4,13 @@ import com.github.alphameo.railways.domain.valueobjects.LocomotiveModel;
 import com.github.alphameo.railways.domain.valueobjects.MachineNumber;
 import com.github.alphameo.railways.exceptions.domain.ValidationException;
 
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.ToString;
 
-@Data
+@EqualsAndHashCode
+@ToString
+@Getter
 public class Locomotive {
 
     private Long id;
@@ -15,8 +19,8 @@ public class Locomotive {
 
     public Locomotive(final Long id, final MachineNumber number, final LocomotiveModel model) {
         this.id = id;
-        this.setNumber(number);
-        this.setModel(model);
+        this.changeNumber(number);
+        this.changeModel(model);
     }
 
     public Locomotive(Locomotive locomotive) {
@@ -26,7 +30,7 @@ public class Locomotive {
                 locomotive.model);
     }
 
-    public void setNumber(MachineNumber number) {
+    public void changeNumber(MachineNumber number) {
         if (number == null) {
             throw new ValidationException("Locomotive.number cannot be null");
         }
@@ -34,7 +38,7 @@ public class Locomotive {
         this.number = number;
     }
 
-    public void setModel(final LocomotiveModel model) {
+    public void changeModel(final LocomotiveModel model) {
         if (model == null) {
             throw new ValidationException("Locomotive.model cannot be null");
         }

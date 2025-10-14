@@ -4,9 +4,13 @@ import com.github.alphameo.railways.domain.valueobjects.CarriageContentType;
 import com.github.alphameo.railways.domain.valueobjects.MachineNumber;
 import com.github.alphameo.railways.exceptions.domain.ValidationException;
 
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.ToString;
 
-@Data
+@Getter
+@ToString
+@EqualsAndHashCode
 public class Carriage {
 
     private static int MIN_CAPACITY = 0;
@@ -19,9 +23,9 @@ public class Carriage {
     public Carriage(final Long id, final MachineNumber number,
             final CarriageContentType contentType, final Long capacity) {
         this.id = id;
-        this.setNumber(number);
-        this.contentType = contentType;
-        this.setCapacity(capacity);
+        this.changeNumber(number);
+        this.changeContentType(contentType);
+        this.changeCapacity(capacity);
     }
 
     public Carriage(final Carriage carriage) {
@@ -32,7 +36,7 @@ public class Carriage {
                 carriage.capacity);
     }
 
-    public void setNumber(final MachineNumber number) {
+    public void changeNumber(final MachineNumber number) {
         if (number == null) {
             throw new ValidationException("Carriage.number cannot be null");
         }
@@ -40,7 +44,7 @@ public class Carriage {
         this.number = number;
     }
 
-    public void setCapacity(final Long capacity) {
+    public void changeCapacity(final Long capacity) {
         if (capacity == null) {
             throw new ValidationException("Carriage.capacity cannot be null");
         }
@@ -49,5 +53,9 @@ public class Carriage {
         }
 
         this.capacity = capacity;
+    }
+
+    public void changeContentType(CarriageContentType contentType) {
+        this.contentType = contentType;
     }
 }

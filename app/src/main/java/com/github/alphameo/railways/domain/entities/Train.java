@@ -6,10 +6,14 @@ import java.util.List;
 import com.github.alphameo.railways.domain.valueobjects.ScheduleEntry;
 import com.github.alphameo.railways.exceptions.domain.ValidationException;
 
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NonNull;
+import lombok.ToString;
 
-@Data
+@EqualsAndHashCode
+@ToString
+@Getter
 public class Train {
 
     private Long id;
@@ -19,7 +23,7 @@ public class Train {
 
     public Train(final Long id, final String number, final Long trainCompositionId, List<ScheduleEntry> schdeule) {
         this.id = id;
-        this.setNumber(number);
+        this.changeNumber(number);
     }
 
     public Train(final Train train) {
@@ -30,7 +34,11 @@ public class Train {
                 train.schedule);
     }
 
-    public void setNumber(final String number) {
+    public List<ScheduleEntry> getSchedule() {
+        return List.copyOf(schedule);
+    }
+
+    public void changeNumber(final String number) {
         if (number == null) {
             throw new ValidationException("Train.number cannot be null");
         }
@@ -38,7 +46,7 @@ public class Train {
         this.number = number;
     }
 
-    public void setTrainCompositionId(Long trainCompositionId) {
+    public void assignTrainComposition(Long trainCompositionId) {
         if (trainCompositionId == null) {
             throw new ValidationException("Train.trainCompositionId cannot be null");
         }
@@ -46,7 +54,7 @@ public class Train {
         this.trainCompositionId = trainCompositionId;
     }
 
-    public void setSchedule(@NonNull final List<ScheduleEntry> schedule) {
+    public void updateSchedule(@NonNull final List<ScheduleEntry> schedule) {
         if (schedule == null | schedule.isEmpty()) {
             throw new ValidationException("TrainComposition.carriageIds should not be empty or null");
         }
@@ -65,7 +73,7 @@ public class Train {
         this.schedule = newSchedule;
     }
 
-    public void addScheduleEntry(@NonNull final ScheduleEntry scheduleEntry, int orderIndex) {
+    public void insertScheduleEntry(@NonNull final ScheduleEntry scheduleEntry, int orderIndex) {
         var index = orderIndex - 1;
         if (index > 0) {
             var prevEntry = this.schedule.get(index - 1);
@@ -83,7 +91,7 @@ public class Train {
         }
     }
 
-    public void removeScheduleEntryByOrederIndex(final int orderIndex) {
+    public void removeScheduleEntry(final int orderIndex) {
         try {
             this.schedule.remove(orderIndex - 1);
         } catch (Exception e) {
@@ -92,7 +100,7 @@ public class Train {
         }
     }
 
-    public int getScheduleEntriesCount() {
+    public int scheduleEntriesCount() {
         return this.schedule.size();
     }
 
