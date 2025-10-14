@@ -2,11 +2,9 @@ package com.github.alphameo.railways.domain.valueobjects;
 
 import com.github.alphameo.railways.exceptions.domain.ValidationException;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
+import lombok.Value;
 
-@Getter
-@EqualsAndHashCode
+@Value
 public class ObjectName {
 
     private static int MAX_NUMBER_LENGTH = 100;

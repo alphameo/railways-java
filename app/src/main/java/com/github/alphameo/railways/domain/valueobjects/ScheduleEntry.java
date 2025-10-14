@@ -4,11 +4,9 @@ import java.time.LocalDateTime;
 
 import com.github.alphameo.railways.exceptions.domain.ValidationException;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
+import lombok.Value;
 
-@Getter
-@EqualsAndHashCode
+@Value
 public class ScheduleEntry {
 
     private Long stationId;
