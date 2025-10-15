@@ -1,60 +1,85 @@
 package com.github.alphameo.railways.infrastructure.inmemory;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import com.github.alphameo.railways.domain.entities.Station;
 import com.github.alphameo.railways.domain.repositories.StationRepository;
+import com.github.alphameo.railways.exceptions.infrastructure.inmemory.InMemoryEntityAlreadyExistsException;
+import com.github.alphameo.railways.exceptions.infrastructure.inmemory.InMemoryEntityNotExistsException;
+import com.github.alphameo.railways.exceptions.infrastructure.inmemory.InMemoryException;
 import com.github.alphameo.railways.exceptions.infrastructure.inmemory.InMemoryNotNullConstraintException;
+
+import lombok.NonNull;
 
 public class InMemoryStationRepository implements StationRepository {
 
-    private final InMemoryStorage<Station, Long> storage = new InMemoryStorage<>();
+    private final Map<Long, Station> storage = new HashMap<>();
     private Long idGenerator = 0L;
 
     @Override
-    public Station create(final Station station) {
+    public void create(@NonNull final Station station) {
         validate(station);
+
+        Long id = station.getId();
         if (station.getId() == null) {
-            final long id = ++idGenerator;
-            station.setId(id);
+            id = ++idGenerator;
+        } else {
+            if (storage.containsKey(id)) {
+                throw new InMemoryEntityAlreadyExistsException("Station", id);
+            }
         }
 
-        storage.create(station.getId(), station);
-        return station;
+        final var newStation = createStation(id, station);
+        storage.put(id, newStation);
     }
 
     @Override
-    public Optional<Station> findById(final Long id) {
-        return storage.getById(id);
+    public Optional<Station> findById(@NonNull final Long id) {
+        return Optional.ofNullable(storage.get(id));
     }
 
     @Override
     public List<Station> findAll() {
-        return storage.findAll();
+        return new ArrayList<>(storage.values());
     }
 
     @Override
-    public Station update(final Station station) {
+    public void update(@NonNull final Station station) {
         validate(station);
+        final var id = station.getId();
+        if (id == null) {
+            throw new InMemoryException("id cannot be null");
+        }
+        if (!storage.containsKey(id)) {
+            throw new InMemoryEntityNotExistsException(station.getClass().toString(), id);
+        }
 
-        return storage.update(station.getId(), station);
+        final var newStation = createStation(id, station);
+        storage.put(id, newStation);
     }
 
     @Override
-    public void deleteById(final Long id) {
-        storage.deleteById(id);
+    public void deleteById(@NonNull final Long id) {
+        storage.remove(id);
     }
 
     private static void validate(final Station station) {
-        if (station == null) {
-            throw new IllegalArgumentException("Station cannot be null");
-        }
         if (station.getName() == null) {
             throw new InMemoryNotNullConstraintException("Station.name");
         }
         if (station.getLocation() == null) {
             throw new InMemoryNotNullConstraintException("Station.location");
         }
+    }
+
+    private static Station createStation(final long id, Station s) {
+        return new Station(
+                id,
+                s.getName(),
+                s.getLocation());
     }
 }

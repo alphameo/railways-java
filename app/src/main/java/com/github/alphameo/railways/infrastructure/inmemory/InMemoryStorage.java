@@ -14,7 +14,7 @@ public class InMemoryStorage<T, ID> {
 
     private final Map<ID, T> storage = new HashMap<>();
 
-    public T create(final ID id, final T entity) {
+    public void create(final ID id, final T entity) {
         if (entity == null) {
             throw new IllegalArgumentException("Entity cannot be null");
         }
@@ -26,8 +26,6 @@ public class InMemoryStorage<T, ID> {
             throw new InMemoryConstraintException(String.format("Entity with id=%s already exist", id));
         }
         storage.put(id, entity);
-        var created = storage.get(id);
-        return created;
     }
 
     public Optional<T> getById(final ID id) {
@@ -42,7 +40,7 @@ public class InMemoryStorage<T, ID> {
         return new ArrayList<>(storage.values());
     }
 
-    public T update(final ID id, final T entity) {
+    public void update(final ID id, final T entity) {
         if (entity == null) {
             throw new IllegalArgumentException("Entity cannot be null");
         }
@@ -54,8 +52,6 @@ public class InMemoryStorage<T, ID> {
             throw new InMemoryEntityNotExistsException(entity.getClass().toString(), id);
         }
         storage.put(id, entity);
-        var updated = storage.get(id);
-        return updated;
     }
 
     public void deleteById(final ID id) {

@@ -1,86 +1,101 @@
 package com.github.alphameo.railways.infrastructure.inmemory;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import com.github.alphameo.railways.domain.entities.Carriage;
 import com.github.alphameo.railways.domain.repositories.CarriageRepository;
+import com.github.alphameo.railways.domain.valueobjects.MachineNumber;
 import com.github.alphameo.railways.exceptions.infrastructure.inmemory.InMemoryConstraintException;
+import com.github.alphameo.railways.exceptions.infrastructure.inmemory.InMemoryEntityAlreadyExistsException;
+import com.github.alphameo.railways.exceptions.infrastructure.inmemory.InMemoryEntityNotExistsException;
+import com.github.alphameo.railways.exceptions.infrastructure.inmemory.InMemoryException;
 import com.github.alphameo.railways.exceptions.infrastructure.inmemory.InMemoryNotNullConstraintException;
 import com.github.alphameo.railways.exceptions.infrastructure.inmemory.InMemoryUniqueCounstraintException;
 
+import lombok.NonNull;
+
 public class InMemoryCarriageRepository implements CarriageRepository {
 
-    private final InMemoryStorage<Carriage, Long> storage = new InMemoryStorage<>();
+    private final Map<Long, Carriage> storage = new HashMap<>();
     private Long idGenerator = 0L;
-    private final HashMap<String, Long> uniqueNumberIds = new HashMap<>();
+    private final Map<MachineNumber, Long> uniqueNumberIds = new HashMap<>();
 
     @Override
-    public Carriage create(final Carriage carriage) {
+    public void create(@NonNull final Carriage carriage) {
         validate(carriage);
         final var number = carriage.getNumber();
         if (uniqueNumberIds.containsKey(number)) {
             throw new InMemoryUniqueCounstraintException("Carriage.number");
         }
 
-        if (carriage.getId() == null) {
-            final long id = ++idGenerator;
-            carriage.setId(id);
+        Long id = carriage.getId();
+        if (id == null) {
+            id = ++idGenerator;
+        } else {
+            if (storage.containsKey(id)) {
+                throw new InMemoryEntityAlreadyExistsException("Carriage", id);
+            }
         }
-        final var id = carriage.getId();
-        uniqueNumberIds.put(number, id);
-        return storage.create(id, carriage);
+
+        final var newCarriage = createCarriage(id, carriage);
+        uniqueNumberIds.put(newCarriage.getNumber(), id);
+        storage.put(id, newCarriage);
     }
 
     @Override
-    public Optional<Carriage> findById(final Long id) {
-        return storage.getById(id);
+    public Optional<Carriage> findById(@NonNull final Long id) {
+        return Optional.ofNullable(storage.get(id));
     }
 
     @Override
     public List<Carriage> findAll() {
-        return storage.findAll();
+        return new ArrayList<>(storage.values());
     }
 
     @Override
-    public Carriage update(final Carriage carriage) {
+    public void update(@NonNull final Carriage carriage) {
         validate(carriage);
+        final var id = carriage.getId();
+        if (id == null) {
+            throw new InMemoryException("id cannot be null");
+        }
+        if (!storage.containsKey(id)) {
+            throw new InMemoryEntityNotExistsException(carriage.getClass().toString(), id);
+        }
         final var number = carriage.getNumber();
-        final var oldNumber = storage.getById(carriage.getId()).get().getNumber();
+        final var oldNumber = storage.get(id).getNumber();
         if (oldNumber != number) {
             if (uniqueNumberIds.containsKey(number)) {
                 throw new InMemoryUniqueCounstraintException("Carriage.number");
             }
             uniqueNumberIds.remove(oldNumber);
-            uniqueNumberIds.put(number, carriage.getId());
+            uniqueNumberIds.put(number, id);
         }
 
-        return storage.update(carriage.getId(), carriage);
+        final var newCarriage = createCarriage(id, carriage);
+        storage.put(id, newCarriage);
     }
 
     @Override
-    public void deleteById(final Long id) {
-        final var delCandidate = storage.getById(id);
-        storage.deleteById(id);
-        final var number = delCandidate.get().getNumber();
-        uniqueNumberIds.remove(number);
+    public void deleteById(@NonNull final Long id) {
+        final var delCandidate = storage.remove(id);
+        if (delCandidate != null) {
+            uniqueNumberIds.remove(delCandidate.getNumber());
+        }
     }
 
     @Override
-    public Optional<Carriage> findByNumber(final String number) {
+    public Optional<Carriage> findByNumber(@NonNull final MachineNumber number) {
         final var id = uniqueNumberIds.get(number);
-        final var carriage = storage.getById(id);
-        if (carriage == null) {
-            return Optional.empty();
-        }
-        return carriage;
+        final var carriage = storage.get(id);
+        return Optional.ofNullable(carriage);
     }
 
     private static void validate(final Carriage carriage) {
-        if (carriage == null) {
-            throw new IllegalArgumentException("Carriage cannot be null");
-        }
         if (carriage.getId() == null) {
             throw new InMemoryNotNullConstraintException("Carriage.id");
         }
@@ -90,5 +105,14 @@ public class InMemoryCarriageRepository implements CarriageRepository {
         if (carriage.getCapacity() < 0) {
             throw new InMemoryConstraintException("Carriage.capacity should be >= 0");
         }
+    }
+
+    private static Carriage createCarriage(final long id, Carriage c) {
+        return new Carriage(
+                id,
+                c.getNumber(),
+                c.getContentType(),
+                c.getCapacity());
+
     }
 }

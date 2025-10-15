@@ -1,79 +1,96 @@
 package com.github.alphameo.railways.infrastructure.inmemory;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import com.github.alphameo.railways.domain.entities.Train;
 import com.github.alphameo.railways.domain.repositories.TrainRepository;
+import com.github.alphameo.railways.domain.valueobjects.MachineNumber;
+import com.github.alphameo.railways.exceptions.infrastructure.inmemory.InMemoryEntityAlreadyExistsException;
+import com.github.alphameo.railways.exceptions.infrastructure.inmemory.InMemoryEntityNotExistsException;
+import com.github.alphameo.railways.exceptions.infrastructure.inmemory.InMemoryException;
 import com.github.alphameo.railways.exceptions.infrastructure.inmemory.InMemoryNotNullConstraintException;
 import com.github.alphameo.railways.exceptions.infrastructure.inmemory.InMemoryUniqueCounstraintException;
 
+import lombok.NonNull;
+
 public class InMemoryTrainRepository implements TrainRepository {
 
-    private final InMemoryStorage<Train, Long> storage = new InMemoryStorage<>();
+    private final Map<Long, Train> storage = new HashMap<>();
     private Long idGenerator = 0L;
-    private final HashMap<String, Long> uniqueNumberIds = new HashMap<>();
+    private final HashMap<MachineNumber, Long> uniqueNumberIds = new HashMap<>();
 
     @Override
-    public Train create(Train train) {
+    public void create(@NonNull Train train) {
         validate(train);
         final var number = train.getNumber();
         if (uniqueNumberIds.containsKey(number)) {
             throw new InMemoryUniqueCounstraintException("Train.number");
         }
 
+        Long id = train.getId();
         if (train.getId() == null) {
-            final long id = ++idGenerator;
-            train.setId(id);
+            id = ++idGenerator;
+        } else {
+            if (storage.containsKey(id)) {
+                throw new InMemoryEntityAlreadyExistsException("Carriage", id);
+            }
         }
-        final var id = train.getId();
-        uniqueNumberIds.put(number, id);
-        return storage.create(id, train);
+
+        final var newTrain = createTrain(id, train);
+        uniqueNumberIds.put(newTrain.getNumber(), id);
+        storage.put(id, newTrain);
     }
 
     @Override
-    public Optional<Train> findById(Long id) {
-        return storage.getById(id);
+    public Optional<Train> findById(@NonNull Long id) {
+        return Optional.ofNullable(storage.get(id));
     }
 
     @Override
     public List<Train> findAll() {
-        return storage.findAll();
+        return new ArrayList<>(storage.values());
     }
 
     @Override
-    public Train update(Train train) {
+    public void update(@NonNull Train train) {
         validate(train);
-
+        final var id = train.getId();
+        if (id == null) {
+            throw new InMemoryException("id cannot be null");
+        }
+        if (!storage.containsKey(id)) {
+            throw new InMemoryEntityNotExistsException(train.getClass().toString(), id);
+        }
         final var number = train.getNumber();
-        final var oldNumber = storage.getById(train.getId()).get().getNumber();
+        final var oldNumber = storage.get(id).getNumber();
         if (oldNumber != number) {
             if (uniqueNumberIds.containsKey(number)) {
                 throw new InMemoryUniqueCounstraintException("Train.number");
             }
             uniqueNumberIds.remove(oldNumber);
-            uniqueNumberIds.put(number, train.getId());
+            uniqueNumberIds.put(number, id);
         }
 
-        return storage.update(train.getId(), train);
+        final var newTrain = createTrain(id, train);
+        storage.put(id, newTrain);
     }
 
     @Override
     public void deleteById(Long id) {
-        final var delCandidate = storage.getById(id);
-        storage.deleteById(id);
-        final var number = delCandidate.get().getNumber();
-        uniqueNumberIds.remove(number);
+        final var delCandidate = storage.remove(id);
+        if (delCandidate != null) {
+            uniqueNumberIds.remove(delCandidate.getNumber());
+        }
     }
 
-    public Optional<Train> findByNumber(final String number) {
+    public Optional<Train> findByNumber(final MachineNumber number) {
         final var id = uniqueNumberIds.get(number);
-        final var train = storage.getById(id);
-        if (train == null) {
-            return Optional.empty();
-        }
-        return train;
+        final var train = storage.get(id);
+        return Optional.ofNullable(train);
     }
 
     private static void validate(Train train) {
@@ -86,5 +103,13 @@ public class InMemoryTrainRepository implements TrainRepository {
         if (train.getNumber() == null) {
             throw new InMemoryNotNullConstraintException("Train.number");
         }
+    }
+
+    private static Train createTrain(final long id, final Train t) {
+        return new Train(
+                id,
+                t.getNumber(),
+                t.getTrainCompositionId(),
+                t.getSchedule());
     }
 }
