@@ -55,7 +55,7 @@ public class Carriage {
         this.capacity = capacity;
     }
 
-    public void changeContentType(CarriageContentType contentType) {
+    public void changeContentType(final CarriageContentType contentType) {
         this.contentType = contentType;
     }
 }
