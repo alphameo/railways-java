@@ -3,6 +3,7 @@ package com.github.alphameo.railways.domain.entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.github.alphameo.railways.domain.valueobjects.MachineNumber;
 import com.github.alphameo.railways.domain.valueobjects.ScheduleEntry;
 import com.github.alphameo.railways.exceptions.domain.ValidationException;
 
@@ -17,11 +18,12 @@ import lombok.ToString;
 public class Train {
 
     private Long id;
-    private String number;
+    private MachineNumber number;
     private Long trainCompositionId;
     private List<ScheduleEntry> schedule;
 
-    public Train(final Long id, final String number, final Long trainCompositionId, List<ScheduleEntry> schdeule) {
+    public Train(final Long id, final MachineNumber number, final Long trainCompositionId,
+            List<ScheduleEntry> schdeule) {
         this.id = id;
         this.changeNumber(number);
     }
@@ -38,7 +40,7 @@ public class Train {
         return List.copyOf(schedule);
     }
 
-    public void changeNumber(final String number) {
+    public void changeNumber(final MachineNumber number) {
         if (number == null) {
             throw new ValidationException("Train.number cannot be null");
         }
