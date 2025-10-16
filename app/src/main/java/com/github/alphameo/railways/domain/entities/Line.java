@@ -17,9 +17,7 @@ import lombok.ToString;
 public class Line {
 
     private Long id;
-
     private ObjectName name;
-
     private List<Long> stationIds;
 
     public Line(final Long id, final ObjectName name, final List<Long> stationOrder) {
@@ -42,7 +40,7 @@ public class Line {
 
     public void updateStationIds(List<Long> stationIds) {
         if (stationIds == null | stationIds.isEmpty()) {
-            throw new ValidationException("Line.stationsIds cannot be null or empty");
+            throw new ValidationException("Line.stationIds cannot be null or empty");
         }
 
         final var newIds = new ArrayList<Long>();
