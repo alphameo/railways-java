@@ -19,8 +19,8 @@ import lombok.NonNull;
 public class InMemoryLocomotiveRepository implements LocomotiveRepository {
 
     private final Map<Long, Locomotive> storage;
-    private Long idGenerator = 0L;
     private final HashMap<MachineNumber, Long> uniqueNumberIds = new HashMap<>();
+    private Long idGenerator = 0L;
 
     public InMemoryLocomotiveRepository(@NonNull final Map<Long, Locomotive> storage) {
         this.storage = storage;

@@ -21,9 +21,9 @@ import lombok.NonNull;
 public class InMemoryTrainRepository implements TrainRepository {
 
     private final Map<Long, Train> storage;
-    private Long idGenerator = 0L;
     private final HashMap<MachineNumber, Long> uniqueNumberIds = new HashMap<>();
     private final Map<Long, TrainComposition> trainCompoStorage;
+    private Long idGenerator = 0L;
 
     public InMemoryTrainRepository(@NonNull final Map<Long, Train> storage,
             @NonNull final Map<Long, TrainComposition> trainCompositionStorage) {
@@ -96,6 +96,7 @@ public class InMemoryTrainRepository implements TrainRepository {
         }
     }
 
+    @Override
     public Optional<Train> findByNumber(final MachineNumber number) {
         final var id = uniqueNumberIds.get(number);
         final var train = storage.get(id);

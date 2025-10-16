@@ -18,9 +18,9 @@ import lombok.NonNull;
 public class InMemoryTrainCompositionRepository implements TrainCompositionRepository {
 
     private final Map<Long, TrainComposition> storage;
-    private Long idGenerator = 0L;
     private final Map<Long, Locomotive> locoStorage;
     private final Map<Long, Carriage> carrStorage;
+    private Long idGenerator = 0L;
 
     public InMemoryTrainCompositionRepository(
             @NonNull final Map<Long, TrainComposition> storage,

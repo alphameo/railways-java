@@ -19,8 +19,8 @@ import lombok.NonNull;
 public class InMemoryCarriageRepository implements CarriageRepository {
 
     private final Map<Long, Carriage> storage;
-    private Long idGenerator = 0L;
     private final Map<MachineNumber, Long> uniqueNumberIds = new HashMap<>();
+    private Long idGenerator = 0L;
 
     public InMemoryCarriageRepository(@NonNull final Map<Long, Carriage> storage) {
         this.storage = storage;
