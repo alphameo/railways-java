@@ -11,7 +11,6 @@ import com.github.alphameo.railways.domain.repositories.StationRepository;
 import com.github.alphameo.railways.exceptions.infrastructure.inmemory.InMemoryEntityAlreadyExistsException;
 import com.github.alphameo.railways.exceptions.infrastructure.inmemory.InMemoryEntityNotExistsException;
 import com.github.alphameo.railways.exceptions.infrastructure.inmemory.InMemoryException;
-import com.github.alphameo.railways.exceptions.infrastructure.inmemory.InMemoryNotNullConstraintException;
 
 import lombok.NonNull;
 
@@ -22,8 +21,6 @@ public class InMemoryStationRepository implements StationRepository {
 
     @Override
     public void create(@NonNull final Station station) {
-        validate(station);
-
         Long id = station.getId();
         if (station.getId() == null) {
             id = ++idGenerator;
@@ -49,7 +46,6 @@ public class InMemoryStationRepository implements StationRepository {
 
     @Override
     public void update(@NonNull final Station station) {
-        validate(station);
         final var id = station.getId();
         if (id == null) {
             throw new InMemoryException("id cannot be null");
@@ -65,15 +61,6 @@ public class InMemoryStationRepository implements StationRepository {
     @Override
     public void deleteById(@NonNull final Long id) {
         storage.remove(id);
-    }
-
-    private static void validate(final Station station) {
-        if (station.getName() == null) {
-            throw new InMemoryNotNullConstraintException("Station.name");
-        }
-        if (station.getLocation() == null) {
-            throw new InMemoryNotNullConstraintException("Station.location");
-        }
     }
 
     private static Station createStation(final long id, Station s) {

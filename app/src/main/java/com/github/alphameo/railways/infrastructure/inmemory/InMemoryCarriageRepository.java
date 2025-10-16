@@ -9,11 +9,9 @@ import java.util.Optional;
 import com.github.alphameo.railways.domain.entities.Carriage;
 import com.github.alphameo.railways.domain.repositories.CarriageRepository;
 import com.github.alphameo.railways.domain.valueobjects.MachineNumber;
-import com.github.alphameo.railways.exceptions.infrastructure.inmemory.InMemoryConstraintException;
 import com.github.alphameo.railways.exceptions.infrastructure.inmemory.InMemoryEntityAlreadyExistsException;
 import com.github.alphameo.railways.exceptions.infrastructure.inmemory.InMemoryEntityNotExistsException;
 import com.github.alphameo.railways.exceptions.infrastructure.inmemory.InMemoryException;
-import com.github.alphameo.railways.exceptions.infrastructure.inmemory.InMemoryNotNullConstraintException;
 import com.github.alphameo.railways.exceptions.infrastructure.inmemory.InMemoryUniqueCounstraintException;
 
 import lombok.NonNull;
@@ -26,7 +24,6 @@ public class InMemoryCarriageRepository implements CarriageRepository {
 
     @Override
     public void create(@NonNull final Carriage carriage) {
-        validate(carriage);
         final var number = carriage.getNumber();
         if (uniqueNumberIds.containsKey(number)) {
             throw new InMemoryUniqueCounstraintException("Carriage.number");
@@ -58,7 +55,6 @@ public class InMemoryCarriageRepository implements CarriageRepository {
 
     @Override
     public void update(@NonNull final Carriage carriage) {
-        validate(carriage);
         final var id = carriage.getId();
         if (id == null) {
             throw new InMemoryException("id cannot be null");
@@ -93,18 +89,6 @@ public class InMemoryCarriageRepository implements CarriageRepository {
         final var id = uniqueNumberIds.get(number);
         final var carriage = storage.get(id);
         return Optional.ofNullable(carriage);
-    }
-
-    private static void validate(final Carriage carriage) {
-        if (carriage.getId() == null) {
-            throw new InMemoryNotNullConstraintException("Carriage.id");
-        }
-        if (carriage.getNumber() == null) {
-            throw new InMemoryNotNullConstraintException("Carriage.number");
-        }
-        if (carriage.getCapacity() < 0) {
-            throw new InMemoryConstraintException("Carriage.capacity should be >= 0");
-        }
     }
 
     private static Carriage createCarriage(final long id, Carriage c) {

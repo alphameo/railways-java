@@ -12,7 +12,6 @@ import com.github.alphameo.railways.domain.valueobjects.MachineNumber;
 import com.github.alphameo.railways.exceptions.infrastructure.inmemory.InMemoryEntityAlreadyExistsException;
 import com.github.alphameo.railways.exceptions.infrastructure.inmemory.InMemoryEntityNotExistsException;
 import com.github.alphameo.railways.exceptions.infrastructure.inmemory.InMemoryException;
-import com.github.alphameo.railways.exceptions.infrastructure.inmemory.InMemoryNotNullConstraintException;
 import com.github.alphameo.railways.exceptions.infrastructure.inmemory.InMemoryUniqueCounstraintException;
 
 import lombok.NonNull;
@@ -25,7 +24,6 @@ public class InMemoryTrainRepository implements TrainRepository {
 
     @Override
     public void create(@NonNull Train train) {
-        validate(train);
         final var number = train.getNumber();
         if (uniqueNumberIds.containsKey(number)) {
             throw new InMemoryUniqueCounstraintException("Train.number");
@@ -57,7 +55,6 @@ public class InMemoryTrainRepository implements TrainRepository {
 
     @Override
     public void update(@NonNull Train train) {
-        validate(train);
         final var id = train.getId();
         if (id == null) {
             throw new InMemoryException("id cannot be null");
@@ -91,18 +88,6 @@ public class InMemoryTrainRepository implements TrainRepository {
         final var id = uniqueNumberIds.get(number);
         final var train = storage.get(id);
         return Optional.ofNullable(train);
-    }
-
-    private static void validate(Train train) {
-        if (train == null) {
-            throw new IllegalArgumentException("Train cannot be null");
-        }
-        if (train.getId() == null) {
-            throw new InMemoryNotNullConstraintException("Train.id");
-        }
-        if (train.getNumber() == null) {
-            throw new InMemoryNotNullConstraintException("Train.number");
-        }
     }
 
     private static Train createTrain(final long id, final Train t) {

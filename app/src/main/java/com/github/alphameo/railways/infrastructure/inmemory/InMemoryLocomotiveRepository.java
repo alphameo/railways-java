@@ -13,7 +13,6 @@ import com.github.alphameo.railways.exceptions.infrastructure.inmemory.InMemoryC
 import com.github.alphameo.railways.exceptions.infrastructure.inmemory.InMemoryEntityAlreadyExistsException;
 import com.github.alphameo.railways.exceptions.infrastructure.inmemory.InMemoryEntityNotExistsException;
 import com.github.alphameo.railways.exceptions.infrastructure.inmemory.InMemoryException;
-import com.github.alphameo.railways.exceptions.infrastructure.inmemory.InMemoryNotNullConstraintException;
 import com.github.alphameo.railways.exceptions.infrastructure.inmemory.InMemoryUniqueCounstraintException;
 
 import lombok.NonNull;
@@ -26,7 +25,6 @@ public class InMemoryLocomotiveRepository implements LocomotiveRepository {
 
     @Override
     public void create(@NonNull final Locomotive locomotive) {
-        validate(locomotive);
         final var number = locomotive.getNumber();
         if (uniqueNumberIds.containsKey(number)) {
             throw new InMemoryConstraintException("Locomotive.number is not unique");
@@ -58,7 +56,6 @@ public class InMemoryLocomotiveRepository implements LocomotiveRepository {
 
     @Override
     public void update(@NonNull final Locomotive locomotive) {
-        validate(locomotive);
         final var id = locomotive.getId();
         if (id == null) {
             throw new InMemoryException("id cannot be null");
@@ -93,15 +90,6 @@ public class InMemoryLocomotiveRepository implements LocomotiveRepository {
         final var id = uniqueNumberIds.get(number);
         final var locomotive = storage.get(id);
         return Optional.ofNullable(locomotive);
-    }
-
-    private static void validate(final Locomotive locomotive) {
-        if (locomotive.getNumber() == null) {
-            throw new InMemoryNotNullConstraintException("Locomotive.number");
-        }
-        if (locomotive.getModel() == null) {
-            throw new InMemoryNotNullConstraintException("Locomotive.model");
-        }
     }
 
     private static Locomotive createLocomotive(long id, Locomotive l) {

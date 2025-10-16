@@ -11,7 +11,6 @@ import com.github.alphameo.railways.domain.repositories.TrainCompositionReposito
 import com.github.alphameo.railways.exceptions.infrastructure.inmemory.InMemoryEntityAlreadyExistsException;
 import com.github.alphameo.railways.exceptions.infrastructure.inmemory.InMemoryEntityNotExistsException;
 import com.github.alphameo.railways.exceptions.infrastructure.inmemory.InMemoryException;
-import com.github.alphameo.railways.exceptions.infrastructure.inmemory.InMemoryNotNullConstraintException;
 
 import lombok.NonNull;
 
@@ -22,8 +21,6 @@ public class InMemoryTrainCompositionRepository implements TrainCompositionRepos
 
     @Override
     public void create(@NonNull final TrainComposition trainComposition) {
-        validate(trainComposition);
-
         Long id = trainComposition.getId();
         if (trainComposition.getId() == null) {
             id = ++idGenerator;
@@ -48,9 +45,7 @@ public class InMemoryTrainCompositionRepository implements TrainCompositionRepos
     }
 
     @Override
-    public void update(final TrainComposition trainComposition) {
-        validate(trainComposition);
-
+    public void update(@NonNull final TrainComposition trainComposition) {
         final var id = trainComposition.getId();
         if (id == null) {
             throw new InMemoryException("id cannot be null");
@@ -66,18 +61,6 @@ public class InMemoryTrainCompositionRepository implements TrainCompositionRepos
     @Override
     public void deleteById(final Long id) {
         storage.remove(id);
-    }
-
-    private static void validate(final TrainComposition trainComposition) {
-        if (trainComposition == null) {
-            throw new IllegalArgumentException("TrainComposition cannot be null");
-        }
-        if (trainComposition.getLocomotiveId() == null) {
-            throw new InMemoryNotNullConstraintException("TrainComposition.locomotiveId");
-        }
-        if (trainComposition.getCarriageIds() == null) {
-            throw new InMemoryNotNullConstraintException("TrainComposition.carriageIds");
-        }
     }
 
     private static TrainComposition createTrainComposition(final long id, final TrainComposition t) {
