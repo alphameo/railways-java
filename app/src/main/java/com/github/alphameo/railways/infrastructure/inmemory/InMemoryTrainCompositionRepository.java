@@ -26,7 +26,7 @@ public class InMemoryTrainCompositionRepository implements TrainCompositionRepos
             id = ++idGenerator;
         } else {
             if (storage.containsKey(id)) {
-                throw new InMemoryEntityAlreadyExistsException("Station", id);
+                throw new InMemoryEntityAlreadyExistsException("TrainComposition", id);
             }
         }
 

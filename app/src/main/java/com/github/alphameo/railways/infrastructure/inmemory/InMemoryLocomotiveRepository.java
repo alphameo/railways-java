@@ -35,7 +35,7 @@ public class InMemoryLocomotiveRepository implements LocomotiveRepository {
             id = ++idGenerator;
         } else {
             if (storage.containsKey(id)) {
-                throw new InMemoryEntityAlreadyExistsException("Carriage", id);
+                throw new InMemoryEntityAlreadyExistsException("Locomotive", id);
             }
         }
 
