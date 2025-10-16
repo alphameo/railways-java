@@ -1,11 +1,12 @@
 package com.github.alphameo.railways.infrastructure.inmemory;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import com.github.alphameo.railways.domain.entities.Carriage;
+import com.github.alphameo.railways.domain.entities.Locomotive;
 import com.github.alphameo.railways.domain.entities.TrainComposition;
 import com.github.alphameo.railways.domain.repositories.TrainCompositionRepository;
 import com.github.alphameo.railways.exceptions.infrastructure.inmemory.InMemoryEntityAlreadyExistsException;
@@ -16,8 +17,19 @@ import lombok.NonNull;
 
 public class InMemoryTrainCompositionRepository implements TrainCompositionRepository {
 
-    private final Map<Long, TrainComposition> storage = new HashMap<>();
+    private final Map<Long, TrainComposition> storage;
     private Long idGenerator = 0L;
+    private final Map<Long, Locomotive> locoStorage;
+    private final Map<Long, Carriage> carrStorage;
+
+    public InMemoryTrainCompositionRepository(
+            @NonNull final Map<Long, TrainComposition> storage,
+            @NonNull final Map<Long, Locomotive> locomotiveStorage,
+            @NonNull final Map<Long, Carriage> carriageSorage) {
+        this.storage = storage;
+        this.locoStorage = locomotiveStorage;
+        this.carrStorage = carriageSorage;
+    }
 
     @Override
     public void create(@NonNull final TrainComposition trainComposition) {
@@ -61,6 +73,20 @@ public class InMemoryTrainCompositionRepository implements TrainCompositionRepos
     @Override
     public void deleteById(final Long id) {
         storage.remove(id);
+    }
+
+    public void validate(final TrainComposition trainComposition) {
+        final var locoId = trainComposition.getLocomotiveId();
+        if (locoStorage.get(locoId) == null) {
+            throw new InMemoryEntityNotExistsException("Locomotive", locoId);
+        }
+
+        final var carrIds = trainComposition.getCarriageIds();
+        for (final Long carrId : carrIds) {
+            if (carrStorage.get(carrId) == null) {
+                throw new InMemoryEntityNotExistsException("Carriage", carrId);
+            }
+        }
     }
 
     private static TrainComposition createTrainComposition(final long id, final TrainComposition t) {

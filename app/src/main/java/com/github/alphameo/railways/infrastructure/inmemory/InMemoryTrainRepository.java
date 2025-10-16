@@ -7,8 +7,10 @@ import java.util.Map;
 import java.util.Optional;
 
 import com.github.alphameo.railways.domain.entities.Train;
+import com.github.alphameo.railways.domain.entities.TrainComposition;
 import com.github.alphameo.railways.domain.repositories.TrainRepository;
 import com.github.alphameo.railways.domain.valueobjects.MachineNumber;
+import com.github.alphameo.railways.exceptions.application.services.EntityNotFoundException;
 import com.github.alphameo.railways.exceptions.infrastructure.inmemory.InMemoryEntityAlreadyExistsException;
 import com.github.alphameo.railways.exceptions.infrastructure.inmemory.InMemoryEntityNotExistsException;
 import com.github.alphameo.railways.exceptions.infrastructure.inmemory.InMemoryException;
@@ -18,12 +20,20 @@ import lombok.NonNull;
 
 public class InMemoryTrainRepository implements TrainRepository {
 
-    private final Map<Long, Train> storage = new HashMap<>();
+    private final Map<Long, Train> storage;
     private Long idGenerator = 0L;
     private final HashMap<MachineNumber, Long> uniqueNumberIds = new HashMap<>();
+    private final Map<Long, TrainComposition> trainCompoStorage;
+
+    public InMemoryTrainRepository(@NonNull final Map<Long, Train> storage,
+            @NonNull final Map<Long, TrainComposition> trainCompositionStorage) {
+        this.storage = storage;
+        this.trainCompoStorage = trainCompositionStorage;
+    }
 
     @Override
     public void create(@NonNull Train train) {
+        validate(train);
         final var number = train.getNumber();
         if (uniqueNumberIds.containsKey(number)) {
             throw new InMemoryUniqueCounstraintException("Train.number");
@@ -55,6 +65,8 @@ public class InMemoryTrainRepository implements TrainRepository {
 
     @Override
     public void update(@NonNull Train train) {
+        validate(train);
+
         final var id = train.getId();
         if (id == null) {
             throw new InMemoryException("id cannot be null");
@@ -88,6 +100,13 @@ public class InMemoryTrainRepository implements TrainRepository {
         final var id = uniqueNumberIds.get(number);
         final var train = storage.get(id);
         return Optional.ofNullable(train);
+    }
+
+    private void validate(Train train) {
+        final var trainCompoId = train.getTrainCompositionId();
+        if (trainCompoStorage.get(trainCompoId) == null) {
+            throw new EntityNotFoundException("TrainComposition", trainCompoId);
+        }
     }
 
     private static Train createTrain(final long id, final Train t) {

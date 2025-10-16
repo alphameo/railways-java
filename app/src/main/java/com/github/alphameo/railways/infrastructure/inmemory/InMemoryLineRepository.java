@@ -1,12 +1,12 @@
 package com.github.alphameo.railways.infrastructure.inmemory;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 import com.github.alphameo.railways.domain.entities.Line;
+import com.github.alphameo.railways.domain.entities.Station;
 import com.github.alphameo.railways.domain.repositories.LineRepository;
 import com.github.alphameo.railways.exceptions.infrastructure.inmemory.InMemoryEntityAlreadyExistsException;
 import com.github.alphameo.railways.exceptions.infrastructure.inmemory.InMemoryEntityNotExistsException;
@@ -15,11 +15,19 @@ import lombok.NonNull;
 
 public class InMemoryLineRepository implements LineRepository {
 
-    private final Map<Long, Line> storage = new HashMap<>();
+    private final Map<Long, Line> storage;
+    private final Map<Long, Station> stationStorage;
     private Long idGenerator = 0L;
+
+    public InMemoryLineRepository(@NonNull final Map<Long, Line> storage,
+            @NonNull final Map<Long, Station> stationStorage) {
+        this.storage = storage;
+        this.stationStorage = stationStorage;
+    }
 
     @Override
     public void create(@NonNull final Line line) {
+        validate(line);
 
         Long id = line.getId();
         if (line.getId() == null) {
@@ -46,6 +54,7 @@ public class InMemoryLineRepository implements LineRepository {
 
     @Override
     public void update(@NonNull final Line line) {
+        validate(line);
         final var id = line.getId();
         if (!storage.containsKey(id)) {
             throw new InMemoryEntityNotExistsException(line.getClass().toString(), id);
@@ -60,7 +69,16 @@ public class InMemoryLineRepository implements LineRepository {
         storage.remove(id);
     }
 
-    private static Line createLine(final long id, Line l) {
+    private void validate(final Line line) {
+        final var stationIds = line.getStationIds();
+        for (final Long id : stationIds) {
+            if (stationStorage.get(id) == null) {
+                throw new InMemoryEntityNotExistsException("Station", id);
+            }
+        }
+    }
+
+    private static Line createLine(final long id, final Line l) {
         return new Line(
                 id,
                 l.getName(),
