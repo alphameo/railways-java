@@ -97,6 +97,5 @@ public class InMemoryCarriageRepository implements CarriageRepository {
                 c.getNumber(),
                 c.getContentType(),
                 c.getCapacity());
-
     }
 }
