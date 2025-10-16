@@ -4,30 +4,38 @@ import java.util.List;
 import java.util.Optional;
 
 import com.github.alphameo.railways.domain.entities.Train;
+import com.github.alphameo.railways.domain.repositories.TrainCompositionRepository;
 import com.github.alphameo.railways.domain.repositories.TrainRepository;
+import com.github.alphameo.railways.domain.valueobjects.MachineNumber;
+import com.github.alphameo.railways.domain.valueobjects.ScheduleEntry;
 import com.github.alphameo.railways.exceptions.application.services.EntityNotFoundException;
 import com.github.alphameo.railways.exceptions.application.services.ServiceException;
 
+import lombok.NonNull;
+
 public class TrainService {
 
-    private TrainRepository repository;
+    private TrainRepository trainRepo;
+    private TrainCompositionRepository trainCompositionRepo;
 
-    public Train register(final String number) {
+    public void register(final MachineNumber number, final Long trainCompositionId,
+            final List<ScheduleEntry> schedule) {
+        final var trainCompo = trainCompositionRepo.findById(trainCompositionId);
+        if (trainCompo.isEmpty()) {
+            throw new EntityNotFoundException("TrainComposition", trainCompositionId);
+        }
         try {
-            final var train = new Train(null, number);
-            return repository.create(train);
+            final var train = new Train(null, number, trainCompositionId, schedule);
+            trainRepo.create(train);
         } catch (RuntimeException e) {
             throw new ServiceException(e.getMessage());
         }
     }
 
-    public Train findById(Long id) {
-        if (id == null) {
-            throw new IllegalArgumentException("id cannot be null");
-        }
+    public Train findById(@NonNull Long id) {
         final Optional<Train> out;
         try {
-            out = repository.findById(id);
+            out = trainRepo.findById(id);
         } catch (Exception e) {
             throw new ServiceException(e.getMessage());
         }
@@ -40,7 +48,7 @@ public class TrainService {
 
     public List<Train> listAll() {
         try {
-            return repository.findAll();
+            return trainRepo.findAll();
         } catch (RuntimeException e) {
             throw new ServiceException(e.getMessage());
         }
@@ -48,7 +56,7 @@ public class TrainService {
 
     public void unregister(Long id) {
         try {
-            repository.deleteById(id);
+            trainRepo.deleteById(id);
         } catch (RuntimeException e) {
             throw new ServiceException(e.getMessage());
         }

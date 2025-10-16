@@ -5,29 +5,30 @@ import java.util.Optional;
 
 import com.github.alphameo.railways.domain.entities.Station;
 import com.github.alphameo.railways.domain.repositories.StationRepository;
+import com.github.alphameo.railways.domain.valueobjects.ObjectName;
+import com.github.alphameo.railways.domain.valueobjects.StationLocation;
 import com.github.alphameo.railways.exceptions.application.services.EntityNotFoundException;
 import com.github.alphameo.railways.exceptions.application.services.ServiceException;
 
+import lombok.NonNull;
+
 public class StationService {
 
-    private StationRepository repository;
+    private StationRepository stationRepo;
 
-    public Station register(final String name, final String location) {
+    public void register(final ObjectName name, final StationLocation location) {
         try {
             final var station = new Station(null, name, location);
-            return repository.create(station);
+            stationRepo.create(station);
         } catch (RuntimeException e) {
             throw new ServiceException(e.getMessage());
         }
     }
 
-    public Station findById(Long id) {
-        if (id == null) {
-            throw new IllegalArgumentException("id cannot be null");
-        }
+    public Station findById(@NonNull final Long id) {
         final Optional<Station> out;
         try {
-            out = repository.findById(id);
+            out = stationRepo.findById(id);
         } catch (Exception e) {
             throw new ServiceException(e.getMessage());
         }
@@ -40,7 +41,7 @@ public class StationService {
 
     public List<Station> listAll() {
         try {
-            return repository.findAll();
+            return stationRepo.findAll();
         } catch (RuntimeException e) {
             throw new ServiceException(e.getMessage());
         }
@@ -48,7 +49,7 @@ public class StationService {
 
     public void unregister(Long id) {
         try {
-            repository.deleteById(id);
+            stationRepo.deleteById(id);
         } catch (RuntimeException e) {
             throw new ServiceException(e.getMessage());
         }

@@ -1,75 +1,71 @@
 package com.github.alphameo.railways.application.services;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import com.github.alphameo.railways.domain.entities.Line;
-import com.github.alphameo.railways.domain.entities.LineStation;
 import com.github.alphameo.railways.domain.entities.Station;
-import com.github.alphameo.railways.domain.repositories.LineStationRepository;
+import com.github.alphameo.railways.domain.repositories.LineRepository;
 import com.github.alphameo.railways.domain.repositories.StationRepository;
+import com.github.alphameo.railways.domain.valueobjects.ObjectName;
+import com.github.alphameo.railways.exceptions.application.services.EntityNotFoundException;
 import com.github.alphameo.railways.exceptions.application.services.ServiceException;
+
+import lombok.NonNull;
 
 public class LineService {
 
-    // private LineRepository lineRepository;
-    private StationRepository stationRepository;
-    private LineStationRepository lineStationRepository;
+    private LineRepository lineRepo;
+    private StationRepository stationRepo;
 
-    public Station registerStation(final String name, final String location) {
+    public void declareLine(final ObjectName name, final List<Long> stations) {
         try {
-            final var station = new Station(null, name, location);
-            stationRepository.create(station);
-            return station;
+            final var line = new Line(null, name, stations);
+            lineRepo.create(line);
         } catch (final Exception e) {
             throw new ServiceException(e.getMessage());
         }
     }
 
-    public void unregisterStation(final Long stationId) {
+    public List<Station> listLineStations(@NonNull final Long lineId) {
         try {
-            stationRepository.deleteById(stationId);
-        } catch (final Exception e) {
-            throw new ServiceException(e.getMessage());
-        }
-    }
-
-    public Line declareLine(final String name, final List<Long> stations) {
-        if (stations.isEmpty() || stations == null) {
-            throw new ServiceException("Line should contain minimum one station, but given 0");
-        }
-        try {
-            final var line = new Line(null, name);
-            for (int i = 0; i < stations.size(); i++) {
-                final var id = stations.get(i);
-                final var station = stationRepository.findById(id);
-                final var lineStation = new LineStation(line.getId(), station.get().getId(), i + 1);
-                lineStationRepository.create(lineStation);
+            final List<Station> stations = new ArrayList<>();
+            final var stationIds = lineRepo.findById(lineId).get().getStationIds();
+            for (long id : stationIds) {
+                stations.add(stationRepo.findById(id).get());
             }
-            return line;
-        } catch (final Exception e) {
+            return stations;
+        } catch (Exception e) {
             throw new ServiceException(e.getMessage());
         }
     }
 
-    // TODO: make after joins
-    // public List<Station> listLineStations(final Long lineId) {
-    //     try {
-    //         final var stationIds = lineStationRepository.findStationIdsByLineId(lineId);
-    //         final var sortedStationIds = new Long[stationIds.size()];
-    //         for (final var stationId : stationIds) {
-    //             final Station station = 
-    //         }
-    //     } catch (Exception e) {
-    //         throw new ServiceException(e.getMessage());
-    //     }
-    // }
-
-    public void disbandLine(Long lineId) {
+    public Line findById(@NonNull final Long id) {
+        final Optional<Line> out;
         try {
-            final var stationIds = lineStationRepository.findStationIdsByLineId(lineId);
-            for (final var stationId : stationIds) {
-                lineStationRepository.deleteById(new LineStation.LineStationId(lineId, stationId));
-            }
+            out = lineRepo.findById(id);
+        } catch (Exception e) {
+            throw new ServiceException(e.getMessage());
+        }
+        if (out.isEmpty()) {
+            throw new EntityNotFoundException("Line", id.toString());
+        }
+
+        return out.get();
+    }
+
+    public List<Line> listAll() {
+        try {
+            return lineRepo.findAll();
+        } catch (RuntimeException e) {
+            throw new ServiceException(e.getMessage());
+        }
+    }
+
+    public void disbandLine(@NonNull final Long lineId) {
+        try {
+            lineRepo.deleteById(lineId);
         } catch (Exception e) {
             throw new ServiceException(e.getMessage());
         }

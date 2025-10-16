@@ -4,31 +4,30 @@ import java.util.List;
 import java.util.Optional;
 
 import com.github.alphameo.railways.domain.entities.Carriage;
-import com.github.alphameo.railways.domain.entities.Carriage.ContentType;
 import com.github.alphameo.railways.domain.repositories.CarriageRepository;
+import com.github.alphameo.railways.domain.valueobjects.CarriageContentType;
+import com.github.alphameo.railways.domain.valueobjects.MachineNumber;
 import com.github.alphameo.railways.exceptions.application.services.EntityNotFoundException;
 import com.github.alphameo.railways.exceptions.application.services.ServiceException;
 
 import lombok.AllArgsConstructor;
+import lombok.NonNull;
 
 @AllArgsConstructor
 public class CarriageService {
 
     private CarriageRepository repository;
 
-    public Carriage register(final String number, final ContentType contentType, final Long capacity) {
+    public void register(final MachineNumber number, final CarriageContentType contentType, final Long capacity) {
         try {
             final var carriage = new Carriage(null, number, contentType, capacity);
-            return repository.create(carriage);
+            repository.create(carriage);
         } catch (RuntimeException e) {
             throw new ServiceException(e.getMessage());
         }
     }
 
-    public Carriage findById(Long id) {
-        if (id == null) {
-            throw new IllegalArgumentException("id cannot be null");
-        }
+    public Carriage findById(@NonNull final Long id) {
         final Optional<Carriage> out;
         try {
             out = repository.findById(id);
@@ -50,7 +49,7 @@ public class CarriageService {
         }
     }
 
-    public void unregister(Long id) {
+    public void unregister(@NonNull final Long id) {
         try {
             repository.deleteById(id);
         } catch (RuntimeException e) {

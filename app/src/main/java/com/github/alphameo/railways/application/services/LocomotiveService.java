@@ -5,26 +5,27 @@ import java.util.Optional;
 
 import com.github.alphameo.railways.domain.entities.Locomotive;
 import com.github.alphameo.railways.domain.repositories.LocomotiveRepository;
+import com.github.alphameo.railways.domain.valueobjects.LocomotiveModel;
+import com.github.alphameo.railways.domain.valueobjects.MachineNumber;
 import com.github.alphameo.railways.exceptions.application.services.EntityNotFoundException;
 import com.github.alphameo.railways.exceptions.application.services.ServiceException;
+
+import lombok.NonNull;
 
 public class LocomotiveService {
 
     private LocomotiveRepository repository;
 
-    public Locomotive register(final String number, final String model) {
+    public void register(final MachineNumber number, final LocomotiveModel model) {
         try {
             final var locomotive = new Locomotive(null, number, model);
-            return repository.create(locomotive);
+            repository.create(locomotive);
         } catch (RuntimeException e) {
             throw new ServiceException(e.getMessage());
         }
     }
 
-    public Locomotive findById(Long id) {
-        if (id == null) {
-            throw new IllegalArgumentException("id cannot be null");
-        }
+    public Locomotive findById(@NonNull final Long id) {
         final Optional<Locomotive> out;
         try {
             out = repository.findById(id);
@@ -46,7 +47,7 @@ public class LocomotiveService {
         }
     }
 
-    public void unregister(Long id) {
+    public void unregister(@NonNull final Long id) {
         try {
             repository.deleteById(id);
         } catch (RuntimeException e) {
