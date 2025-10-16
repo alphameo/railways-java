@@ -9,7 +9,6 @@ import java.util.Optional;
 import com.github.alphameo.railways.domain.entities.Locomotive;
 import com.github.alphameo.railways.domain.repositories.LocomotiveRepository;
 import com.github.alphameo.railways.domain.valueobjects.MachineNumber;
-import com.github.alphameo.railways.exceptions.infrastructure.inmemory.InMemoryConstraintException;
 import com.github.alphameo.railways.exceptions.infrastructure.inmemory.InMemoryEntityAlreadyExistsException;
 import com.github.alphameo.railways.exceptions.infrastructure.inmemory.InMemoryEntityNotExistsException;
 import com.github.alphameo.railways.exceptions.infrastructure.inmemory.InMemoryException;
@@ -19,15 +18,19 @@ import lombok.NonNull;
 
 public class InMemoryLocomotiveRepository implements LocomotiveRepository {
 
-    private final Map<Long, Locomotive> storage = new HashMap<>();
+    private final Map<Long, Locomotive> storage;
     private Long idGenerator = 0L;
     private final HashMap<MachineNumber, Long> uniqueNumberIds = new HashMap<>();
+
+    public InMemoryLocomotiveRepository(@NonNull final Map<Long, Locomotive> storage) {
+        this.storage = storage;
+    }
 
     @Override
     public void create(@NonNull final Locomotive locomotive) {
         final var number = locomotive.getNumber();
         if (uniqueNumberIds.containsKey(number)) {
-            throw new InMemoryConstraintException("Locomotive.number is not unique");
+            throw new InMemoryUniqueCounstraintException("Locomotive.number");
         }
 
         Long id = locomotive.getId();

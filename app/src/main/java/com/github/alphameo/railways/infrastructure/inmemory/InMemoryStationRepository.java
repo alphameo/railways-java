@@ -1,7 +1,6 @@
 package com.github.alphameo.railways.infrastructure.inmemory;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -16,8 +15,12 @@ import lombok.NonNull;
 
 public class InMemoryStationRepository implements StationRepository {
 
-    private final Map<Long, Station> storage = new HashMap<>();
+    private final Map<Long, Station> storage;
     private Long idGenerator = 0L;
+
+    public InMemoryStationRepository(@NonNull final Map<Long, Station> storage) {
+        this.storage = storage;
+    }
 
     @Override
     public void create(@NonNull final Station station) {
