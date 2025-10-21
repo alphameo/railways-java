@@ -41,6 +41,20 @@ public class CarriageService {
         return out.get();
     }
 
+    public Carriage findByNumber(@NonNull final MachineNumber number) {
+        final Optional<Carriage> out;
+        try {
+            out = repository.findByNumber(number);
+        } catch (Exception e) {
+            throw new ServiceException(e.getMessage());
+        }
+        if (out.isEmpty()) {
+            throw new EntityNotFoundException(String.format("Carriage with number=%s not exists", number));
+        }
+
+        return out.get();
+    }
+
     public List<Carriage> listAll() {
         try {
             return repository.findAll();
