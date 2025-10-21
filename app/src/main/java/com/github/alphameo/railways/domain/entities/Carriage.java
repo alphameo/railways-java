@@ -46,7 +46,8 @@ public class Carriage {
 
     public void changeCapacity(final Long capacity) {
         if (capacity == null) {
-            throw new ValidationException("Carriage.capacity cannot be null");
+            this.capacity = null;
+            return;
         }
         if (capacity <= MIN_CAPACITY) {
             throw new ValidationException(String.format("Carriage.capacity must be > %s", MIN_CAPACITY));
