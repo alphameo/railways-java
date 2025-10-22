@@ -23,7 +23,7 @@ public class Train {
     private List<ScheduleEntry> schedule;
 
     public Train(final Long id, final MachineNumber number, final Long trainCompositionId,
-            List<ScheduleEntry> schdeule) {
+            List<ScheduleEntry> schedule) {
         this.id = id;
         this.changeNumber(number);
     }
