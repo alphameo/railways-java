@@ -4,11 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.github.alphameo.railways.application.dto.LineDto;
+import com.github.alphameo.railways.application.dto.StationDto;
+import com.github.alphameo.railways.application.mapper.LineMapper;
+import com.github.alphameo.railways.application.mapper.StationMapper;
 import com.github.alphameo.railways.domain.entities.Line;
 import com.github.alphameo.railways.domain.entities.Station;
 import com.github.alphameo.railways.domain.repositories.LineRepository;
 import com.github.alphameo.railways.domain.repositories.StationRepository;
-import com.github.alphameo.railways.domain.valueobjects.ObjectName;
 import com.github.alphameo.railways.exceptions.application.services.EntityNotFoundException;
 import com.github.alphameo.railways.exceptions.application.services.ServiceException;
 
@@ -19,46 +22,46 @@ public class LineService {
     private LineRepository lineRepo;
     private StationRepository stationRepo;
 
-    public void declareLine(final ObjectName name, final List<Long> stations) {
+    public void declareLine(@NonNull final LineDto line) {
         try {
-            final var line = new Line(null, name, stations);
-            lineRepo.create(line);
+            final var varLine = LineMapper.toEntity(line);
+            lineRepo.create(varLine);
         } catch (final Exception e) {
             throw new ServiceException(e.getMessage());
         }
     }
 
-    public List<Station> listLineStations(@NonNull final Long lineId) {
+    public List<StationDto> listLineStations(@NonNull final Long lineId) {
         try {
             final List<Station> stations = new ArrayList<>();
             final var stationIds = lineRepo.findById(lineId).get().getStationIds();
-            for (long id : stationIds) {
+            for (final long id : stationIds) {
                 stations.add(stationRepo.findById(id).get());
             }
-            return stations;
-        } catch (Exception e) {
+            return StationMapper.toDtoList(stations);
+        } catch (final Exception e) {
             throw new ServiceException(e.getMessage());
         }
     }
 
-    public Line findById(@NonNull final Long id) {
-        final Optional<Line> out;
+    public LineDto findById(@NonNull final Long id) {
+        final Optional<Line> line;
         try {
-            out = lineRepo.findById(id);
-        } catch (Exception e) {
+            line = lineRepo.findById(id);
+        } catch (final Exception e) {
             throw new ServiceException(e.getMessage());
         }
-        if (out.isEmpty()) {
+        if (line.isEmpty()) {
             throw new EntityNotFoundException("Line", id.toString());
         }
 
-        return out.get();
+        return LineMapper.toDto(line.get());
     }
 
-    public List<Line> listAll() {
+    public List<LineDto> listAll() {
         try {
-            return lineRepo.findAll();
-        } catch (RuntimeException e) {
+            return LineMapper.toDtoList(lineRepo.findAll());
+        } catch (final RuntimeException e) {
             throw new ServiceException(e.getMessage());
         }
     }
@@ -66,7 +69,7 @@ public class LineService {
     public void disbandLine(@NonNull final Long lineId) {
         try {
             lineRepo.deleteById(lineId);
-        } catch (Exception e) {
+        } catch (final Exception e) {
             throw new ServiceException(e.getMessage());
         }
     }

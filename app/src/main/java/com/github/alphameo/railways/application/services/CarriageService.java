@@ -3,9 +3,10 @@ package com.github.alphameo.railways.application.services;
 import java.util.List;
 import java.util.Optional;
 
+import com.github.alphameo.railways.application.dto.CarriageDto;
+import com.github.alphameo.railways.application.mapper.CarriageMapper;
 import com.github.alphameo.railways.domain.entities.Carriage;
 import com.github.alphameo.railways.domain.repositories.CarriageRepository;
-import com.github.alphameo.railways.domain.valueobjects.CarriageContentType;
 import com.github.alphameo.railways.domain.valueobjects.MachineNumber;
 import com.github.alphameo.railways.exceptions.application.services.EntityNotFoundException;
 import com.github.alphameo.railways.exceptions.application.services.ServiceException;
@@ -16,49 +17,51 @@ import lombok.NonNull;
 @AllArgsConstructor
 public class CarriageService {
 
-    private CarriageRepository repository;
+    private final CarriageRepository repository;
 
-    public void register(final MachineNumber number, final CarriageContentType contentType, final Long capacity) {
+    public void register(@NonNull final CarriageDto carriage) {
         try {
-            final var carriage = new Carriage(null, number, contentType, capacity);
-            repository.create(carriage);
-        } catch (RuntimeException e) {
+            final var valCarriage = CarriageMapper.toEntity(carriage);
+            repository.create(valCarriage);
+        } catch (final RuntimeException e) {
             throw new ServiceException(e.getMessage());
         }
     }
 
-    public Carriage findById(@NonNull final Long id) {
-        final Optional<Carriage> out;
+    public CarriageDto findById(@NonNull final Long id) {
+        final Optional<Carriage> carr;
         try {
-            out = repository.findById(id);
-        } catch (Exception e) {
+            carr = repository.findById(id);
+        } catch (final Exception e) {
             throw new ServiceException(e.getMessage());
         }
-        if (out.isEmpty()) {
+        if (carr.isEmpty()) {
             throw new EntityNotFoundException("Carriage", id.toString());
         }
 
-        return out.get();
+        return CarriageMapper.toDto(carr.get());
     }
 
-    public Carriage findByNumber(@NonNull final MachineNumber number) {
-        final Optional<Carriage> out;
+    public CarriageDto findByNumber(@NonNull final String number) {
+        final Optional<Carriage> carr;
         try {
-            out = repository.findByNumber(number);
-        } catch (Exception e) {
+            final var valNumber = new MachineNumber(number);
+            carr = repository.findByNumber(valNumber);
+        } catch (final Exception e) {
             throw new ServiceException(e.getMessage());
         }
-        if (out.isEmpty()) {
+        if (carr.isEmpty()) {
             throw new EntityNotFoundException(String.format("Carriage with number=%s not exists", number));
         }
 
-        return out.get();
+        return CarriageMapper.toDto(carr.get());
     }
 
-    public List<Carriage> listAll() {
+    public List<CarriageDto> listAll() {
         try {
-            return repository.findAll();
-        } catch (RuntimeException e) {
+            final var carriages =  repository.findAll();
+            return CarriageMapper.toDtoList(carriages);
+        } catch (final RuntimeException e) {
             throw new ServiceException(e.getMessage());
         }
     }
@@ -66,7 +69,7 @@ public class CarriageService {
     public void unregister(@NonNull final Long id) {
         try {
             repository.deleteById(id);
-        } catch (RuntimeException e) {
+        } catch (final RuntimeException e) {
             throw new ServiceException(e.getMessage());
         }
     }

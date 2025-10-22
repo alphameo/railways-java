@@ -3,6 +3,8 @@ package com.github.alphameo.railways.application.services;
 import java.util.List;
 import java.util.Optional;
 
+import com.github.alphameo.railways.application.dto.TrainCompositionDto;
+import com.github.alphameo.railways.application.mapper.TrainCompositionMapper;
 import com.github.alphameo.railways.domain.entities.Carriage;
 import com.github.alphameo.railways.domain.entities.Locomotive;
 import com.github.alphameo.railways.domain.entities.TrainComposition;
@@ -20,12 +22,15 @@ public class TrainCompositionService {
     private CarriageRepository carriageRepo;
     private LocomotiveRepository locomotiveRepo;
 
-    public void assembleTrainComposition(Long locomotiveId, List<Long> carriageIds) {
+    public void assembleTrainComposition(@NonNull final TrainCompositionDto trainComposition) {
+        final var locomotiveId = trainComposition.locomotiveId();
+        final var carriageIds = trainComposition.carriageIds();
+
         final Optional<Locomotive> loc = locomotiveRepo.findById(locomotiveId);
         if (loc.isEmpty()) {
             throw new EntityNotFoundException("Locomotive", locomotiveId);
         }
-        for (long id : carriageIds) {
+        for (final long id : carriageIds) {
             final Optional<Carriage> car = carriageRepo.findById(id);
             if (car.isEmpty()) {
                 throw new EntityNotFoundException("Carriage", id);
@@ -34,29 +39,29 @@ public class TrainCompositionService {
         try {
             final var trainComp = new TrainComposition(null, locomotiveId, carriageIds);
             trainCompositionRepo.create(trainComp);
-        } catch (Exception e) {
+        } catch (final Exception e) {
             throw new ServiceException(e.getMessage());
         }
     }
 
-    public TrainComposition findById(@NonNull final Long id) {
+    public TrainCompositionDto findById(@NonNull final Long id) {
         final Optional<TrainComposition> out;
         try {
             out = trainCompositionRepo.findById(id);
-        } catch (Exception e) {
+        } catch (final Exception e) {
             throw new ServiceException(e.getMessage());
         }
         if (out.isEmpty()) {
-            throw new EntityNotFoundException("Station", id.toString());
+            throw new EntityNotFoundException("TrainComposition", id.toString());
         }
 
-        return out.get();
+        return TrainCompositionMapper.toDto(out.get());
     }
 
-    public List<TrainComposition> listAll() {
+    public List<TrainCompositionDto> listAll() {
         try {
-            return trainCompositionRepo.findAll();
-        } catch (RuntimeException e) {
+            return TrainCompositionMapper.toDtoList(trainCompositionRepo.findAll());
+        } catch (final RuntimeException e) {
             throw new ServiceException(e.getMessage());
         }
     }
@@ -64,7 +69,7 @@ public class TrainCompositionService {
     public void disassembleTrainComposition(final Long id) {
         try {
             trainCompositionRepo.deleteById(id);
-        } catch (Exception e) {
+        } catch (final Exception e) {
             throw new ServiceException(e.getMessage());
         }
     }

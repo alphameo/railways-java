@@ -1,8 +1,10 @@
 package com.github.alphameo.railways.application.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.github.alphameo.railways.application.dto.TrainDto;
 import com.github.alphameo.railways.domain.entities.Train;
 import com.github.alphameo.railways.domain.repositories.TrainCompositionRepository;
 import com.github.alphameo.railways.domain.repositories.TrainRepository;
@@ -18,15 +20,22 @@ public class TrainService {
     private TrainRepository trainRepo;
     private TrainCompositionRepository trainCompositionRepo;
 
-    public void register(final MachineNumber number, final Long trainCompositionId,
-            final List<ScheduleEntry> schedule) {
-        final var trainCompo = trainCompositionRepo.findById(trainCompositionId);
+    public void register(@NonNull final TrainDto train) {
+        final var trainCompoId = train.trainCompositionId();
+        final var trainCompo = trainCompositionRepo.findById(trainCompoId);
         if (trainCompo.isEmpty()) {
-            throw new EntityNotFoundException("TrainComposition", trainCompositionId);
+            throw new EntityNotFoundException("TrainComposition", trainCompoId);
         }
         try {
-            final var train = new Train(null, number, trainCompositionId, schedule);
-            trainRepo.create(train);
+            final var number = new MachineNumber(train.number());
+            final var schedule = train.schedule();
+            final List<ScheduleEntry> valSchedule = new ArrayList<>();
+            for (var scheduleEntry : schedule) {
+                final var valScheduleEntry = new ScheduleEntry(scheduleEntry.stationId(), scheduleEntry.arrivalTime(), scheduleEntry.departureTime());
+                valSchedule.add(valScheduleEntry);
+            }
+            final var valTrain = new Train(null, number, trainCompoId, valSchedule);
+            trainRepo.create(valTrain);
         } catch (RuntimeException e) {
             throw new ServiceException(e.getMessage());
         }

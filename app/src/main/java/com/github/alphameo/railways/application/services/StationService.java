@@ -3,6 +3,8 @@ package com.github.alphameo.railways.application.services;
 import java.util.List;
 import java.util.Optional;
 
+import com.github.alphameo.railways.application.dto.StationDto;
+import com.github.alphameo.railways.application.mapper.StationMapper;
 import com.github.alphameo.railways.domain.entities.Station;
 import com.github.alphameo.railways.domain.repositories.StationRepository;
 import com.github.alphameo.railways.domain.valueobjects.ObjectName;
@@ -16,41 +18,43 @@ public class StationService {
 
     private StationRepository stationRepo;
 
-    public void register(final ObjectName name, final StationLocation location) {
+    public void register(@NonNull final StationDto station) {
         try {
-            final var station = new Station(null, name, location);
-            stationRepo.create(station);
-        } catch (RuntimeException e) {
+            final var name = new ObjectName(station.name());
+            final var location = new StationLocation(station.location());
+            final var valStation = new Station(null, name, location);
+            stationRepo.create(valStation);
+        } catch (final RuntimeException e) {
             throw new ServiceException(e.getMessage());
         }
     }
 
-    public Station findById(@NonNull final Long id) {
+    public StationDto findById(@NonNull final Long id) {
         final Optional<Station> out;
         try {
             out = stationRepo.findById(id);
-        } catch (Exception e) {
+        } catch (final Exception e) {
             throw new ServiceException(e.getMessage());
         }
         if (out.isEmpty()) {
             throw new EntityNotFoundException("Station", id.toString());
         }
 
-        return out.get();
+        return StationMapper.toDto(out.get());
     }
 
-    public List<Station> listAll() {
+    public List<StationDto> listAll() {
         try {
-            return stationRepo.findAll();
-        } catch (RuntimeException e) {
+            return StationMapper.toDtoList(stationRepo.findAll());
+        } catch (final RuntimeException e) {
             throw new ServiceException(e.getMessage());
         }
     }
 
-    public void unregister(Long id) {
+    public void unregister(final Long id) {
         try {
             stationRepo.deleteById(id);
-        } catch (RuntimeException e) {
+        } catch (final RuntimeException e) {
             throw new ServiceException(e.getMessage());
         }
     }
