@@ -11,12 +11,12 @@ public class LocomotiveModel {
 
     private String value;
 
-    public LocomotiveModel(final String number) {
-        if (number == null) {
+    public LocomotiveModel(final String model) {
+        if (model == null) {
             throw new ValidationException("LocomotiveModel.value cannot be null");
         }
 
-        var trimmedNumber = number.trim();
+        var trimmedNumber = model.trim();
 
         if (trimmedNumber.isBlank()) {
             throw new ValidationException("LocomotiveModel.value cannot be blank");
