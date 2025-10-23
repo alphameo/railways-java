@@ -13,7 +13,7 @@ import lombok.Setter;
 public class RegisterCarriageCommand implements CliCommand {
 
     private static String NAME = "register";
-    private final String SIGNATURE = String.format("%s <number> <type> <capacity>", NAME);
+    private final String SIGNATURE = String.format("%s <number> [type] [capacity]", NAME);
     @Setter
     private String[] args;
     private CarriageService service;

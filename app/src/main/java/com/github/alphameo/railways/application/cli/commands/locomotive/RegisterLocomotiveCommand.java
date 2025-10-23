@@ -13,7 +13,7 @@ import lombok.Setter;
 public class RegisterLocomotiveCommand implements CliCommand {
 
     private static String NAME = "register";
-    private final String SIGNATURE = String.format("%s <number> <type> <capacity>", NAME);
+    private final String SIGNATURE = String.format("%s <number> <model>", NAME);
     @Setter
     private String[] args;
     private LocomotiveService service;
