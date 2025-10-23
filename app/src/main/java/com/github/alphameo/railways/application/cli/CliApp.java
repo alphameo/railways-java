@@ -21,7 +21,7 @@ public class CliApp {
         final Scanner scanner = new Scanner(System.in);
         while (true) {
             try {
-                System.out.print("> ");
+                System.out.print(Renderer.PROMPT);
                 final var inp = scanner.nextLine();
                 final String[] args = inp.split(" ");
                 final var modName = args[0];
@@ -46,7 +46,7 @@ public class CliApp {
                     cmdArgs = new String[0];
                 }
                 CliCommand cmd;
-                var isFound = false;
+                var isCmdFound = false;
                 for (final var module : modules) {
                     if (module.getName().equals(modName)) {
                         cmd = module.getCmd(cmdName, cmdArgs);
@@ -55,11 +55,11 @@ public class CliApp {
                         } catch (final Exception e) {
                             System.out.printf("Execution error: %s\n%s\n", e.getMessage(), cmd.getSignature());
                         }
-                        isFound = true;
+                        isCmdFound = true;
                         continue;
                     }
                 }
-                if (!isFound) {
+                if (!isCmdFound) {
                     System.out.printf("No such module: %s\n%s\n", modName, getHelp());
                 }
             } catch (final Exception e) {
