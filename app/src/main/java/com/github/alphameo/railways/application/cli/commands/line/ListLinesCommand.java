@@ -39,6 +39,6 @@ public class ListLinesCommand implements CliCommand {
             throw new CliArgsCountException("==", argsCount);
         }
         final var list = this.service.listAll();
-        System.out.print(Renderer.renderList("All Lines", list));
+        System.out.println(Renderer.renderList("All Lines", list));
     }
 }

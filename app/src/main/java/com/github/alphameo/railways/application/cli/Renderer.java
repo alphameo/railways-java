@@ -32,11 +32,12 @@ public class Renderer {
         StringBuilder sb = new StringBuilder();
         sb.append(String.format("[ %s ]\n", title));
         if (list.isEmpty()) {
-            sb.append("  (empty)\n");
+            sb.append("  (empty)");
         }
         for (T item : list) {
             sb.append(String.format("  - %s\n", item.toString()));
         }
+        sb.deleteCharAt(sb.length() - 1);
 
         return sb.toString();
     }
