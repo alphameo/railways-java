@@ -49,6 +49,8 @@ public class CliApp {
 
     private final List<CliModule> modules = new ArrayList<>();
 
+    private String helpMsg = "";
+
     public CliApp(
             CarriageService carServ,
             LineService lineServ,
@@ -108,6 +110,7 @@ public class CliApp {
 
     public void addModule(@NonNull final CliModule module) {
         this.modules.add(module);
+        this.updateHelp();
     }
 
     public void run() {
@@ -118,11 +121,11 @@ public class CliApp {
                 final var inp = scanner.nextLine();
                 final String[] args = inp.split(" ");
                 final var modName = args[0];
-                if (modName.equals("help")) {
+                if (modName.equals("help") || modName.equals("h")) {
                     System.out.print(getHelp());
                     continue;
                 }
-                if (modName.equals("quit")) {
+                if (modName.equals("quit") || modName.equals("q")) {
                     break;
                 }
                 if (modName.equals("")) {
@@ -163,6 +166,11 @@ public class CliApp {
     }
 
     public String getHelp() {
+        return this.helpMsg;
+    }
+
+    public void updateHelp() {
+
         final var sb = new StringBuilder();
 
         sb.append("Available modules:\n");
@@ -172,7 +180,6 @@ public class CliApp {
             sb.append(module.getName());
             sb.append("\n");
         }
-
-        return sb.toString();
+        this.helpMsg = sb.toString();
     }
 }
