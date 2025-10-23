@@ -3,7 +3,7 @@ package com.github.alphameo.railways.application.cli.commands.carriage;
 import com.github.alphameo.railways.application.cli.Renderer;
 import com.github.alphameo.railways.application.cli.commands.CliCommand;
 import com.github.alphameo.railways.application.services.CarriageService;
-import com.github.alphameo.railways.exceptions.application.cli.CliException;
+import com.github.alphameo.railways.exceptions.application.cli.CliArgsCountException;
 
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
@@ -36,7 +36,7 @@ public class ListCarriagesCommand implements CliCommand {
     public void execute() {
         final int argsCount = 0;
         if (args.length != argsCount) {
-            throw new CliException("Error: args count != " + argsCount);
+            throw new CliArgsCountException(argsCount);
         }
         final var list = this.service.listAll();
         System.out.print(Renderer.renderList("All Carriages", list));
