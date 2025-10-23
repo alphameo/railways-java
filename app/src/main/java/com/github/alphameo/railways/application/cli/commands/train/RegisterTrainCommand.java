@@ -2,6 +2,7 @@ package com.github.alphameo.railways.application.cli.commands.train;
 
 import java.util.ArrayList;
 
+import com.github.alphameo.railways.application.cli.Renderer;
 import com.github.alphameo.railways.application.cli.commands.CliCommand;
 import com.github.alphameo.railways.application.dto.ScheduleEntryDto;
 import com.github.alphameo.railways.application.dto.TrainDto;
@@ -16,7 +17,9 @@ import lombok.Setter;
 public class RegisterTrainCommand implements CliCommand {
 
     private static String NAME = "register";
-    private final String SIGNATURE = String.format("%s <number> <trainCompositionId>", NAME);
+    public static String SHORT_NAME = "a";
+    public static String ARGS_TEMPLATE = "<number> <trainCompositionId>";
+    public final String SIGNATURE = Renderer.renderSignature(NAME, SHORT_NAME, ARGS_TEMPLATE);
     @Setter
     private String[] args;
     private TrainService service;
@@ -28,6 +31,11 @@ public class RegisterTrainCommand implements CliCommand {
     @Override
     public String getName() {
         return NAME;
+    }
+
+    @Override
+    public String getShortName() {
+        return SHORT_NAME;
     }
 
     @Override

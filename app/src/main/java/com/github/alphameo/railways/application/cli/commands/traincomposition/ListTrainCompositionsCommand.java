@@ -13,7 +13,9 @@ import lombok.Setter;
 public class ListTrainCompositionsCommand implements CliCommand {
 
     private static String NAME = "list";
-    private final String SIGNATURE = String.format("%s", NAME);
+    public static String SHORT_NAME = "f";
+    public static String ARGS_TEMPLATE = "";
+    public final String SIGNATURE = Renderer.renderSignature(NAME, SHORT_NAME, ARGS_TEMPLATE);
     @Setter
     private String[] args;
     private TrainCompositionService service;
@@ -25,6 +27,11 @@ public class ListTrainCompositionsCommand implements CliCommand {
     @Override
     public String getName() {
         return NAME;
+    }
+
+    @Override
+    public String getShortName() {
+        return SHORT_NAME;
     }
 
     @Override

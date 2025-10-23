@@ -3,16 +3,23 @@ package com.github.alphameo.railways.application.cli.commands;
 public class MessageCommand implements CliCommand {
 
     private final String name;
+    private final String shortName;
     private String msg;
 
-    public MessageCommand(final String name, final String msg) {
+    public MessageCommand(final String name, final String shortName, final String msg) {
         this.name = name;
+        this.shortName = shortName;
         this.msg = msg;
     }
 
     @Override
     public String getName() {
         return name;
+    }
+
+    @Override
+    public String getShortName() {
+        return shortName;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.github.alphameo.railways.application.cli.commands.station;
 
+import com.github.alphameo.railways.application.cli.Renderer;
 import com.github.alphameo.railways.application.cli.commands.CliCommand;
 import com.github.alphameo.railways.application.dto.StationDto;
 import com.github.alphameo.railways.application.services.StationService;
@@ -13,7 +14,9 @@ import lombok.Setter;
 public class RegisterStationCommand implements CliCommand {
 
     private static String NAME = "register";
-    private final String SIGNATURE = String.format("%s <number> <model>", NAME);
+    public static String SHORT_NAME = "a";
+    public static String ARGS_TEMPLATE = "<number> <model>";
+    public final String SIGNATURE = Renderer.renderSignature(NAME, SHORT_NAME, ARGS_TEMPLATE);
     @Setter
     private String[] args;
     private StationService service;
@@ -25,6 +28,11 @@ public class RegisterStationCommand implements CliCommand {
     @Override
     public String getName() {
         return NAME;
+    }
+
+    @Override
+    public String getShortName() {
+        return SHORT_NAME;
     }
 
     @Override

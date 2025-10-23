@@ -1,5 +1,6 @@
 package com.github.alphameo.railways.application.cli.commands.train;
 
+import com.github.alphameo.railways.application.cli.Renderer;
 import com.github.alphameo.railways.application.cli.commands.CliCommand;
 import com.github.alphameo.railways.application.services.TrainService;
 import com.github.alphameo.railways.exceptions.application.cli.CliArgsCountException;
@@ -12,7 +13,9 @@ import lombok.Setter;
 public class FindTrainByIdCommand implements CliCommand {
 
     private static String NAME = "findById";
-    private final String SIGNATURE = String.format("%s <id>", NAME);
+    public static String SHORT_NAME = "f";
+    public static String ARGS_TEMPLATE = "<id>";
+    public final String SIGNATURE = Renderer.renderSignature(NAME, SHORT_NAME, ARGS_TEMPLATE);
     @Setter
     private String[] args;
     private TrainService service;
@@ -24,6 +27,11 @@ public class FindTrainByIdCommand implements CliCommand {
     @Override
     public String getName() {
         return NAME;
+    }
+
+    @Override
+    public String getShortName() {
+        return SHORT_NAME;
     }
 
     @Override

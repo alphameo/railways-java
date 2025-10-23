@@ -1,5 +1,6 @@
 package com.github.alphameo.railways.application.cli.commands.carriage;
 
+import com.github.alphameo.railways.application.cli.Renderer;
 import com.github.alphameo.railways.application.cli.commands.CliCommand;
 import com.github.alphameo.railways.application.dto.CarriageDto;
 import com.github.alphameo.railways.application.services.CarriageService;
@@ -13,7 +14,9 @@ import lombok.Setter;
 public class RegisterCarriageCommand implements CliCommand {
 
     private static String NAME = "register";
-    private final String SIGNATURE = String.format("%s <number> [type] [capacity]", NAME);
+    public static String SHORT_NAME = "a";
+    public static String ARGS_TEMPLATE = "<number> [type] [capacity]";
+    public final String SIGNATURE = Renderer.renderSignature(NAME, SHORT_NAME, ARGS_TEMPLATE);
     @Setter
     private String[] args;
     private CarriageService service;
@@ -25,6 +28,11 @@ public class RegisterCarriageCommand implements CliCommand {
     @Override
     public String getName() {
         return NAME;
+    }
+
+    @Override
+    public String getShortName() {
+        return SHORT_NAME;
     }
 
     @Override

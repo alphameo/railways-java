@@ -12,8 +12,10 @@ import lombok.Setter;
 @AllArgsConstructor
 public class ListCarriagesCommand implements CliCommand {
 
-    private static String NAME = "list";
-    private final String SIGNATURE = String.format("%s", NAME);
+    public static String NAME = "list";
+    public static String SHORT_NAME = "l";
+    public static String ARGS_TEMPLATE = "";
+    public final String SIGNATURE = Renderer.renderSignature(NAME, SHORT_NAME, ARGS_TEMPLATE);
     @Setter
     private String[] args;
     private CarriageService service;
@@ -25,6 +27,11 @@ public class ListCarriagesCommand implements CliCommand {
     @Override
     public String getName() {
         return NAME;
+    }
+
+    @Override
+    public String getShortName() {
+        return SHORT_NAME;
     }
 
     @Override

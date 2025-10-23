@@ -1,5 +1,6 @@
 package com.github.alphameo.railways.application.cli.commands.train;
 
+import com.github.alphameo.railways.application.cli.Renderer;
 import com.github.alphameo.railways.application.cli.commands.CliCommand;
 import com.github.alphameo.railways.application.services.TrainService;
 import com.github.alphameo.railways.exceptions.application.cli.CliArgsCountException;
@@ -9,9 +10,10 @@ import lombok.Setter;
 
 public class RemoveTrainScheduleEntry implements CliCommand {
 
-    
     private static String NAME = "removeScheduleEntry";
-    private final String SIGNATURE = String.format("%s <train_id> <order_index>", NAME);
+    public static String SHORT_NAME = "dse";
+    public static String ARGS_TEMPLATE = "<train_id> <order_index>";
+    public final String SIGNATURE = Renderer.renderSignature(NAME, SHORT_NAME, ARGS_TEMPLATE);
     @Setter
     private String[] args;
     private TrainService service;
@@ -23,6 +25,11 @@ public class RemoveTrainScheduleEntry implements CliCommand {
     @Override
     public String getName() {
         return NAME;
+    }
+
+    @Override
+    public String getShortName() {
+        return SHORT_NAME;
     }
 
     @Override

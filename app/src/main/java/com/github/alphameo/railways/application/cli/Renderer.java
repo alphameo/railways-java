@@ -5,6 +5,7 @@ import java.util.List;
 public class Renderer {
 
     public static String PROMPT = "> ";
+    public static int CMD_NAME_WIDTH = 25;
 
     public String showHelp(String[] options) {
         StringBuilder sb = new StringBuilder();
@@ -52,5 +53,20 @@ public class Renderer {
 
     public static String renderOption(String title) {
         return String.format("<> %s", title);
+    }
+
+    public static String renderSignature(final String name, final String shortName, final String args) {
+        final String argsLine;
+        final var names = String.format("%s, %s", name, shortName);
+        final var len = names.length();
+        if (len == 0) {
+            argsLine = "";
+        } else {
+            argsLine = String.format(
+                    "%s%s",
+                    " ".repeat(CMD_NAME_WIDTH - len),
+                    args);
+        }
+        return String.format("%s%s", names, argsLine);
     }
 }

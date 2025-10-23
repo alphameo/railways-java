@@ -3,6 +3,7 @@ package com.github.alphameo.railways.application.cli.commands.line;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.github.alphameo.railways.application.cli.Renderer;
 import com.github.alphameo.railways.application.cli.commands.CliCommand;
 import com.github.alphameo.railways.application.dto.LineDto;
 import com.github.alphameo.railways.application.services.LineService;
@@ -16,7 +17,9 @@ import lombok.Setter;
 public class DeclareLineCommand implements CliCommand {
 
     private static String NAME = "declare";
-    private final String SIGNATURE = String.format("%s <name> <stationId> [stationId...]", NAME);
+    public static String SHORT_NAME = "a";
+    public static String ARGS_TEMPLATE = "<name> <stationId> [stationId...]";
+    public final String SIGNATURE = Renderer.renderSignature(NAME, SHORT_NAME, ARGS_TEMPLATE);
     @Setter
     private String[] args;
     private LineService service;
@@ -28,6 +31,11 @@ public class DeclareLineCommand implements CliCommand {
     @Override
     public String getName() {
         return NAME;
+    }
+
+    @Override
+    public String getShortName() {
+        return SHORT_NAME;
     }
 
     @Override

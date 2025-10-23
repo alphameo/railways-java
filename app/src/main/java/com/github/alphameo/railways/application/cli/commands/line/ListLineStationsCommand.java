@@ -11,7 +11,9 @@ import lombok.Setter;
 public class ListLineStationsCommand implements CliCommand {
 
     private static String NAME = "stations";
-    private final String SIGNATURE = String.format("%s <line_id>", NAME);
+    public static String SHORT_NAME = "lst";
+    public static String ARGS_TEMPLATE = "<line_id>";
+    public final String SIGNATURE = Renderer.renderSignature(NAME, SHORT_NAME, ARGS_TEMPLATE);
     @Setter
     private String[] args;
     private LineService service;
@@ -23,6 +25,11 @@ public class ListLineStationsCommand implements CliCommand {
     @Override
     public String getName() {
         return NAME;
+    }
+
+    @Override
+    public String getShortName() {
+        return SHORT_NAME;
     }
 
     @Override

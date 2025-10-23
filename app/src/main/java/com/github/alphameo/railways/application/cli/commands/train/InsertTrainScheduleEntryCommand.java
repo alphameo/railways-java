@@ -3,6 +3,7 @@ package com.github.alphameo.railways.application.cli.commands.train;
 import java.time.LocalDateTime;
 
 import com.github.alphameo.railways.application.cli.DateParser;
+import com.github.alphameo.railways.application.cli.Renderer;
 import com.github.alphameo.railways.application.cli.commands.CliCommand;
 import com.github.alphameo.railways.application.dto.ScheduleEntryDto;
 import com.github.alphameo.railways.application.services.TrainService;
@@ -14,8 +15,9 @@ import lombok.Setter;
 public class InsertTrainScheduleEntryCommand implements CliCommand {
 
     private static String NAME = "insertScheduleEntry";
-    private final String SIGNATURE = String
-            .format("%s <train_id> <orderIndex> <station_id> [<arrival_time> [<departure_time>]]", NAME);
+    public static String SHORT_NAME = "ise";
+    public static String ARGS_TEMPLATE = "<train_id> <orderIndex> <station_id> [<arrival_time> [<departure_time>]]";
+    public final String SIGNATURE = Renderer.renderSignature(NAME, SHORT_NAME, ARGS_TEMPLATE);
     @Setter
     private String[] args;
     private TrainService service;
@@ -27,6 +29,11 @@ public class InsertTrainScheduleEntryCommand implements CliCommand {
     @Override
     public String getName() {
         return NAME;
+    }
+
+    @Override
+    public String getShortName() {
+        return SHORT_NAME;
     }
 
     @Override

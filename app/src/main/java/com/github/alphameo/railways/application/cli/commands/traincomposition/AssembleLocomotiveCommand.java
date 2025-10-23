@@ -3,6 +3,7 @@ package com.github.alphameo.railways.application.cli.commands.traincomposition;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.github.alphameo.railways.application.cli.Renderer;
 import com.github.alphameo.railways.application.cli.commands.CliCommand;
 import com.github.alphameo.railways.application.dto.TrainCompositionDto;
 import com.github.alphameo.railways.application.services.TrainCompositionService;
@@ -16,7 +17,9 @@ import lombok.Setter;
 public class AssembleLocomotiveCommand implements CliCommand {
 
     private static String NAME = "assemble";
-    private final String SIGNATURE = String.format("%s <locomotiveId> <carriageId> [carriageId...]", NAME);
+    public static String SHORT_NAME = "a";
+    public static String ARGS_TEMPLATE = "<locomotiveId> <carriageId> [carriageId...]";
+    public final String SIGNATURE = Renderer.renderSignature(NAME, SHORT_NAME, ARGS_TEMPLATE);
     @Setter
     private String[] args;
     private TrainCompositionService service;
@@ -28,6 +31,11 @@ public class AssembleLocomotiveCommand implements CliCommand {
     @Override
     public String getName() {
         return NAME;
+    }
+
+    @Override
+    public String getShortName() {
+        return SHORT_NAME;
     }
 
     @Override

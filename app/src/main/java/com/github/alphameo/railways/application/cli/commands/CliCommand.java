@@ -9,4 +9,6 @@ public interface CliCommand {
     String getSignature();
 
     String getName();
+    
+    String getShortName();
 }
