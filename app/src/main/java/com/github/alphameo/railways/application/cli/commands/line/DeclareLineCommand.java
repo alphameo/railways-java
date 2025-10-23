@@ -39,7 +39,7 @@ public class DeclareLineCommand implements CliCommand {
     public void execute() {
         final int argsCount = 2;
         if (args.length < argsCount) {
-            throw new CliArgsCountException(">=", argsCount);
+            throw new CliArgsCountException(">= " + argsCount);
         }
         final var name = args[0];
         final List<Long> stationIds = new ArrayList<>();

@@ -39,7 +39,7 @@ public class RegisterTrainCommand implements CliCommand {
     public void execute() {
         final int argsCount = 2;
         if (args.length != argsCount) {
-            throw new CliArgsCountException("==", argsCount);
+            throw new CliArgsCountException("== " + argsCount);
         }
         final var number = args[0];
         final var trainCompositionId = Long.parseLong(args[1]);

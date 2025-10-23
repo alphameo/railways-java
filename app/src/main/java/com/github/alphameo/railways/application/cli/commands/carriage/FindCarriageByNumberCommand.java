@@ -35,7 +35,7 @@ public class FindCarriageByNumberCommand implements CliCommand {
     public void execute() {
         final int argsCount = 1;
         if (args.length != argsCount) {
-            throw new CliArgsCountException("==", argsCount);
+            throw new CliArgsCountException("== " + argsCount);
         }
         final var number = args[0];
         final var entity = this.service.findByNumber(number);

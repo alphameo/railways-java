@@ -39,7 +39,7 @@ public class AssembleLocomotiveCommand implements CliCommand {
     public void execute() {
         final int argsCount = 2;
         if (args.length < argsCount) {
-            throw new CliArgsCountException("==", argsCount);
+            throw new CliArgsCountException(">= " + argsCount);
         }
         final var locomotiveId = Long.parseLong(args[0]);
         final List<Long> carriageIds = new ArrayList<>();

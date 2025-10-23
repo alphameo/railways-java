@@ -34,9 +34,10 @@ public class RegisterCarriageCommand implements CliCommand {
 
     @Override
     public void execute() {
-        final int argsCount = 1;
-        if (args.length < argsCount || args.length > 3) {
-            throw new CliArgsCountException(">=", argsCount);
+        final int argsMinCount = 1;
+        final int argsMaxCount = 3;
+        if (args.length < argsMinCount || args.length > argsMaxCount) {
+            throw new CliArgsCountException(String.format("inside [%n;%n]", argsMinCount, argsMaxCount));
         }
         final var number = args[0];
         final String contentType;

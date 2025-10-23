@@ -35,7 +35,7 @@ public class FindLocomotiveByIdCommand implements CliCommand {
     public void execute() {
         final int argsCount = 1;
         if (args.length != argsCount) {
-            throw new CliArgsCountException("==", argsCount);
+            throw new CliArgsCountException("== " + argsCount);
         }
         final var id = Long.parseLong(args[0]);
         final var entity = this.service.findById(id);

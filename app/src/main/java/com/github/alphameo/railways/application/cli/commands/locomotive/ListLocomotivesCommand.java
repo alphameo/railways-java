@@ -36,7 +36,7 @@ public class ListLocomotivesCommand implements CliCommand {
     public void execute() {
         final int argsCount = 0;
         if (args.length != argsCount) {
-            throw new CliArgsCountException("==", argsCount);
+            throw new CliArgsCountException("== " + argsCount);
         }
         final var list = this.service.listAll();
         System.out.println(Renderer.renderList("All Locomotives", list));
