@@ -32,7 +32,7 @@ public class InMemoryTrainRepository implements TrainRepository {
     }
 
     @Override
-    public void create(@NonNull Train train) {
+    public void create(@NonNull final Train train) {
         validate(train);
         final var number = train.getNumber();
         if (uniqueNumberIds.containsKey(number)) {
@@ -54,7 +54,7 @@ public class InMemoryTrainRepository implements TrainRepository {
     }
 
     @Override
-    public Optional<Train> findById(@NonNull Long id) {
+    public Optional<Train> findById(@NonNull final Long id) {
         return Optional.ofNullable(storage.get(id));
     }
 
@@ -64,7 +64,7 @@ public class InMemoryTrainRepository implements TrainRepository {
     }
 
     @Override
-    public void update(@NonNull Train train) {
+    public void update(@NonNull final Train train) {
         validate(train);
 
         final var id = train.getId();
@@ -89,7 +89,7 @@ public class InMemoryTrainRepository implements TrainRepository {
     }
 
     @Override
-    public void deleteById(Long id) {
+    public void deleteById(final Long id) {
         final var delCandidate = storage.remove(id);
         if (delCandidate != null) {
             uniqueNumberIds.remove(delCandidate.getNumber());
@@ -103,7 +103,7 @@ public class InMemoryTrainRepository implements TrainRepository {
         return Optional.ofNullable(train);
     }
 
-    private void validate(Train train) {
+    private void validate(final Train train) {
         final var trainCompoId = train.getTrainCompositionId();
         if (trainCompoStorage.get(trainCompoId) == null) {
             throw new EntityNotFoundException("TrainComposition", trainCompoId);
