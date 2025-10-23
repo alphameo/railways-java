@@ -45,8 +45,8 @@ public class TrainComposition {
     }
 
     public void updateCarriages(@NonNull List<Long> carriageIds) {
-        if (carriageIds == null | carriageIds.isEmpty()) {
-            throw new ValidationException("TrainComposition.carriageIds should not be empty or null");
+        if (carriageIds.isEmpty()) {
+            throw new ValidationException("TrainComposition.carriageIds should not be empty");
         }
 
         var newIds = new ArrayList<Long>();
