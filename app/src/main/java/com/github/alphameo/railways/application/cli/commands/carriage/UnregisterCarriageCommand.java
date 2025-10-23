@@ -37,7 +37,7 @@ public class UnregisterCarriageCommand implements CliCommand {
         if (args.length != argsCount) {
             throw new CliArgsCountException("==", argsCount);
         }
-        final var number = Long.parseLong(args[0]);
-        this.service.unregister(number);
+        final var id = Long.parseLong(args[0]);
+        this.service.unregister(id);
     }
 }
