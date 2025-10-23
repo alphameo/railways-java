@@ -91,4 +91,49 @@ public class TrainService {
             throw new ServiceException(e.getMessage());
         }
     }
+
+    public void insertScheduleEntry(@NonNull final Long trainId, @NonNull final ScheduleEntryDto scheduleEntry,
+            int orderIndex) {
+        final var trainOpt = trainRepo.findById(trainId);
+        if (trainOpt.isEmpty()) {
+            throw new EntityNotFoundException("Train", trainId);
+        }
+        try {
+            final var valScheduleEntry = ScheduleEntryMapper.toValueObject(scheduleEntry);
+            final var train = trainOpt.get();
+            train.insertScheduleEntry(valScheduleEntry, orderIndex);
+            trainRepo.update(train);
+        } catch (Exception e) {
+            throw new ServiceException(e.getMessage());
+        }
+    }
+
+    public void removeScheduleEntry(@NonNull final Long trainId, int orderIndex) {
+        final var trainOpt = trainRepo.findById(trainId);
+        if (trainOpt.isEmpty()) {
+            throw new EntityNotFoundException("Train", trainId);
+        }
+        try {
+            final var train = trainOpt.get();
+            train.removeScheduleEntry(orderIndex);
+            trainRepo.update(train);
+        } catch (Exception e) {
+            throw new ServiceException(e.getMessage());
+        }
+    }
+
+    public void updateSchedule(@NonNull final Long trainId, @NonNull final List<ScheduleEntryDto> schedule) {
+        final var trainOpt = trainRepo.findById(trainId);
+        if (trainOpt.isEmpty()) {
+            throw new EntityNotFoundException("Train", trainId);
+        }
+        try {
+            final var valSchedule = ScheduleEntryMapper.toValueObjectList(schedule);
+            final var train = trainOpt.get();
+            train.updateSchedule(valSchedule);
+            trainRepo.update(train);
+        } catch (Exception e) {
+            throw new ServiceException(e.getMessage());
+        }
+    }
 }

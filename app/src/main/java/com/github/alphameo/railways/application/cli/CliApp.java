@@ -27,8 +27,10 @@ import com.github.alphameo.railways.application.cli.commands.station.RegisterSta
 import com.github.alphameo.railways.application.cli.commands.station.UnregisterStationCommand;
 import com.github.alphameo.railways.application.cli.commands.train.FindTrainByIdCommand;
 import com.github.alphameo.railways.application.cli.commands.train.FindTrainByNumberCommand;
+import com.github.alphameo.railways.application.cli.commands.train.InsertTrainScheduleEntryCommand;
 import com.github.alphameo.railways.application.cli.commands.train.ListTrainsCommand;
 import com.github.alphameo.railways.application.cli.commands.train.RegisterTrainCommand;
+import com.github.alphameo.railways.application.cli.commands.train.RemoveTrainScheduleEntry;
 import com.github.alphameo.railways.application.cli.commands.train.UnregisterTrainCommand;
 import com.github.alphameo.railways.application.cli.commands.traincomposition.AssembleLocomotiveCommand;
 import com.github.alphameo.railways.application.cli.commands.traincomposition.DisassembleTrainCompositionCommand;
@@ -87,6 +89,8 @@ public class CliApp {
         trainMod.addCmd(new FindTrainByIdCommand(trainServ));
         trainMod.addCmd(new FindTrainByNumberCommand(trainServ));
         trainMod.addCmd(new UnregisterTrainCommand(trainServ));
+        trainMod.addCmd(new InsertTrainScheduleEntryCommand(trainServ));
+        trainMod.addCmd(new RemoveTrainScheduleEntry(trainServ));
 
         final var trainCompoMod = new CliModule("traincomposition");
         trainCompoMod.addCmd(new AssembleLocomotiveCommand(trainCompoServ));
