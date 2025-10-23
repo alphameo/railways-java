@@ -11,9 +11,11 @@ import com.github.alphameo.railways.domain.valueobjects.StationLocation;
 public class StationMapper {
 
     public static StationDto toDto(final Station station) {
+        final var id = station.getId();
         final var name = station.getName().getValue();
         final var location = station.getLocation().getValue();
         return new StationDto(
+                id,
                 name,
                 location);
     }
@@ -27,9 +29,10 @@ public class StationMapper {
     }
 
     public static Station toEntity(final StationDto stationDto) {
+        final var id = stationDto.id();
         final var name = new ObjectName(stationDto.name());
         final var location = new StationLocation(stationDto.location());
-        return new Station(null, name, location);
+        return new Station(id, name, location);
     }
 
     public static Iterable<Station> toEntityList(final Iterable<StationDto> stationDtos) {

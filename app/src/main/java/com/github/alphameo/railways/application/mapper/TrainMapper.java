@@ -10,11 +10,13 @@ import com.github.alphameo.railways.domain.valueobjects.MachineNumber;
 public class TrainMapper {
 
     public static TrainDto toDto(final Train train) {
+        final var id = train.getId();
         final var number = train.getNumber().getValue();
         final var trainCompositionId = train.getTrainCompositionId();
         final var schedule = train.getSchedule();
         final var scheduleDto = ScheduleEntryMapper.toDtoList(schedule);
         return new TrainDto(
+                id,
                 number,
                 trainCompositionId,
                 scheduleDto);
@@ -29,11 +31,12 @@ public class TrainMapper {
     }
 
     public static Train toEntity(final TrainDto trainDto) {
+        final var id = trainDto.id();
         final var number = new MachineNumber(trainDto.number());
         final var trainCompositionId = trainDto.trainCompositionId();
         final var scheduleDto = trainDto.schedule();
         final var schedule = ScheduleEntryMapper.toValueObjectList(scheduleDto);
-        return new Train(null, number, trainCompositionId, schedule);
+        return new Train(id, number, trainCompositionId, schedule);
     }
 
     public static Iterable<Train> toEntityList(final Iterable<TrainDto> trainDtos) {
