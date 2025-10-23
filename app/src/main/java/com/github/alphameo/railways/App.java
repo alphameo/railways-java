@@ -2,6 +2,7 @@ package com.github.alphameo.railways;
 
 import com.github.alphameo.railways.application.cli.CliApp;
 import com.github.alphameo.railways.application.cli.CliModule;
+import com.github.alphameo.railways.application.cli.commands.carriage.ListCarriagesCommand;
 import com.github.alphameo.railways.application.cli.commands.carriage.RegisterCarriageCommand;
 import com.github.alphameo.railways.application.services.CarriageService;
 import com.github.alphameo.railways.infrastructure.inmemory.InMemoryStorage;
@@ -13,6 +14,7 @@ public class App {
         final var cliApp = new CliApp();
         final var carrMod = new CliModule("carriage");
         carrMod.addCmd(new RegisterCarriageCommand(carServ));
+        carrMod.addCmd(new ListCarriagesCommand(carServ));
         cliApp.addModule(carrMod);
         cliApp.run();
     }
