@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.github.alphameo.railways.application.dto.ScheduleEntryDto;
 import com.github.alphameo.railways.application.dto.TrainDto;
+import com.github.alphameo.railways.application.mapper.ScheduleEntryMapper;
+import com.github.alphameo.railways.application.mapper.TrainMapper;
 import com.github.alphameo.railways.domain.entities.Train;
 import com.github.alphameo.railways.domain.repositories.TrainCompositionRepository;
 import com.github.alphameo.railways.domain.repositories.TrainRepository;
@@ -33,7 +36,8 @@ public class TrainService {
             final var schedule = train.schedule();
             final List<ScheduleEntry> valSchedule = new ArrayList<>();
             for (var scheduleEntry : schedule) {
-                final var valScheduleEntry = new ScheduleEntry(scheduleEntry.stationId(), scheduleEntry.arrivalTime(), scheduleEntry.departureTime());
+                final var valScheduleEntry = new ScheduleEntry(scheduleEntry.stationId(), scheduleEntry.arrivalTime(),
+                        scheduleEntry.departureTime());
                 valSchedule.add(valScheduleEntry);
             }
             final var valTrain = new Train(null, number, trainCompoId, valSchedule);
@@ -43,7 +47,7 @@ public class TrainService {
         }
     }
 
-    public Train findById(@NonNull Long id) {
+    public TrainDto findById(@NonNull Long id) {
         final Optional<Train> out;
         try {
             out = trainRepo.findById(id);
@@ -54,12 +58,12 @@ public class TrainService {
             throw new EntityNotFoundException("Train", id.toString());
         }
 
-        return out.get();
+        return TrainMapper.toDto(out.get());
     }
 
-    public List<Train> listAll() {
+    public List<TrainDto> listAll() {
         try {
-            return trainRepo.findAll();
+            return TrainMapper.toDtoList(trainRepo.findAll());
         } catch (RuntimeException e) {
             throw new ServiceException(e.getMessage());
         }
