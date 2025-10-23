@@ -1,9 +1,14 @@
 package com.github.alphameo.railways.application.cli.commands;
 
+import com.github.alphameo.railways.application.cli.Renderer;
+
+import lombok.Setter;
+
 public class MessageCommand implements CliCommand {
 
     private final String name;
     private final String shortName;
+    @Setter
     private String msg;
 
     public MessageCommand(final String name, final String shortName, final String msg) {
@@ -24,7 +29,7 @@ public class MessageCommand implements CliCommand {
 
     @Override
     public String getSignature() {
-        return this.getName();
+        return Renderer.renderSignature(name, shortName, "");
     }
 
     public void setArgs(final String[] args) {

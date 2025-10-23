@@ -13,6 +13,9 @@ public class CliModule {
     private final String name;
 
     private final List<CliCommand> commands = new ArrayList<>();
+    private final MessageCommand helpCmd = new MessageCommand("help", "h", "");
+    private final MessageCommand noCmd = new MessageCommand("nocmd", "n", "");
+    private String helpMsg = "";
 
     public CliModule(@NonNull final String name) {
         this.name = name;
@@ -24,22 +27,26 @@ public class CliModule {
 
     public void addCmd(@NonNull final CliCommand cmd) {
         commands.add(cmd);
+        updateHelpMsg();
+        helpCmd.setMsg(this.helpMsg);
+        noCmd.setMsg(String.format("No such command: %s\n%s", name, this.helpMsg));
     }
 
     public CliCommand getCmd(@NonNull final String name, @NonNull final String[] args) {
         for (final var command : commands) {
-            if (command.getName().equals(name)) {
+            if (command.getName().equals(name) ||
+                    command.getShortName().equals(name)) {
                 command.setArgs(args);
                 return command;
             }
         }
-        if (name.equals("help")) {
-            return new MessageCommand("help", getHelpMsg());
+        if (name.equals("help") || name.equals("h")) {
+            return helpCmd;
         }
-        return new MessageCommand("help", String.format("No such command: %s\n%s", name, getHelpMsg()));
+        return noCmd;
     }
 
-    private String getHelpMsg() {
+    private void updateHelpMsg() {
         final StringBuilder sb = new StringBuilder();
         sb.append(String.format("Commands for %s:\n", this.getName()));
 
@@ -48,8 +55,9 @@ public class CliModule {
             sb.append(cmdSign.getSignature());
             sb.append("\n");
         }
-        sb.deleteCharAt(sb.length() - 1);
+        sb.append("\t");
+        sb.append(helpCmd.getSignature());
 
-        return sb.toString();
+        this.helpMsg = sb.toString();
     }
 }
