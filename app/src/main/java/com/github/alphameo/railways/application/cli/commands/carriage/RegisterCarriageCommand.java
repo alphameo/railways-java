@@ -41,7 +41,7 @@ public class RegisterCarriageCommand implements CliCommand {
         final var number = args[0];
         final var contentType = args[1];
         final var capacity = Long.parseLong(args[2]);
-        final var carriageDto = new CarriageDto(number, contentType, capacity);
+        final var carriageDto = new CarriageDto(null, number, contentType, capacity);
         this.service.register(carriageDto);
     }
 }
