@@ -11,5 +11,4 @@ public class CliException extends ApplicationException {
     public CliException(String msg, Throwable cause) {
         super(msg, cause);
     }
-
 }
