@@ -34,13 +34,23 @@ public class RegisterCarriageCommand implements CliCommand {
 
     @Override
     public void execute() {
-        final int argsCount = 3;
-        if (args.length != argsCount) {
-            throw new CliArgsCountException("==", argsCount);
+        final int argsCount = 1;
+        if (args.length < argsCount || args.length > 3) {
+            throw new CliArgsCountException(">=", argsCount);
         }
         final var number = args[0];
-        final var contentType = args[1];
-        final var capacity = Long.parseLong(args[2]);
+        final String contentType;
+        if (args.length >= 2) {
+            contentType = args[1];
+        } else {
+            contentType = null;
+        }
+        final Long capacity;
+        if (args.length >= 3) {
+            capacity = Long.parseLong(args[2]);
+        } else {
+            capacity = null;
+        }
         final var dto = new CarriageDto(null, number, contentType, capacity);
         this.service.register(dto);
     }
