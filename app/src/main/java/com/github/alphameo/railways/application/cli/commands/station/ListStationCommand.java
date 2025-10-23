@@ -39,6 +39,6 @@ public class ListStationCommand implements CliCommand {
             throw new CliArgsCountException("==", argsCount);
         }
         final var list = this.service.listAll();
-        System.out.println(Renderer.renderList("All Carriages", list));
+        System.out.println(Renderer.renderList("All Stations", list));
     }
 }

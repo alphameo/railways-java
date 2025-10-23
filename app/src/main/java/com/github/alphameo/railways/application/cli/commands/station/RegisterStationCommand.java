@@ -10,7 +10,7 @@ import lombok.NonNull;
 import lombok.Setter;
 
 @AllArgsConstructor
-public class RegisterLocomotiveCommand implements CliCommand {
+public class RegisterStationCommand implements CliCommand {
 
     private static String NAME = "register";
     private final String SIGNATURE = String.format("%s <number> <model>", NAME);
@@ -18,7 +18,7 @@ public class RegisterLocomotiveCommand implements CliCommand {
     private String[] args;
     private StationService service;
 
-    public RegisterLocomotiveCommand(@NonNull final StationService service) {
+    public RegisterStationCommand(@NonNull final StationService service) {
         this.service = service;
     }
 

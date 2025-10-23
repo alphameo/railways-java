@@ -34,7 +34,7 @@ public class RegisterLocomotiveCommand implements CliCommand {
 
     @Override
     public void execute() {
-        final int argsCount = 3;
+        final int argsCount = 2;
         if (args.length != argsCount) {
             throw new CliArgsCountException("==", argsCount);
         }
