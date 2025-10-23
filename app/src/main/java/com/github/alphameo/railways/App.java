@@ -1,11 +1,19 @@
 package com.github.alphameo.railways;
 
-public class App {
-    public String getGreeting() {
-        return "Hello World!";
-    }
+import com.github.alphameo.railways.application.cli.CliApp;
+import com.github.alphameo.railways.application.cli.CliModule;
+import com.github.alphameo.railways.application.cli.commands.carriage.RegisterCarriageCommand;
+import com.github.alphameo.railways.application.services.CarriageService;
+import com.github.alphameo.railways.infrastructure.inmemory.InMemoryStorage;
 
+public class App {
     public static void main(String[] args) {
-        System.out.println(new App().getGreeting());
+        final var inMemStorage = InMemoryStorage.getInstance();
+        CarriageService carServ = new CarriageService(inMemStorage.getCarrRepo());
+        final var cliApp = new CliApp();
+        final var carrMod = new CliModule("carriage");
+        carrMod.addCmd(new RegisterCarriageCommand(carServ));
+        cliApp.addModule(carrMod);
+        cliApp.run();
     }
 }
