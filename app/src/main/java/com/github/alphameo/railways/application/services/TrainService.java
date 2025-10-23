@@ -13,8 +13,10 @@ import com.github.alphameo.railways.domain.valueobjects.ScheduleEntry;
 import com.github.alphameo.railways.exceptions.application.services.EntityNotFoundException;
 import com.github.alphameo.railways.exceptions.application.services.ServiceException;
 
+import lombok.AllArgsConstructor;
 import lombok.NonNull;
 
+@AllArgsConstructor
 public class TrainService {
 
     private TrainRepository trainRepo;
