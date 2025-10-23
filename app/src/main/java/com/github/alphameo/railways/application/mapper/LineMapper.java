@@ -12,7 +12,7 @@ public class LineMapper {
     public static LineDto toDto(final Line line) {
         final var id = line.getId();
         final var name = line.getName().getValue();
-        final var stationIds = line.getStationIds();
+        final var stationIds = line.getStationIdOrder();
         return new LineDto(
                 id,
                 name,
@@ -31,7 +31,7 @@ public class LineMapper {
     public static Line toEntity(final LineDto lineDto) {
         final var id = lineDto.id();
         final var name = new ObjectName(lineDto.name());
-        final var stationIds = lineDto.stationIds();
+        final var stationIds = lineDto.stationIdOrder();
         return new Line(id, name, stationIds);
     }
 
