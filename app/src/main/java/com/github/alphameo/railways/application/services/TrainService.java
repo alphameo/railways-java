@@ -61,6 +61,21 @@ public class TrainService {
         return TrainMapper.toDto(out.get());
     }
 
+    public TrainDto findByNumber(@NonNull String number) {
+        final Optional<Train> out;
+        try {
+            final var valNumber = new MachineNumber(number);
+            out = trainRepo.findByNumber(valNumber);
+        } catch (Exception e) {
+            throw new ServiceException(e.getMessage());
+        }
+        if (out.isEmpty()) {
+            throw new EntityNotFoundException(String.format("Train with number=%s not exists", number));
+        }
+
+        return TrainMapper.toDto(out.get());
+    }
+
     public List<TrainDto> listAll() {
         try {
             return TrainMapper.toDtoList(trainRepo.findAll());

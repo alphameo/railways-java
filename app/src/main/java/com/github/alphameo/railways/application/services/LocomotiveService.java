@@ -7,6 +7,7 @@ import com.github.alphameo.railways.application.dto.LocomotiveDto;
 import com.github.alphameo.railways.application.mapper.LocomotiveMapper;
 import com.github.alphameo.railways.domain.entities.Locomotive;
 import com.github.alphameo.railways.domain.repositories.LocomotiveRepository;
+import com.github.alphameo.railways.domain.valueobjects.MachineNumber;
 import com.github.alphameo.railways.exceptions.application.services.EntityNotFoundException;
 import com.github.alphameo.railways.exceptions.application.services.ServiceException;
 
@@ -41,6 +42,20 @@ public class LocomotiveService {
         return LocomotiveMapper.toDto(out.get());
     }
 
+    public LocomotiveDto findByNumber(@NonNull String number) {
+        final Optional<Locomotive> out;
+        try {
+            final var valNumber = new MachineNumber(number);
+            out = repository.findByNumber(valNumber);
+        } catch (Exception e) {
+            throw new ServiceException(e.getMessage());
+        }
+        if (out.isEmpty()) {
+            throw new EntityNotFoundException(String.format("Locomotive with number=%s not exists", number));
+        }
+
+        return LocomotiveMapper.toDto(out.get());
+    }
     public List<LocomotiveDto> listAll() {
         try {
             return LocomotiveMapper.toDtoList(repository.findAll());

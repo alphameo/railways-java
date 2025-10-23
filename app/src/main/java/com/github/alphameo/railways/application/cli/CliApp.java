@@ -17,6 +17,7 @@ import com.github.alphameo.railways.application.cli.commands.line.FindLineByIdCo
 import com.github.alphameo.railways.application.cli.commands.line.ListLineStationsCommand;
 import com.github.alphameo.railways.application.cli.commands.line.ListLinesCommand;
 import com.github.alphameo.railways.application.cli.commands.locomotive.FindLocomotiveByIdCommand;
+import com.github.alphameo.railways.application.cli.commands.locomotive.FindLocomotiveByNumberCommand;
 import com.github.alphameo.railways.application.cli.commands.locomotive.ListLocomotivesCommand;
 import com.github.alphameo.railways.application.cli.commands.locomotive.RegisterLocomotiveCommand;
 import com.github.alphameo.railways.application.cli.commands.locomotive.UnregisterLocomotiveCommand;
@@ -25,6 +26,7 @@ import com.github.alphameo.railways.application.cli.commands.station.ListStation
 import com.github.alphameo.railways.application.cli.commands.station.RegisterStationCommand;
 import com.github.alphameo.railways.application.cli.commands.station.UnregisterStationCommand;
 import com.github.alphameo.railways.application.cli.commands.train.FindTrainByIdCommand;
+import com.github.alphameo.railways.application.cli.commands.train.FindTrainByNumberCommand;
 import com.github.alphameo.railways.application.cli.commands.train.ListTrainsCommand;
 import com.github.alphameo.railways.application.cli.commands.train.RegisterTrainCommand;
 import com.github.alphameo.railways.application.cli.commands.train.UnregisterTrainCommand;
@@ -70,6 +72,7 @@ public class CliApp {
         locoMod.addCmd(new RegisterLocomotiveCommand(locoServ));
         locoMod.addCmd(new ListLocomotivesCommand(locoServ));
         locoMod.addCmd(new FindLocomotiveByIdCommand(locoServ));
+        locoMod.addCmd(new FindLocomotiveByNumberCommand(locoServ));
         locoMod.addCmd(new UnregisterLocomotiveCommand(locoServ));
 
         final var stationMod = new CliModule("station");
@@ -82,6 +85,7 @@ public class CliApp {
         trainMod.addCmd(new RegisterTrainCommand(trainServ));
         trainMod.addCmd(new ListTrainsCommand(trainServ));
         trainMod.addCmd(new FindTrainByIdCommand(trainServ));
+        trainMod.addCmd(new FindTrainByNumberCommand(trainServ));
         trainMod.addCmd(new UnregisterTrainCommand(trainServ));
 
         final var trainCompoMod = new CliModule("traincomposition");
