@@ -12,7 +12,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class RegisterCarriageCommand implements CliCommand {
 
-    private static String NAME = "create";
+    private static String NAME = "register";
     private final String SIGNATURE = String.format("%s <number> <type> <capacity>", NAME);
     @Setter
     private String[] args;
@@ -36,12 +36,12 @@ public class RegisterCarriageCommand implements CliCommand {
     public void execute() {
         final int argsCount = 3;
         if (args.length != argsCount) {
-            throw new CliArgsCountException(argsCount);
+            throw new CliArgsCountException("==", argsCount);
         }
         final var number = args[0];
         final var contentType = args[1];
         final var capacity = Long.parseLong(args[2]);
-        final var carriageDto = new CarriageDto(null, number, contentType, capacity);
-        this.service.register(carriageDto);
+        final var dto = new CarriageDto(null, number, contentType, capacity);
+        this.service.register(dto);
     }
 }
