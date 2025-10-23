@@ -12,7 +12,7 @@ import lombok.Setter;
 public class FindCarriageByIdCommand implements CliCommand {
 
     private static String NAME = "findById";
-    private final String SIGNATURE = String.format("%s", NAME);
+    private final String SIGNATURE = String.format("%s <id>", NAME);
     @Setter
     private String[] args;
     private CarriageService service;
