@@ -10,8 +10,10 @@ import com.github.alphameo.railways.domain.repositories.LocomotiveRepository;
 import com.github.alphameo.railways.exceptions.application.services.EntityNotFoundException;
 import com.github.alphameo.railways.exceptions.application.services.ServiceException;
 
+import lombok.AllArgsConstructor;
 import lombok.NonNull;
 
+@AllArgsConstructor
 public class LocomotiveService {
 
     private LocomotiveRepository repository;
