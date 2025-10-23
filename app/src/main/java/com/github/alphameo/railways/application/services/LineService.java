@@ -15,8 +15,10 @@ import com.github.alphameo.railways.domain.repositories.StationRepository;
 import com.github.alphameo.railways.exceptions.application.services.EntityNotFoundException;
 import com.github.alphameo.railways.exceptions.application.services.ServiceException;
 
+import lombok.AllArgsConstructor;
 import lombok.NonNull;
 
+@AllArgsConstructor
 public class LineService {
 
     private LineRepository lineRepo;
@@ -34,7 +36,7 @@ public class LineService {
     public List<StationDto> listLineStations(@NonNull final Long lineId) {
         try {
             final List<Station> stations = new ArrayList<>();
-            final var stationIds = lineRepo.findById(lineId).get().getStationIds();
+            final var stationIds = lineRepo.findById(lineId).get().getStationIdOrder();
             for (final long id : stationIds) {
                 stations.add(stationRepo.findById(id).get());
             }

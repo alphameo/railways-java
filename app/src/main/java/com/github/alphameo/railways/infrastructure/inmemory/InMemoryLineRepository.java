@@ -70,7 +70,7 @@ public class InMemoryLineRepository implements LineRepository {
     }
 
     private void validate(final Line line) {
-        final var stationIds = line.getStationIds();
+        final var stationIds = line.getStationIdOrder();
         for (final Long id : stationIds) {
             if (stationStorage.get(id) == null) {
                 throw new InMemoryEntityNotExistsException("Station", id);
@@ -82,6 +82,6 @@ public class InMemoryLineRepository implements LineRepository {
         return new Line(
                 id,
                 l.getName(),
-                l.getStationIds());
+                l.getStationIdOrder());
     }
 }

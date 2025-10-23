@@ -18,16 +18,16 @@ public class Line {
 
     private Long id;
     private ObjectName name;
-    private List<Long> stationIds;
+    private List<Long> stationIdOrder;
 
-    public Line(final Long id, final ObjectName name, final List<Long> stationOrder) {
+    public Line(final Long id, final ObjectName name, final List<Long> stationIdOrder) {
         this.id = id;
         this.rename(name);
-        this.updateStationIds(stationIds);
+        this.updateStationIds(stationIdOrder);
     }
 
-    public List<Long> getStationIds() {
-        return List.copyOf(this.stationIds);
+    public List<Long> getStationIdOrder() {
+        return List.copyOf(this.stationIdOrder);
     }
 
     public void rename(final ObjectName name) {
@@ -38,9 +38,9 @@ public class Line {
         this.name = name;
     }
 
-    public void updateStationIds(List<Long> stationIds) {
-        if (stationIds == null | stationIds.isEmpty()) {
-            throw new ValidationException("Line.stationIds cannot be null or empty");
+    public void updateStationIds(@NonNull final List<Long> stationIds) {
+        if (stationIds.isEmpty()) {
+            throw new ValidationException("Line.stationIds cannot be empty");
         }
 
         final var newIds = new ArrayList<Long>();
@@ -53,12 +53,12 @@ public class Line {
             newIds.add(id);
         }
 
-        this.stationIds = newIds;
+        this.stationIdOrder = newIds;
     }
 
     public void registerStation(@NonNull final Long stationId, final int position) {
         try {
-            this.stationIds.add(position - 1, stationId);
+            this.stationIdOrder.add(position - 1, stationId);
         } catch (Exception e) {
             throw new ValidationException(
                     String.format("Cannot insert station on position=%s: %s", position, e.getMessage()));
@@ -67,12 +67,12 @@ public class Line {
     }
 
     public void unregisterStationById(@NonNull final Long id) {
-        this.stationIds.remove(id);
+        this.stationIdOrder.remove(id);
     }
 
     public void unregisterStationOnPosition(final int position) {
         try {
-            this.stationIds.remove(position - 1);
+            this.stationIdOrder.remove(position - 1);
         } catch (Exception e) {
             throw new ValidationException(
                     String.format("Cannot remove station on position=%s: %s", position, e.getMessage()));
@@ -80,6 +80,6 @@ public class Line {
     }
 
     public int stationCount() {
-        return this.stationIds.size();
+        return this.stationIdOrder.size();
     }
 }
