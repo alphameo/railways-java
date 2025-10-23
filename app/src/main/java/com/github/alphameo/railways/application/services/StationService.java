@@ -7,8 +7,6 @@ import com.github.alphameo.railways.application.dto.StationDto;
 import com.github.alphameo.railways.application.mapper.StationMapper;
 import com.github.alphameo.railways.domain.entities.Station;
 import com.github.alphameo.railways.domain.repositories.StationRepository;
-import com.github.alphameo.railways.domain.valueobjects.ObjectName;
-import com.github.alphameo.railways.domain.valueobjects.StationLocation;
 import com.github.alphameo.railways.exceptions.application.services.EntityNotFoundException;
 import com.github.alphameo.railways.exceptions.application.services.ServiceException;
 
@@ -22,9 +20,7 @@ public class StationService {
 
     public void register(@NonNull final StationDto station) {
         try {
-            final var name = new ObjectName(station.name());
-            final var location = new StationLocation(station.location());
-            final var valStation = new Station(null, name, location);
+            final var valStation = StationMapper.toEntity(station);
             stationRepo.create(valStation);
         } catch (final RuntimeException e) {
             throw new ServiceException(e.getMessage());
