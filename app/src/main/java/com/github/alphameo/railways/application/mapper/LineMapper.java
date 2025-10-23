@@ -10,9 +10,11 @@ import com.github.alphameo.railways.domain.valueobjects.ObjectName;
 public class LineMapper {
 
     public static LineDto toDto(final Line line) {
+        final var id = line.getId();
         final var name = line.getName().getValue();
         final var stationIds = line.getStationIds();
         return new LineDto(
+                id,
                 name,
                 stationIds);
 
@@ -27,9 +29,10 @@ public class LineMapper {
     }
 
     public static Line toEntity(final LineDto lineDto) {
+        final var id = lineDto.id();
         final var name = new ObjectName(lineDto.name());
         final var stationIds = lineDto.stationIds();
-        return new Line(null, name, stationIds);
+        return new Line(id, name, stationIds);
     }
 
     public static Iterable<Line> toEntityList(final Iterable<LineDto> lineDtos) {

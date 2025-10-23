@@ -1,4 +1,4 @@
 package com.github.alphameo.railways.application.dto;
 
-public record LocomotiveDto(String number, String model) {
+public record LocomotiveDto(Long id, String number, String model) {
 }

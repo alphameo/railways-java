@@ -9,9 +9,11 @@ import com.github.alphameo.railways.domain.entities.TrainComposition;
 public class TrainCompositionMapper {
 
     public static TrainCompositionDto toDto(final TrainComposition trainComposition) {
+        final var id = trainComposition.getId();
         final var locomotiveId = trainComposition.getLocomotiveId();
         final var carriageIds = trainComposition.getCarriageIds();
         return new TrainCompositionDto(
+                id,
                 locomotiveId,
                 carriageIds);
     }
@@ -25,9 +27,10 @@ public class TrainCompositionMapper {
     }
 
     public static TrainComposition toEntity(final TrainCompositionDto trainCompositionDto) {
+        final var id = trainCompositionDto.id();
         final var locomotiveId = trainCompositionDto.locomotiveId();
         final var carriageIds = trainCompositionDto.carriageIds();
-        return new TrainComposition(null, locomotiveId, carriageIds);
+        return new TrainComposition(id, locomotiveId, carriageIds);
     }
 
     public static Iterable<TrainComposition> toEntityList(final Iterable<TrainCompositionDto> trainCompositionDtos) {
