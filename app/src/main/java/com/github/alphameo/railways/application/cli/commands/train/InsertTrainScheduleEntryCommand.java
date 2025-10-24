@@ -10,7 +10,6 @@ import com.github.alphameo.railways.application.services.TrainService;
 import com.github.alphameo.railways.exceptions.application.cli.CliArgsCountException;
 
 import lombok.NonNull;
-import lombok.Setter;
 
 public class InsertTrainScheduleEntryCommand implements CliCommand {
 
@@ -20,7 +19,6 @@ public class InsertTrainScheduleEntryCommand implements CliCommand {
     public static final int ARGS_MIN_COUNT = 3;
     public static final String SIGNATURE = Renderer.renderSignature(NAME, SHORT_NAME, ARGS_TEMPLATE);
 
-    @Setter
     private String[] args;
     private TrainService service;
 
