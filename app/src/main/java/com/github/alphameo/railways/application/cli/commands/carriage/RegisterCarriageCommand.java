@@ -13,10 +13,13 @@ import lombok.Setter;
 @AllArgsConstructor
 public class RegisterCarriageCommand implements CliCommand {
 
-    private static String NAME = "register";
-    public static String SHORT_NAME = "a";
-    public static String ARGS_TEMPLATE = "<number> [type] [capacity]";
-    public final String SIGNATURE = Renderer.renderSignature(NAME, SHORT_NAME, ARGS_TEMPLATE);
+    public static final String NAME = "register";
+    public static final String SHORT_NAME = "a";
+    public static final String ARGS_TEMPLATE = "<number> [type] [capacity]";
+    public static final int ARGS_MIN_COUNT = 1;
+    public static final int ARGS_MAX_COUNT = 3;
+    public static final String SIGNATURE = Renderer.renderSignature(NAME, SHORT_NAME, ARGS_TEMPLATE);
+
     @Setter
     private String[] args;
     private CarriageService service;
@@ -42,10 +45,8 @@ public class RegisterCarriageCommand implements CliCommand {
 
     @Override
     public void execute() {
-        final int argsMinCount = 1;
-        final int argsMaxCount = 3;
-        if (args.length < argsMinCount || args.length > argsMaxCount) {
-            throw new CliArgsCountException(String.format("inside [%n;%n]", argsMinCount, argsMaxCount));
+        if (args.length < ARGS_MIN_COUNT || args.length > ARGS_MAX_COUNT) {
+            throw new CliArgsCountException(String.format("inside [%n;%n]", ARGS_MIN_COUNT, ARGS_MAX_COUNT));
         }
         final var number = args[0];
         final String contentType;

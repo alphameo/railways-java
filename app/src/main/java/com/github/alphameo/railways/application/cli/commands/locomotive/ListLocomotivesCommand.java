@@ -12,10 +12,12 @@ import lombok.Setter;
 @AllArgsConstructor
 public class ListLocomotivesCommand implements CliCommand {
 
-    private static String NAME = "list";
-    public static String SHORT_NAME = "l";
-    public static String ARGS_TEMPLATE = "";
-    public final String SIGNATURE = Renderer.renderSignature(NAME, SHORT_NAME, ARGS_TEMPLATE);
+    public static final String NAME = "list";
+    public static final String SHORT_NAME = "l";
+    public static final String ARGS_TEMPLATE = "";
+    public static final int ARGS_COUNT = 0;
+    public static final String SIGNATURE = Renderer.renderSignature(NAME, SHORT_NAME, ARGS_TEMPLATE);
+
     @Setter
     private String[] args;
     private LocomotiveService service;
@@ -41,9 +43,8 @@ public class ListLocomotivesCommand implements CliCommand {
 
     @Override
     public void execute() {
-        final int argsCount = 0;
-        if (args.length != argsCount) {
-            throw new CliArgsCountException("== " + argsCount);
+        if (args.length != ARGS_COUNT) {
+            throw new CliArgsCountException("== " + ARGS_COUNT);
         }
         final var list = this.service.listAll();
         System.out.println(Renderer.renderList("All Locomotives", list));

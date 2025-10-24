@@ -16,10 +16,12 @@ import lombok.Setter;
 @AllArgsConstructor
 public class RegisterTrainCommand implements CliCommand {
 
-    private static String NAME = "register";
-    public static String SHORT_NAME = "a";
-    public static String ARGS_TEMPLATE = "<number> <trainCompositionId>";
-    public final String SIGNATURE = Renderer.renderSignature(NAME, SHORT_NAME, ARGS_TEMPLATE);
+    public static final String NAME = "register";
+    public static final String SHORT_NAME = "a";
+    public static final String ARGS_TEMPLATE = "<number> <trainCompositionId>";
+    public static final int ARGS_COUNT = 2;
+    public static final String SIGNATURE = Renderer.renderSignature(NAME, SHORT_NAME, ARGS_TEMPLATE);
+
     @Setter
     private String[] args;
     private TrainService service;
@@ -45,9 +47,8 @@ public class RegisterTrainCommand implements CliCommand {
 
     @Override
     public void execute() {
-        final int argsCount = 2;
-        if (args.length != argsCount) {
-            throw new CliArgsCountException("== " + argsCount);
+        if (args.length != ARGS_COUNT) {
+            throw new CliArgsCountException("== " + ARGS_COUNT);
         }
         final var number = args[0];
         final var trainCompositionId = Long.parseLong(args[1]);

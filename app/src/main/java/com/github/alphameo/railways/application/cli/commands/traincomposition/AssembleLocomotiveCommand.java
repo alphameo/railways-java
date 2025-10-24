@@ -16,10 +16,12 @@ import lombok.Setter;
 @AllArgsConstructor
 public class AssembleLocomotiveCommand implements CliCommand {
 
-    private static String NAME = "assemble";
-    public static String SHORT_NAME = "a";
-    public static String ARGS_TEMPLATE = "<locomotiveId> <carriageId> [carriageId...]";
-    public final String SIGNATURE = Renderer.renderSignature(NAME, SHORT_NAME, ARGS_TEMPLATE);
+    public static final String NAME = "assemble";
+    public static final String SHORT_NAME = "a";
+    public static final String ARGS_TEMPLATE = "<locomotiveId> <carriageId> [carriageId...]";
+    public static final int ARGS_MIN_COUNT = 2;
+    public static final String SIGNATURE = Renderer.renderSignature(NAME, SHORT_NAME, ARGS_TEMPLATE);
+
     @Setter
     private String[] args;
     private TrainCompositionService service;
@@ -45,9 +47,8 @@ public class AssembleLocomotiveCommand implements CliCommand {
 
     @Override
     public void execute() {
-        final int argsCount = 2;
-        if (args.length < argsCount) {
-            throw new CliArgsCountException(">= " + argsCount);
+        if (args.length < ARGS_MIN_COUNT) {
+            throw new CliArgsCountException(">= " + ARGS_MIN_COUNT);
         }
         final var locomotiveId = Long.parseLong(args[0]);
         final List<Long> carriageIds = new ArrayList<>();

@@ -10,10 +10,12 @@ import lombok.Setter;
 
 public class ListLineStationsCommand implements CliCommand {
 
-    private static String NAME = "stations";
-    public static String SHORT_NAME = "lst";
-    public static String ARGS_TEMPLATE = "<line_id>";
-    public final String SIGNATURE = Renderer.renderSignature(NAME, SHORT_NAME, ARGS_TEMPLATE);
+    public static final String NAME = "stations";
+    public static final String SHORT_NAME = "lst";
+    public static final String ARGS_TEMPLATE = "<line_id>";
+    public static final int ARGS_COUNT = 1;
+    public static final String SIGNATURE = Renderer.renderSignature(NAME, SHORT_NAME, ARGS_TEMPLATE);
+
     @Setter
     private String[] args;
     private LineService service;
@@ -39,9 +41,8 @@ public class ListLineStationsCommand implements CliCommand {
 
     @Override
     public void execute() {
-        final int argsCount = 1;
-        if (args.length != argsCount) {
-            throw new CliArgsCountException("== " + argsCount);
+        if (args.length != ARGS_COUNT) {
+            throw new CliArgsCountException("== " + ARGS_COUNT);
         }
         final var id = Long.parseLong(args[0]);
         final var list = this.service.listLineStations(id);

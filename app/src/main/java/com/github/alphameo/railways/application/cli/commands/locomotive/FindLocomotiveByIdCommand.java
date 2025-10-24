@@ -12,10 +12,12 @@ import lombok.Setter;
 @AllArgsConstructor
 public class FindLocomotiveByIdCommand implements CliCommand {
 
-    private static String NAME = "findById";
-    public static String SHORT_NAME = "f";
-    public static String ARGS_TEMPLATE = "<id>";
-    public final String SIGNATURE = Renderer.renderSignature(NAME, SHORT_NAME, ARGS_TEMPLATE);
+    public static final String NAME = "findById";
+    public static final String SHORT_NAME = "f";
+    public static final String ARGS_TEMPLATE = "<id>";
+    public static final int ARGS_COUNT = 1;
+    public static final String SIGNATURE = Renderer.renderSignature(NAME, SHORT_NAME, ARGS_TEMPLATE);
+
     @Setter
     private String[] args;
     private LocomotiveService service;
@@ -41,9 +43,8 @@ public class FindLocomotiveByIdCommand implements CliCommand {
 
     @Override
     public void execute() {
-        final int argsCount = 1;
-        if (args.length != argsCount) {
-            throw new CliArgsCountException("== " + argsCount);
+        if (args.length != ARGS_COUNT) {
+            throw new CliArgsCountException("== " + ARGS_COUNT);
         }
         final var id = Long.parseLong(args[0]);
         final var entity = this.service.findById(id);

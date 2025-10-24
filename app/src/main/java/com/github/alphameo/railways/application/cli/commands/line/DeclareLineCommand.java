@@ -16,10 +16,12 @@ import lombok.Setter;
 @AllArgsConstructor
 public class DeclareLineCommand implements CliCommand {
 
-    private static String NAME = "declare";
-    public static String SHORT_NAME = "a";
-    public static String ARGS_TEMPLATE = "<name> <stationId> [stationId...]";
-    public final String SIGNATURE = Renderer.renderSignature(NAME, SHORT_NAME, ARGS_TEMPLATE);
+    public static final String NAME = "declare";
+    public static final String SHORT_NAME = "a";
+    public static final String ARGS_TEMPLATE = "<name> <stationId> [stationId...]";
+    public static final int ARGS_MIN_COUNT = 2;
+    public static final String SIGNATURE = Renderer.renderSignature(NAME, SHORT_NAME, ARGS_TEMPLATE);
+
     @Setter
     private String[] args;
     private LineService service;
@@ -45,9 +47,8 @@ public class DeclareLineCommand implements CliCommand {
 
     @Override
     public void execute() {
-        final int argsCount = 2;
-        if (args.length < argsCount) {
-            throw new CliArgsCountException(">= " + argsCount);
+        if (args.length < ARGS_MIN_COUNT) {
+            throw new CliArgsCountException(">= " + ARGS_MIN_COUNT);
         }
         final var name = args[0];
         final List<Long> stationIds = new ArrayList<>();

@@ -14,10 +14,12 @@ import lombok.Setter;
 
 public class InsertTrainScheduleEntryCommand implements CliCommand {
 
-    private static String NAME = "insertScheduleEntry";
-    public static String SHORT_NAME = "ise";
-    public static String ARGS_TEMPLATE = "<train_id> <orderIndex> <station_id> [<arrival_time> [<departure_time>]]";
-    public final String SIGNATURE = Renderer.renderSignature(NAME, SHORT_NAME, ARGS_TEMPLATE);
+    public static final String NAME = "insertScheduleEntry";
+    public static final String SHORT_NAME = "ise";
+    public static final String ARGS_TEMPLATE = "<train_id> <orderIndex> <station_id> [<arrival_time> [<departure_time>]]";
+    public static final int ARGS_MIN_COUNT = 3;
+    public static final String SIGNATURE = Renderer.renderSignature(NAME, SHORT_NAME, ARGS_TEMPLATE);
+
     @Setter
     private String[] args;
     private TrainService service;
@@ -43,9 +45,8 @@ public class InsertTrainScheduleEntryCommand implements CliCommand {
 
     @Override
     public void execute() {
-        final int argsMinCount = 3;
-        if (args.length >= argsMinCount) {
-            throw new CliArgsCountException("== " + argsMinCount);
+        if (args.length >= ARGS_MIN_COUNT) {
+            throw new CliArgsCountException("== " + ARGS_MIN_COUNT);
         }
 
         final var id = Long.parseLong(args[0]);
