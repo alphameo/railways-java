@@ -8,7 +8,7 @@ import com.github.alphameo.railways.exceptions.application.cli.CliArgsCountExcep
 import lombok.NonNull;
 import lombok.Setter;
 
-public class RemoveTrainScheduleEntry implements CliCommand {
+public class RemoveTrainScheduleEntryCommand implements CliCommand {
 
     public static final String NAME = "removeScheduleEntry";
     public static final String SHORT_NAME = "dse";
