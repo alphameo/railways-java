@@ -5,21 +5,16 @@ import com.github.alphameo.railways.application.cli.commands.CliCommand;
 import com.github.alphameo.railways.application.services.StationService;
 import com.github.alphameo.railways.exceptions.application.cli.CliArgsCountException;
 
-import lombok.AllArgsConstructor;
 import lombok.NonNull;
-import lombok.Setter;
 
-@AllArgsConstructor
 public class ListStationCommand implements CliCommand {
 
     public static final String NAME = "list";
     public static final String SHORT_NAME = "l";
-    public static final String ARGS_TEMPLATE = "<id>";
-    public static final int ARGS_COUNT = 1;
+    public static final String ARGS_TEMPLATE = "";
+    public static final int ARGS_COUNT = 0;
     public static final String SIGNATURE = Renderer.renderSignature(NAME, SHORT_NAME, ARGS_TEMPLATE);
 
-    @Setter
-    private String[] args;
     private StationService service;
 
     public ListStationCommand(@NonNull final StationService service) {
@@ -42,10 +37,14 @@ public class ListStationCommand implements CliCommand {
     }
 
     @Override
-    public void execute() {
+    public void setArgs(@NonNull final String[] args) {
         if (args.length != ARGS_COUNT) {
             throw new CliArgsCountException("== " + ARGS_COUNT);
         }
+    }
+
+    @Override
+    public void execute() {
         final var list = this.service.listAll();
         System.out.println(Renderer.renderList("All Stations", list));
     }

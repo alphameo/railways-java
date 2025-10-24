@@ -44,11 +44,15 @@ public class InsertTrainScheduleEntryCommand implements CliCommand {
     }
 
     @Override
-    public void execute() {
+    public void setArgs(@NonNull final String[] args) {
         if (args.length >= ARGS_MIN_COUNT) {
             throw new CliArgsCountException("== " + ARGS_MIN_COUNT);
         }
+        this.args = args;
+    }
 
+    @Override
+    public void execute() {
         final var id = Long.parseLong(args[0]);
         final var orderIndex = Integer.parseInt(args[1]);
         final var stationId = Long.parseLong(args[2]);

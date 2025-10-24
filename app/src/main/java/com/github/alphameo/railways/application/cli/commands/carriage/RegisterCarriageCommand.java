@@ -6,11 +6,8 @@ import com.github.alphameo.railways.application.dto.CarriageDto;
 import com.github.alphameo.railways.application.services.CarriageService;
 import com.github.alphameo.railways.exceptions.application.cli.CliArgsCountException;
 
-import lombok.AllArgsConstructor;
 import lombok.NonNull;
-import lombok.Setter;
 
-@AllArgsConstructor
 public class RegisterCarriageCommand implements CliCommand {
 
     public static final String NAME = "register";
@@ -20,7 +17,6 @@ public class RegisterCarriageCommand implements CliCommand {
     public static final int ARGS_MAX_COUNT = 3;
     public static final String SIGNATURE = Renderer.renderSignature(NAME, SHORT_NAME, ARGS_TEMPLATE);
 
-    @Setter
     private String[] args;
     private CarriageService service;
 
@@ -44,10 +40,15 @@ public class RegisterCarriageCommand implements CliCommand {
     }
 
     @Override
-    public void execute() {
+    public void setArgs(@NonNull final String[] args) {
         if (args.length < ARGS_MIN_COUNT || args.length > ARGS_MAX_COUNT) {
             throw new CliArgsCountException(String.format("inside [%n;%n]", ARGS_MIN_COUNT, ARGS_MAX_COUNT));
         }
+        this.args = args;
+    }
+
+    @Override
+    public void execute() {
         final var number = args[0];
         final String contentType;
         if (args.length >= 2) {

@@ -6,11 +6,8 @@ import com.github.alphameo.railways.application.dto.StationDto;
 import com.github.alphameo.railways.application.services.StationService;
 import com.github.alphameo.railways.exceptions.application.cli.CliArgsCountException;
 
-import lombok.AllArgsConstructor;
 import lombok.NonNull;
-import lombok.Setter;
 
-@AllArgsConstructor
 public class RegisterStationCommand implements CliCommand {
 
     public static final String NAME = "register";
@@ -19,7 +16,6 @@ public class RegisterStationCommand implements CliCommand {
     public static final int ARGS_COUNT = 2;
     public static final String SIGNATURE = Renderer.renderSignature(NAME, SHORT_NAME, ARGS_TEMPLATE);
 
-    @Setter
     private String[] args;
     private StationService service;
 
@@ -43,10 +39,15 @@ public class RegisterStationCommand implements CliCommand {
     }
 
     @Override
-    public void execute() {
+    public void setArgs(@NonNull final String[] args) {
         if (args.length != ARGS_COUNT) {
             throw new CliArgsCountException("== " + ARGS_COUNT);
         }
+        this.args = args;
+    }
+
+    @Override
+    public void execute() {
         final var number = args[0];
         final var model = args[1];
         final var dto = new StationDto(null, number, model);

@@ -5,11 +5,8 @@ import com.github.alphameo.railways.application.cli.commands.CliCommand;
 import com.github.alphameo.railways.application.services.LocomotiveService;
 import com.github.alphameo.railways.exceptions.application.cli.CliArgsCountException;
 
-import lombok.AllArgsConstructor;
 import lombok.NonNull;
-import lombok.Setter;
 
-@AllArgsConstructor
 public class FindLocomotiveByNumberCommand implements CliCommand {
 
     public static final String NAME = "findByNumber";
@@ -18,7 +15,6 @@ public class FindLocomotiveByNumberCommand implements CliCommand {
     public static final int ARGS_COUNT = 1;
     public static final String SIGNATURE = Renderer.renderSignature(NAME, SHORT_NAME, ARGS_TEMPLATE);
 
-    @Setter
     private String[] args;
     private LocomotiveService service;
 
@@ -42,10 +38,15 @@ public class FindLocomotiveByNumberCommand implements CliCommand {
     }
 
     @Override
-    public void execute() {
+    public void setArgs(@NonNull final String[] args) {
         if (args.length != ARGS_COUNT) {
             throw new CliArgsCountException("== " + ARGS_COUNT);
         }
+        this.args = args;
+    }
+
+    @Override
+    public void execute() {
         final var number = args[0];
         final var entity = this.service.findByNumber(number);
         System.out.println(entity);

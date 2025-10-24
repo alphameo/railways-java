@@ -9,11 +9,8 @@ import com.github.alphameo.railways.application.dto.TrainCompositionDto;
 import com.github.alphameo.railways.application.services.TrainCompositionService;
 import com.github.alphameo.railways.exceptions.application.cli.CliArgsCountException;
 
-import lombok.AllArgsConstructor;
 import lombok.NonNull;
-import lombok.Setter;
 
-@AllArgsConstructor
 public class AssembleLocomotiveCommand implements CliCommand {
 
     public static final String NAME = "assemble";
@@ -22,7 +19,6 @@ public class AssembleLocomotiveCommand implements CliCommand {
     public static final int ARGS_MIN_COUNT = 2;
     public static final String SIGNATURE = Renderer.renderSignature(NAME, SHORT_NAME, ARGS_TEMPLATE);
 
-    @Setter
     private String[] args;
     private TrainCompositionService service;
 
@@ -46,10 +42,15 @@ public class AssembleLocomotiveCommand implements CliCommand {
     }
 
     @Override
-    public void execute() {
+    public void setArgs(@NonNull final String[] args) {
         if (args.length < ARGS_MIN_COUNT) {
             throw new CliArgsCountException(">= " + ARGS_MIN_COUNT);
         }
+        this.args = args;
+    }
+
+    @Override
+    public void execute() {
         final var locomotiveId = Long.parseLong(args[0]);
         final List<Long> carriageIds = new ArrayList<>();
         for (int i = 1; i < args.length; i++) {

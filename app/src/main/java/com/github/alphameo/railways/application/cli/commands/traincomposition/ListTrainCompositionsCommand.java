@@ -5,11 +5,8 @@ import com.github.alphameo.railways.application.cli.commands.CliCommand;
 import com.github.alphameo.railways.application.services.TrainCompositionService;
 import com.github.alphameo.railways.exceptions.application.cli.CliArgsCountException;
 
-import lombok.AllArgsConstructor;
 import lombok.NonNull;
-import lombok.Setter;
 
-@AllArgsConstructor
 public class ListTrainCompositionsCommand implements CliCommand {
 
     public static final String NAME = "list";
@@ -18,8 +15,6 @@ public class ListTrainCompositionsCommand implements CliCommand {
     public static final int ARGS_COUNT = 0;
     public static final String SIGNATURE = Renderer.renderSignature(NAME, SHORT_NAME, ARGS_TEMPLATE);
 
-    @Setter
-    private String[] args;
     private TrainCompositionService service;
 
     public ListTrainCompositionsCommand(@NonNull final TrainCompositionService service) {
@@ -42,10 +37,14 @@ public class ListTrainCompositionsCommand implements CliCommand {
     }
 
     @Override
-    public void execute() {
+    public void setArgs(@NonNull final String[] args) {
         if (args.length != ARGS_COUNT) {
             throw new CliArgsCountException("== " + ARGS_COUNT);
         }
+    }
+
+    @Override
+    public void execute() {
         final var list = this.service.listAll();
         System.out.println(Renderer.renderList("All Locomotives", list));
     }

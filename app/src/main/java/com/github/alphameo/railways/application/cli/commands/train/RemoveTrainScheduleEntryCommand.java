@@ -6,7 +6,6 @@ import com.github.alphameo.railways.application.services.TrainService;
 import com.github.alphameo.railways.exceptions.application.cli.CliArgsCountException;
 
 import lombok.NonNull;
-import lombok.Setter;
 
 public class RemoveTrainScheduleEntryCommand implements CliCommand {
 
@@ -16,11 +15,10 @@ public class RemoveTrainScheduleEntryCommand implements CliCommand {
     public static final int ARGS_COUNT = 2;
     public static final String SIGNATURE = Renderer.renderSignature(NAME, SHORT_NAME, ARGS_TEMPLATE);
 
-    @Setter
     private String[] args;
     private TrainService service;
 
-    public RemoveTrainScheduleEntry(@NonNull final TrainService service) {
+    public RemoveTrainScheduleEntryCommand(@NonNull final TrainService service) {
         this.service = service;
     }
 
@@ -40,10 +38,15 @@ public class RemoveTrainScheduleEntryCommand implements CliCommand {
     }
 
     @Override
-    public void execute() {
+    public void setArgs(@NonNull final String[] args) {
         if (args.length != ARGS_COUNT) {
             throw new CliArgsCountException("== " + ARGS_COUNT);
         }
+        this.args = args;
+    }
+
+    @Override
+    public void execute() {
         final var id = Long.parseLong(args[0]);
         final var orderIndex = Integer.parseInt(args[1]);
         this.service.removeScheduleEntry(id, orderIndex);
