@@ -8,25 +8,26 @@ import com.github.alphameo.railways.domain.entities.Locomotive;
 import com.github.alphameo.railways.domain.entities.Station;
 import com.github.alphameo.railways.domain.entities.Train;
 import com.github.alphameo.railways.domain.entities.TrainComposition;
+import com.github.alphameo.railways.infrastructure.Storage;
 
 import lombok.Getter;
 
-public class InMemoryStorage {
+public class InMemoryStorage implements Storage {
 
     private static InMemoryStorage INSTANCE;
 
     @Getter
-    private InMemoryCarriageRepository carrRepo;
+    private InMemoryCarriageRepository carriageRepository;
     @Getter
-    private InMemoryLineRepository lineRepo;
+    private InMemoryLineRepository lineRepository;
     @Getter
-    private InMemoryLocomotiveRepository locoRepo;
+    private InMemoryLocomotiveRepository locomotiveRepository;
     @Getter
-    private InMemoryStationRepository stationRepo;
+    private InMemoryStationRepository stationRepository;
     @Getter
-    private InMemoryTrainRepository trainRepo;
+    private InMemoryTrainRepository trainRepository;
     @Getter
-    private InMemoryTrainCompositionRepository trainCompoRepo;
+    private InMemoryTrainCompositionRepository trainCompositionRepository;
 
     private InMemoryStorage() {
         final var carrStorage = new HashMap<Long, Carriage>();
@@ -35,11 +36,11 @@ public class InMemoryStorage {
         final var stationStorage = new HashMap<Long, Station>();
         final var trainStorage = new HashMap<Long, Train>();
         final var trainCompoStorage = new HashMap<Long, TrainComposition>();
-        this.carrRepo = new InMemoryCarriageRepository(carrStorage);
-        this.lineRepo = new InMemoryLineRepository(lineStorage, stationStorage);
-        this.locoRepo = new InMemoryLocomotiveRepository(locoStorage);
-        this.stationRepo = new InMemoryStationRepository(stationStorage);
-        this.trainRepo = new InMemoryTrainRepository(trainStorage, trainCompoStorage);
+        this.carriageRepository = new InMemoryCarriageRepository(carrStorage);
+        this.lineRepository = new InMemoryLineRepository(lineStorage, stationStorage);
+        this.locomotiveRepository = new InMemoryLocomotiveRepository(locoStorage);
+        this.stationRepository = new InMemoryStationRepository(stationStorage);
+        this.trainRepository = new InMemoryTrainRepository(trainStorage, trainCompoStorage);
     }
 
     public static InMemoryStorage getInstance() {
