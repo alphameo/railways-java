@@ -39,6 +39,7 @@ import com.github.alphameo.railways.application.cli.commands.traincomposition.Li
 import com.github.alphameo.railways.application.services.CarriageService;
 import com.github.alphameo.railways.application.services.LineService;
 import com.github.alphameo.railways.application.services.LocomotiveService;
+import com.github.alphameo.railways.application.services.ServiceProvider;
 import com.github.alphameo.railways.application.services.StationService;
 import com.github.alphameo.railways.application.services.TrainCompositionService;
 import com.github.alphameo.railways.application.services.TrainService;
@@ -51,13 +52,14 @@ public class CliApp {
 
     private String helpMsg = "";
 
-    public CliApp(
-            CarriageService carriageService,
-            LineService lineService,
-            LocomotiveService locomotiveService,
-            StationService stationService,
-            TrainService trainService,
-            TrainCompositionService trainCompositionService) {
+    public CliApp(ServiceProvider servFact) {
+        CarriageService carriageService = servFact.getCarriageService();
+        LineService lineService = servFact.getLineService();
+        LocomotiveService locomotiveService = servFact.getLocomotiveService();
+        StationService stationService = servFact.getStationService();
+        TrainService trainService = servFact.getTrainService();
+        TrainCompositionService trainCompositionService = servFact.getTrainCompositionService();
+
         final var carrMod = new CliModule("carriage");
         carrMod.addCmd(new RegisterCarriageCommand(carriageService));
         carrMod.addCmd(new ListCarriagesCommand(carriageService));
