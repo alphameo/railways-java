@@ -2,6 +2,7 @@ package com.github.alphameo.railways.application.cli.commands;
 
 import com.github.alphameo.railways.application.cli.Renderer;
 
+import lombok.Getter;
 import lombok.Setter;
 
 public class MessageCommand implements CliCommand {
@@ -9,6 +10,7 @@ public class MessageCommand implements CliCommand {
     private final String name;
     private final String shortName;
     @Setter
+    @Getter
     private String msg;
 
     public MessageCommand(final String name, final String shortName, final String msg) {

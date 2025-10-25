@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import com.github.alphameo.railways.application.cli.commands.CliCommand;
+import com.github.alphameo.railways.application.cli.commands.MessageCommand;
 import com.github.alphameo.railways.application.cli.commands.carriage.FindCarriageByIdCommand;
 import com.github.alphameo.railways.application.cli.commands.carriage.FindCarriageByNumberCommand;
 import com.github.alphameo.railways.application.cli.commands.carriage.ListCarriagesCommand;
@@ -49,8 +50,8 @@ import lombok.NonNull;
 public class CliApp {
 
     private final List<CliModule> modules = new ArrayList<>();
-
-    private String helpMsg = "";
+    private final MessageCommand helpMsgCmd = new MessageCommand("help", "h", "");
+    private final MessageCommand quitMsgCmd = new MessageCommand("quit", "q", "App closed.");
 
     public CliApp(ServiceProvider servFact) {
         CarriageService carriageService = servFact.getCarriageService();
@@ -112,7 +113,7 @@ public class CliApp {
 
     public void addModule(@NonNull final CliModule module) {
         this.modules.add(module);
-        this.updateHelp();
+        this.updateHelpMsg();
     }
 
     public void run() {
@@ -122,15 +123,16 @@ public class CliApp {
                 System.out.print(Renderer.PROMPT);
                 final var inp = scanner.nextLine();
                 final String[] args = inp.split(" ");
-                final var modName = args[0];
-                if (modName.equals("help") || modName.equals("h")) {
-                    System.out.print(getHelp());
-                    continue;
-                }
-                if (modName.equals("quit") || modName.equals("q")) {
+                final var firstArg = args[0];
+                if (quitMsgCmd.getName().equals(firstArg) || quitMsgCmd.getShortName().equals(firstArg)) {
+                    quitMsgCmd.execute();
                     break;
                 }
-                if (modName.equals("")) {
+                if (helpMsgCmd.getName().equals(firstArg) || helpMsgCmd.getShortName().equals(firstArg)) {
+                    helpMsgCmd.execute();
+                    continue;
+                }
+                if (firstArg.strip().equals("")) {
                     continue;
                 }
 
@@ -146,7 +148,7 @@ public class CliApp {
                 CliCommand cmd;
                 var isCmdFound = false;
                 for (final var module : modules) {
-                    if (module.getName().equals(modName)) {
+                    if (module.getName().equals(firstArg)) {
                         cmd = module.getCmd(cmdName, cmdArgs);
                         try {
                             cmd.execute();
@@ -158,7 +160,7 @@ public class CliApp {
                     }
                 }
                 if (!isCmdFound) {
-                    System.out.printf("No such module: %s\n%s\n", modName, getHelp());
+                    System.out.printf("No such module: %s\n%s\n", firstArg, getHelp());
                 }
             } catch (final Exception e) {
                 System.out.println("Error: " + e.getCause());
@@ -168,20 +170,27 @@ public class CliApp {
     }
 
     public String getHelp() {
-        return this.helpMsg;
+        return this.helpMsgCmd.getMsg();
     }
 
-    public void updateHelp() {
-
+    public void updateHelpMsg() {
         final var sb = new StringBuilder();
 
         sb.append("Available modules:\n");
-
         for (final var module : modules) {
             sb.append("\t");
             sb.append(module.getName());
             sb.append("\n");
         }
-        this.helpMsg = sb.toString();
+
+        sb.append("Available commands:\n");
+        sb.append("\t");
+        sb.append(helpMsgCmd.getSignature());
+        sb.append("\n");
+        sb.append("\t");
+        sb.append(quitMsgCmd.getSignature());
+        sb.append("\n");
+
+        this.helpMsgCmd.setMsg(sb.toString());
     }
 }
