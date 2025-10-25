@@ -52,53 +52,53 @@ public class CliApp {
     private String helpMsg = "";
 
     public CliApp(
-            CarriageService carServ,
-            LineService lineServ,
-            LocomotiveService locoServ,
-            StationService stationServ,
-            TrainService trainServ,
-            TrainCompositionService trainCompoServ) {
+            CarriageService carriageService,
+            LineService lineService,
+            LocomotiveService locomotiveService,
+            StationService stationService,
+            TrainService trainService,
+            TrainCompositionService trainCompositionService) {
         final var carrMod = new CliModule("carriage");
-        carrMod.addCmd(new RegisterCarriageCommand(carServ));
-        carrMod.addCmd(new ListCarriagesCommand(carServ));
-        carrMod.addCmd(new FindCarriageByIdCommand(carServ));
-        carrMod.addCmd(new FindCarriageByNumberCommand(carServ));
-        carrMod.addCmd(new UnregisterCarriageCommand(carServ));
+        carrMod.addCmd(new RegisterCarriageCommand(carriageService));
+        carrMod.addCmd(new ListCarriagesCommand(carriageService));
+        carrMod.addCmd(new FindCarriageByIdCommand(carriageService));
+        carrMod.addCmd(new FindCarriageByNumberCommand(carriageService));
+        carrMod.addCmd(new UnregisterCarriageCommand(carriageService));
 
         final var lineMod = new CliModule("line");
-        lineMod.addCmd(new DeclareLineCommand(lineServ));
-        lineMod.addCmd(new FindLineByIdCommand(lineServ));
-        lineMod.addCmd(new ListLinesCommand(lineServ));
-        lineMod.addCmd(new DisbandLineCommand(lineServ));
-        lineMod.addCmd(new ListLineStationsCommand(lineServ));
+        lineMod.addCmd(new DeclareLineCommand(lineService));
+        lineMod.addCmd(new FindLineByIdCommand(lineService));
+        lineMod.addCmd(new ListLinesCommand(lineService));
+        lineMod.addCmd(new DisbandLineCommand(lineService));
+        lineMod.addCmd(new ListLineStationsCommand(lineService));
 
         final var locoMod = new CliModule("locomotive");
-        locoMod.addCmd(new RegisterLocomotiveCommand(locoServ));
-        locoMod.addCmd(new ListLocomotivesCommand(locoServ));
-        locoMod.addCmd(new FindLocomotiveByIdCommand(locoServ));
-        locoMod.addCmd(new FindLocomotiveByNumberCommand(locoServ));
-        locoMod.addCmd(new UnregisterLocomotiveCommand(locoServ));
+        locoMod.addCmd(new RegisterLocomotiveCommand(locomotiveService));
+        locoMod.addCmd(new ListLocomotivesCommand(locomotiveService));
+        locoMod.addCmd(new FindLocomotiveByIdCommand(locomotiveService));
+        locoMod.addCmd(new FindLocomotiveByNumberCommand(locomotiveService));
+        locoMod.addCmd(new UnregisterLocomotiveCommand(locomotiveService));
 
         final var stationMod = new CliModule("station");
-        stationMod.addCmd(new RegisterStationCommand(stationServ));
-        stationMod.addCmd(new ListStationCommand(stationServ));
-        stationMod.addCmd(new FindStationByIdCommand(stationServ));
-        stationMod.addCmd(new UnregisterStationCommand(stationServ));
+        stationMod.addCmd(new RegisterStationCommand(stationService));
+        stationMod.addCmd(new ListStationCommand(stationService));
+        stationMod.addCmd(new FindStationByIdCommand(stationService));
+        stationMod.addCmd(new UnregisterStationCommand(stationService));
 
         final var trainMod = new CliModule("train");
-        trainMod.addCmd(new RegisterTrainCommand(trainServ));
-        trainMod.addCmd(new ListTrainsCommand(trainServ));
-        trainMod.addCmd(new FindTrainByIdCommand(trainServ));
-        trainMod.addCmd(new FindTrainByNumberCommand(trainServ));
-        trainMod.addCmd(new UnregisterTrainCommand(trainServ));
-        trainMod.addCmd(new InsertTrainScheduleEntryCommand(trainServ));
-        trainMod.addCmd(new RemoveTrainScheduleEntryCommand(trainServ));
+        trainMod.addCmd(new RegisterTrainCommand(trainService));
+        trainMod.addCmd(new ListTrainsCommand(trainService));
+        trainMod.addCmd(new FindTrainByIdCommand(trainService));
+        trainMod.addCmd(new FindTrainByNumberCommand(trainService));
+        trainMod.addCmd(new UnregisterTrainCommand(trainService));
+        trainMod.addCmd(new InsertTrainScheduleEntryCommand(trainService));
+        trainMod.addCmd(new RemoveTrainScheduleEntryCommand(trainService));
 
         final var trainCompoMod = new CliModule("traincomposition");
-        trainCompoMod.addCmd(new AssembleLocomotiveCommand(trainCompoServ));
-        trainCompoMod.addCmd(new ListTrainCompositionsCommand(trainCompoServ));
-        trainCompoMod.addCmd(new FindTrainCompositionByIdCommand(trainCompoServ));
-        trainCompoMod.addCmd(new DisassembleTrainCompositionCommand(trainCompoServ));
+        trainCompoMod.addCmd(new AssembleLocomotiveCommand(trainCompositionService));
+        trainCompoMod.addCmd(new ListTrainCompositionsCommand(trainCompositionService));
+        trainCompoMod.addCmd(new FindTrainCompositionByIdCommand(trainCompositionService));
+        trainCompoMod.addCmd(new DisassembleTrainCompositionCommand(trainCompositionService));
 
         this.addModule(carrMod);
         this.addModule(lineMod);
