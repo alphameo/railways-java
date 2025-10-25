@@ -8,6 +8,7 @@ import com.github.alphameo.railways.domain.repositories.TrainCompositionReposito
 import com.github.alphameo.railways.domain.repositories.TrainRepository;
 
 public interface Storage {
+
     CarriageRepository getCarriageRepository();
 
     LineRepository getLineRepository();
