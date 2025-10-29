@@ -6,6 +6,10 @@ public class RailwaysException extends RuntimeException {
         super(msg);
     }
 
+    public RailwaysException(Throwable cause) {
+        super(cause);
+    }
+
     public RailwaysException(String msg, Throwable cause) {
         super(msg, cause);
     }

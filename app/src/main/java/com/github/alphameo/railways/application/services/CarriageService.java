@@ -24,7 +24,7 @@ public class CarriageService {
             final var valCarriage = CarriageMapper.toEntity(carriage);
             repository.create(valCarriage);
         } catch (final RuntimeException e) {
-            throw new ServiceException(e.getMessage());
+            throw new ServiceException(e);
         }
     }
 
@@ -33,7 +33,7 @@ public class CarriageService {
         try {
             carr = repository.findById(id);
         } catch (final Exception e) {
-            throw new ServiceException(e.getMessage());
+            throw new ServiceException(e);
         }
         if (carr.isEmpty()) {
             throw new EntityNotFoundException("Carriage", id.toString());
@@ -48,7 +48,7 @@ public class CarriageService {
             final var valNumber = new MachineNumber(number);
             carr = repository.findByNumber(valNumber);
         } catch (final Exception e) {
-            throw new ServiceException(e.getMessage());
+            throw new ServiceException(e);
         }
         if (carr.isEmpty()) {
             throw new EntityNotFoundException(String.format("Carriage with number=%s not exists", number));
@@ -62,7 +62,7 @@ public class CarriageService {
             final var carriages =  repository.findAll();
             return CarriageMapper.toDtoList(carriages);
         } catch (final RuntimeException e) {
-            throw new ServiceException(e.getMessage());
+            throw new ServiceException(e);
         }
     }
 
@@ -70,7 +70,7 @@ public class CarriageService {
         try {
             repository.deleteById(id);
         } catch (final RuntimeException e) {
-            throw new ServiceException(e.getMessage());
+            throw new ServiceException(e);
         }
     }
 }

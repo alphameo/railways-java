@@ -29,7 +29,7 @@ public class LineService {
             final var varLine = LineMapper.toEntity(line);
             lineRepo.create(varLine);
         } catch (final Exception e) {
-            throw new ServiceException(e.getMessage());
+            throw new ServiceException(e);
         }
     }
 
@@ -42,7 +42,7 @@ public class LineService {
             }
             return StationMapper.toDtoList(stations);
         } catch (final Exception e) {
-            throw new ServiceException(e.getMessage());
+            throw new ServiceException(e);
         }
     }
 
@@ -51,7 +51,7 @@ public class LineService {
         try {
             line = lineRepo.findById(id);
         } catch (final Exception e) {
-            throw new ServiceException(e.getMessage());
+            throw new ServiceException(e);
         }
         if (line.isEmpty()) {
             throw new EntityNotFoundException("Line", id.toString());
@@ -64,7 +64,7 @@ public class LineService {
         try {
             return LineMapper.toDtoList(lineRepo.findAll());
         } catch (final RuntimeException e) {
-            throw new ServiceException(e.getMessage());
+            throw new ServiceException(e);
         }
     }
 
@@ -72,7 +72,7 @@ public class LineService {
         try {
             lineRepo.deleteById(lineId);
         } catch (final Exception e) {
-            throw new ServiceException(e.getMessage());
+            throw new ServiceException(e);
         }
     }
 }

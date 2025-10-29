@@ -64,7 +64,8 @@ public class TrainComposition {
             this.carriageIds.add(position - 1, id);
         } catch (Exception e) {
             throw new ValidationException(
-                    String.format("Cannot insert carriage on position=%s: %s", position, e.getMessage()));
+                    String.format("Cannot insert carriage on position=%s: %s", position, e.getMessage()),
+                    e);
         }
 
     }
@@ -78,7 +79,8 @@ public class TrainComposition {
             this.carriageIds.remove(position - 1);
         } catch (Exception e) {
             throw new ValidationException(
-                    String.format("Cannot remove carriage on position=%s: %s", position, e.getMessage()));
+                    String.format("Cannot remove carriage on position=%s: %s", position, e.getMessage()),
+                    e);
         }
     }
 

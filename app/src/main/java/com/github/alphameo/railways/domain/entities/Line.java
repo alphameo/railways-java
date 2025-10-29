@@ -61,7 +61,8 @@ public class Line {
             this.stationIdOrder.add(position - 1, stationId);
         } catch (Exception e) {
             throw new ValidationException(
-                    String.format("Cannot insert station on position=%s: %s", position, e.getMessage()));
+                    String.format("Cannot insert station on position=%s: %s", position, e.getMessage()),
+                    e);
         }
 
     }
@@ -75,7 +76,8 @@ public class Line {
             this.stationIdOrder.remove(position - 1);
         } catch (Exception e) {
             throw new ValidationException(
-                    String.format("Cannot remove station on position=%s: %s", position, e.getMessage()));
+                    String.format("Cannot remove station on position=%s: %s", position, e.getMessage()),
+                    e);
         }
     }
 

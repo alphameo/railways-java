@@ -42,7 +42,7 @@ public class TrainCompositionService {
             final var trainComp = new TrainComposition(null, locomotiveId, carriageIds);
             trainCompositionRepo.create(trainComp);
         } catch (final Exception e) {
-            throw new ServiceException(e.getMessage());
+            throw new ServiceException(e);
         }
     }
 
@@ -51,7 +51,7 @@ public class TrainCompositionService {
         try {
             out = trainCompositionRepo.findById(id);
         } catch (final Exception e) {
-            throw new ServiceException(e.getMessage());
+            throw new ServiceException(e);
         }
         if (out.isEmpty()) {
             throw new EntityNotFoundException("TrainComposition", id.toString());
@@ -64,7 +64,7 @@ public class TrainCompositionService {
         try {
             return TrainCompositionMapper.toDtoList(trainCompositionRepo.findAll());
         } catch (final RuntimeException e) {
-            throw new ServiceException(e.getMessage());
+            throw new ServiceException(e);
         }
     }
 
@@ -72,7 +72,7 @@ public class TrainCompositionService {
         try {
             trainCompositionRepo.deleteById(id);
         } catch (final Exception e) {
-            throw new ServiceException(e.getMessage());
+            throw new ServiceException(e);
         }
     }
 }

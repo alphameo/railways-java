@@ -163,7 +163,7 @@ public class CliApp {
                     System.out.printf("No such module: %s\n%s\n", firstArg, getHelp());
                 }
             } catch (final Exception e) {
-                System.out.println("Error: " + e.getCause());
+                System.out.println("Error: " + e.getMessage());
             }
         }
         scanner.close();

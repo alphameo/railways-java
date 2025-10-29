@@ -89,7 +89,8 @@ public class Train {
             this.schedule.add(index, scheduleEntry);
         } catch (Exception e) {
             throw new ValidationException(
-                    String.format("Cannot insert station on orderIndex=%s: %s", orderIndex, e.getMessage()));
+                    String.format("Cannot insert station on orderIndex=%s: %s", orderIndex, e.getMessage()),
+                    e);
         }
     }
 
@@ -98,7 +99,8 @@ public class Train {
             this.schedule.remove(orderIndex - 1);
         } catch (Exception e) {
             throw new ValidationException(
-                    String.format("Cannot remove station on orderIndex=%s: %s", orderIndex, e.getMessage()));
+                    String.format("Cannot remove station on orderIndex=%s: %s", orderIndex, e.getMessage()),
+            e);
         }
     }
 

@@ -23,7 +23,7 @@ public class StationService {
             final var valStation = StationMapper.toEntity(station);
             stationRepo.create(valStation);
         } catch (final RuntimeException e) {
-            throw new ServiceException(e.getMessage());
+            throw new ServiceException(e);
         }
     }
 
@@ -32,7 +32,7 @@ public class StationService {
         try {
             out = stationRepo.findById(id);
         } catch (final Exception e) {
-            throw new ServiceException(e.getMessage());
+            throw new ServiceException(e);
         }
         if (out.isEmpty()) {
             throw new EntityNotFoundException("Station", id.toString());
@@ -45,7 +45,7 @@ public class StationService {
         try {
             return StationMapper.toDtoList(stationRepo.findAll());
         } catch (final RuntimeException e) {
-            throw new ServiceException(e.getMessage());
+            throw new ServiceException(e);
         }
     }
 
@@ -53,7 +53,7 @@ public class StationService {
         try {
             stationRepo.deleteById(id);
         } catch (final RuntimeException e) {
-            throw new ServiceException(e.getMessage());
+            throw new ServiceException(e);
         }
     }
 }

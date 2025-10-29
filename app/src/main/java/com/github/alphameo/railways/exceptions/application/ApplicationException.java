@@ -8,6 +8,10 @@ public class ApplicationException extends RailwaysException {
         super(msg);
     }
 
+    public ApplicationException(Throwable cause) {
+        super(cause);
+    }
+
     public ApplicationException(String msg, Throwable cause) {
         super(msg, cause);
     }

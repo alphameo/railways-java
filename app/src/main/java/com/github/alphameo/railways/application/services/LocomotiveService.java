@@ -24,7 +24,7 @@ public class LocomotiveService {
             final var valLocomotive = LocomotiveMapper.toEntity(locomotive);
             repository.create(valLocomotive);
         } catch (final RuntimeException e) {
-            throw new ServiceException(e.getMessage());
+            throw new ServiceException(e);
         }
     }
 
@@ -33,7 +33,7 @@ public class LocomotiveService {
         try {
             out = repository.findById(id);
         } catch (final Exception e) {
-            throw new ServiceException(e.getMessage());
+            throw new ServiceException(e);
         }
         if (out.isEmpty()) {
             throw new EntityNotFoundException("Locomotive", id.toString());
@@ -48,7 +48,7 @@ public class LocomotiveService {
             final var valNumber = new MachineNumber(number);
             out = repository.findByNumber(valNumber);
         } catch (Exception e) {
-            throw new ServiceException(e.getMessage());
+            throw new ServiceException(e);
         }
         if (out.isEmpty()) {
             throw new EntityNotFoundException(String.format("Locomotive with number=%s not exists", number));
@@ -60,7 +60,7 @@ public class LocomotiveService {
         try {
             return LocomotiveMapper.toDtoList(repository.findAll());
         } catch (final RuntimeException e) {
-            throw new ServiceException(e.getMessage());
+            throw new ServiceException(e);
         }
     }
 
@@ -68,7 +68,7 @@ public class LocomotiveService {
         try {
             repository.deleteById(id);
         } catch (final RuntimeException e) {
-            throw new ServiceException(e.getMessage());
+            throw new ServiceException(e);
         }
     }
 }

@@ -43,7 +43,7 @@ public class TrainService {
             final var valTrain = new Train(null, number, trainCompoId, valSchedule);
             trainRepo.create(valTrain);
         } catch (RuntimeException e) {
-            throw new ServiceException(e.getMessage());
+            throw new ServiceException(e);
         }
     }
 
@@ -52,7 +52,7 @@ public class TrainService {
         try {
             out = trainRepo.findById(id);
         } catch (Exception e) {
-            throw new ServiceException(e.getMessage());
+            throw new ServiceException(e);
         }
         if (out.isEmpty()) {
             throw new EntityNotFoundException("Train", id.toString());
@@ -67,7 +67,7 @@ public class TrainService {
             final var valNumber = new MachineNumber(number);
             out = trainRepo.findByNumber(valNumber);
         } catch (Exception e) {
-            throw new ServiceException(e.getMessage());
+            throw new ServiceException(e);
         }
         if (out.isEmpty()) {
             throw new EntityNotFoundException(String.format("Train with number=%s not exists", number));
@@ -80,7 +80,7 @@ public class TrainService {
         try {
             return TrainMapper.toDtoList(trainRepo.findAll());
         } catch (RuntimeException e) {
-            throw new ServiceException(e.getMessage());
+            throw new ServiceException(e);
         }
     }
 
@@ -88,7 +88,7 @@ public class TrainService {
         try {
             trainRepo.deleteById(id);
         } catch (RuntimeException e) {
-            throw new ServiceException(e.getMessage());
+            throw new ServiceException(e);
         }
     }
 
@@ -104,7 +104,7 @@ public class TrainService {
             train.insertScheduleEntry(valScheduleEntry, orderIndex);
             trainRepo.update(train);
         } catch (Exception e) {
-            throw new ServiceException(e.getMessage());
+            throw new ServiceException(e);
         }
     }
 
@@ -118,7 +118,7 @@ public class TrainService {
             train.removeScheduleEntry(orderIndex);
             trainRepo.update(train);
         } catch (Exception e) {
-            throw new ServiceException(e.getMessage());
+            throw new ServiceException(e);
         }
     }
 
@@ -133,7 +133,7 @@ public class TrainService {
             train.updateSchedule(valSchedule);
             trainRepo.update(train);
         } catch (Exception e) {
-            throw new ServiceException(e.getMessage());
+            throw new ServiceException(e);
         }
     }
 }

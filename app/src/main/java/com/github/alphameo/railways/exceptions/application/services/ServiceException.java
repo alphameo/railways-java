@@ -8,6 +8,10 @@ public class ServiceException extends ApplicationException {
         super(msg);
     }
 
+    public ServiceException(Throwable cause) {
+        super(cause);
+    }
+
     public ServiceException(String msg, Throwable cause) {
         super(msg, cause);
     }
