@@ -122,7 +122,7 @@ public class CliApp {
             try {
                 System.out.print(Renderer.PROMPT);
                 final var inp = scanner.nextLine();
-                final String[] args = inp.split(" ");
+                final String[] args = inp.strip().split(" +");
                 final var firstArg = args[0];
                 if (quitMsgCmd.getName().equals(firstArg) || quitMsgCmd.getShortName().equals(firstArg)) {
                     quitMsgCmd.execute();
@@ -132,7 +132,7 @@ public class CliApp {
                     helpMsgCmd.execute();
                     continue;
                 }
-                if (firstArg.strip().equals("")) {
+                if (firstArg.equals("")) {
                     continue;
                 }
 
