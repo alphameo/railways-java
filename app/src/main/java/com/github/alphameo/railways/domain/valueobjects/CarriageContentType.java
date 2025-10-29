@@ -13,7 +13,7 @@ public enum CarriageContentType {
             case "passenger" -> PASSENGER;
             case "cargo" -> CARGO;
             case "none", "null" -> null;
-            default -> throw new IllegalArgumentException(String.format("Unknown carriage content type: $s", type));
+            default -> throw new IllegalArgumentException(String.format("Unknown carriage content type: %s", type));
         };
     }
 }
