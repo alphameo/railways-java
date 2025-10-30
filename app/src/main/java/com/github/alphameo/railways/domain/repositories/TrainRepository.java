@@ -1,0 +1,11 @@
+package com.github.alphameo.railways.domain.repositories;
+
+import java.util.Optional;
+
+import com.github.alphameo.railways.domain.entities.Train;
+import com.github.alphameo.railways.domain.valueobjects.MachineNumber;
+
+public interface TrainRepository extends Repository<Train, Long> {
+
+    public Optional<Train> findByNumber(MachineNumber number);
+}
