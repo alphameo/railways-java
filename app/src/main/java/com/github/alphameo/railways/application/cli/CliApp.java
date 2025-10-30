@@ -53,13 +53,13 @@ public class CliApp {
     private final MessageCommand helpMsgCmd = new MessageCommand("help", "h", "");
     private final MessageCommand quitMsgCmd = new MessageCommand("quit", "q", "App closed.");
 
-    public CliApp(ServiceProvider servFact) {
-        CarriageService carriageService = servFact.getCarriageService();
-        LineService lineService = servFact.getLineService();
-        LocomotiveService locomotiveService = servFact.getLocomotiveService();
-        StationService stationService = servFact.getStationService();
-        TrainService trainService = servFact.getTrainService();
-        TrainCompositionService trainCompositionService = servFact.getTrainCompositionService();
+    public CliApp(ServiceProvider serviceProvider) {
+        CarriageService carriageService = serviceProvider.getCarriageService();
+        LineService lineService = serviceProvider.getLineService();
+        LocomotiveService locomotiveService = serviceProvider.getLocomotiveService();
+        StationService stationService = serviceProvider.getStationService();
+        TrainService trainService = serviceProvider.getTrainService();
+        TrainCompositionService trainCompositionService = serviceProvider.getTrainCompositionService();
 
         final var carrMod = new CliModule("carriage");
         carrMod.addCmd(new RegisterCarriageCommand(carriageService));
