@@ -4,20 +4,15 @@ import com.github.alphameo.railways.infrastructure.Storage;
 
 import lombok.Getter;
 
+@Getter
 public class ServiceProvider {
 
-    @Getter
-    private CarriageService carriageService;
-    @Getter
-    private LineService lineService;
-    @Getter
-    private LocomotiveService locomotiveService;
-    @Getter
-    private StationService stationService;
-    @Getter
-    private TrainService trainService;
-    @Getter
-    private TrainCompositionService trainCompositionService;
+    private final CarriageService carriageService;
+    private final LineService lineService;
+    private final LocomotiveService locomotiveService;
+    private final StationService stationService;
+    private final TrainService trainService;
+    private final TrainCompositionService trainCompositionService;
 
     public ServiceProvider(Storage storageContainer) {
         this.carriageService = new CarriageService(storageContainer.getCarriageRepository());
