@@ -41,6 +41,10 @@ public class InMemoryStorage implements Storage {
         this.locomotiveRepository = new InMemoryLocomotiveRepository(locoStorage);
         this.stationRepository = new InMemoryStationRepository(stationStorage);
         this.trainRepository = new InMemoryTrainRepository(trainStorage, trainCompoStorage);
+        this.trainCompositionRepository = new InMemoryTrainCompositionRepository(
+                trainCompoStorage,
+                locoStorage,
+                carrStorage);
     }
 
     public static InMemoryStorage getInstance() {
