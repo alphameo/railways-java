@@ -12,22 +12,17 @@ import com.github.alphameo.railways.infrastructure.Storage;
 
 import lombok.Getter;
 
+@Getter
 public class InMemoryStorage implements Storage {
 
     private static InMemoryStorage INSTANCE;
 
-    @Getter
-    private InMemoryCarriageRepository carriageRepository;
-    @Getter
-    private InMemoryLineRepository lineRepository;
-    @Getter
-    private InMemoryLocomotiveRepository locomotiveRepository;
-    @Getter
-    private InMemoryStationRepository stationRepository;
-    @Getter
-    private InMemoryTrainRepository trainRepository;
-    @Getter
-    private InMemoryTrainCompositionRepository trainCompositionRepository;
+    private final InMemoryCarriageRepository carriageRepository;
+    private final InMemoryLineRepository lineRepository;
+    private final InMemoryLocomotiveRepository locomotiveRepository;
+    private final InMemoryStationRepository stationRepository;
+    private final InMemoryTrainRepository trainRepository;
+    private final InMemoryTrainCompositionRepository trainCompositionRepository;
 
     private InMemoryStorage() {
         final var carrStorage = new HashMap<Long, Carriage>();
