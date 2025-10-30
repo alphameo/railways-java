@@ -49,6 +49,13 @@ import lombok.NonNull;
 
 public class CliApp {
 
+    private static final String CARRIAGE_MODULE_NAME = "carriage";
+    private static final String LINE_MODULE_NAME = "line";
+    private static final String LOCOMOTIVE_MODULE_NAME = "locomotive";
+    private static final String STATION_MODULE_NAME = "station";
+    private static final String TRAIN_MODULE_NAME = "train";
+    private static final String TRAIN_COMPOSITION_MODULE_NAME = "traincomposition";
+
     private final List<CliModule> modules = new ArrayList<>();
     private final MessageCommand helpMsgCmd = new MessageCommand("help", "h", "");
     private final MessageCommand quitMsgCmd = new MessageCommand("quit", "q", "App closed.");
@@ -61,34 +68,34 @@ public class CliApp {
         TrainService trainService = serviceProvider.getTrainService();
         TrainCompositionService trainCompositionService = serviceProvider.getTrainCompositionService();
 
-        final var carrMod = new CliModule("carriage");
+        final var carrMod = new CliModule(CARRIAGE_MODULE_NAME);
         carrMod.addCmd(new RegisterCarriageCommand(carriageService));
         carrMod.addCmd(new ListCarriagesCommand(carriageService));
         carrMod.addCmd(new FindCarriageByIdCommand(carriageService));
         carrMod.addCmd(new FindCarriageByNumberCommand(carriageService));
         carrMod.addCmd(new UnregisterCarriageCommand(carriageService));
 
-        final var lineMod = new CliModule("line");
+        final var lineMod = new CliModule(LINE_MODULE_NAME);
         lineMod.addCmd(new DeclareLineCommand(lineService));
         lineMod.addCmd(new FindLineByIdCommand(lineService));
         lineMod.addCmd(new ListLinesCommand(lineService));
         lineMod.addCmd(new DisbandLineCommand(lineService));
         lineMod.addCmd(new ListLineStationsCommand(lineService));
 
-        final var locoMod = new CliModule("locomotive");
+        final var locoMod = new CliModule(LOCOMOTIVE_MODULE_NAME);
         locoMod.addCmd(new RegisterLocomotiveCommand(locomotiveService));
         locoMod.addCmd(new ListLocomotivesCommand(locomotiveService));
         locoMod.addCmd(new FindLocomotiveByIdCommand(locomotiveService));
         locoMod.addCmd(new FindLocomotiveByNumberCommand(locomotiveService));
         locoMod.addCmd(new UnregisterLocomotiveCommand(locomotiveService));
 
-        final var stationMod = new CliModule("station");
+        final var stationMod = new CliModule(STATION_MODULE_NAME);
         stationMod.addCmd(new RegisterStationCommand(stationService));
         stationMod.addCmd(new ListStationCommand(stationService));
         stationMod.addCmd(new FindStationByIdCommand(stationService));
         stationMod.addCmd(new UnregisterStationCommand(stationService));
 
-        final var trainMod = new CliModule("train");
+        final var trainMod = new CliModule(TRAIN_MODULE_NAME);
         trainMod.addCmd(new RegisterTrainCommand(trainService));
         trainMod.addCmd(new ListTrainsCommand(trainService));
         trainMod.addCmd(new FindTrainByIdCommand(trainService));
@@ -97,7 +104,7 @@ public class CliApp {
         trainMod.addCmd(new InsertTrainScheduleEntryCommand(trainService));
         trainMod.addCmd(new RemoveTrainScheduleEntryCommand(trainService));
 
-        final var trainCompoMod = new CliModule("traincomposition");
+        final var trainCompoMod = new CliModule(TRAIN_COMPOSITION_MODULE_NAME);
         trainCompoMod.addCmd(new AssembleLocomotiveCommand(trainCompositionService));
         trainCompoMod.addCmd(new ListTrainCompositionsCommand(trainCompositionService));
         trainCompoMod.addCmd(new FindTrainCompositionByIdCommand(trainCompositionService));
