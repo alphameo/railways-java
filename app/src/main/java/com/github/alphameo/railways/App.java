@@ -6,10 +6,10 @@ import com.github.alphameo.railways.infrastructure.inmemory.InMemoryStorage;
 
 public class App {
     public static void main(String[] args) {
-        final var inMemStorage = InMemoryStorage.getInstance();
-        ServiceProvider servFact = new ServiceProvider(inMemStorage);
+        final var inMemoryStorage = InMemoryStorage.getInstance();
+        ServiceProvider serviceProvider = new ServiceProvider(inMemoryStorage);
 
-        final var cliApp = new CliApp(servFact);
+        final var cliApp = new CliApp(serviceProvider);
         cliApp.run();
     }
 }
