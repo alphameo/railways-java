@@ -12,6 +12,7 @@ import com.github.alphameo.railways.domain.entities.TrainComposition;
 import com.github.alphameo.railways.domain.repositories.CarriageRepository;
 import com.github.alphameo.railways.domain.repositories.LocomotiveRepository;
 import com.github.alphameo.railways.domain.repositories.TrainCompositionRepository;
+import com.github.alphameo.railways.domain.valueobjects.Id;
 import com.github.alphameo.railways.exceptions.application.services.EntityNotFoundException;
 import com.github.alphameo.railways.exceptions.application.services.ServiceException;
 
@@ -34,7 +35,7 @@ public class DefaultTrainCompositionService implements TrainCompositionService {
         if (loc.isEmpty()) {
             throw new EntityNotFoundException("Locomotive", locomotiveId);
         }
-        for (final long id : carriageIds) {
+        for (final var id : carriageIds) {
             final Optional<Carriage> car = carriageRepo.findById(id);
             if (car.isEmpty()) {
                 throw new EntityNotFoundException("Carriage", id);
@@ -49,7 +50,7 @@ public class DefaultTrainCompositionService implements TrainCompositionService {
     }
 
     @Override
-    public TrainCompositionDto findById(@NonNull final Long id) {
+    public TrainCompositionDto findById(@NonNull final Id id) {
         final Optional<TrainComposition> out;
         try {
             out = trainCompositionRepo.findById(id);
@@ -73,7 +74,7 @@ public class DefaultTrainCompositionService implements TrainCompositionService {
     }
 
     @Override
-    public void disassembleTrainComposition(@NonNull final Long id) {
+    public void disassembleTrainComposition(@NonNull final Id id) {
         try {
             trainCompositionRepo.deleteById(id);
         } catch (final Exception e) {

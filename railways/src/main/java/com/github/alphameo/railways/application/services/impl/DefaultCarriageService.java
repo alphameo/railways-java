@@ -8,6 +8,7 @@ import com.github.alphameo.railways.application.mapper.CarriageMapper;
 import com.github.alphameo.railways.application.services.CarriageService;
 import com.github.alphameo.railways.domain.entities.Carriage;
 import com.github.alphameo.railways.domain.repositories.CarriageRepository;
+import com.github.alphameo.railways.domain.valueobjects.Id;
 import com.github.alphameo.railways.domain.valueobjects.MachineNumber;
 import com.github.alphameo.railways.exceptions.application.services.EntityNotFoundException;
 import com.github.alphameo.railways.exceptions.application.services.ServiceException;
@@ -31,7 +32,7 @@ public class DefaultCarriageService implements CarriageService {
     }
 
     @Override
-    public CarriageDto findById(@NonNull final Long id) {
+    public CarriageDto findById(@NonNull final Id id) {
         final Optional<Carriage> carr;
         try {
             carr = repository.findById(id);
@@ -72,7 +73,7 @@ public class DefaultCarriageService implements CarriageService {
     }
 
     @Override
-    public void unregister(@NonNull final Long id) {
+    public void unregister(@NonNull final Id id) {
         try {
             repository.deleteById(id);
         } catch (final RuntimeException e) {

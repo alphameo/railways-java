@@ -8,6 +8,7 @@ import com.github.alphameo.railways.application.mapper.StationMapper;
 import com.github.alphameo.railways.application.services.StationService;
 import com.github.alphameo.railways.domain.entities.Station;
 import com.github.alphameo.railways.domain.repositories.StationRepository;
+import com.github.alphameo.railways.domain.valueobjects.Id;
 import com.github.alphameo.railways.exceptions.application.services.EntityNotFoundException;
 import com.github.alphameo.railways.exceptions.application.services.ServiceException;
 
@@ -30,7 +31,7 @@ public class DefaultStationService implements StationService {
     }
 
     @Override
-    public StationDto findById(@NonNull final Long id) {
+    public StationDto findById(@NonNull final Id id) {
         final Optional<Station> out;
         try {
             out = stationRepo.findById(id);
@@ -54,7 +55,7 @@ public class DefaultStationService implements StationService {
     }
 
     @Override
-    public void unregister(final Long id) {
+    public void unregister(final Id id) {
         try {
             stationRepo.deleteById(id);
         } catch (final RuntimeException e) {

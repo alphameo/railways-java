@@ -13,6 +13,7 @@ import com.github.alphameo.railways.domain.entities.Line;
 import com.github.alphameo.railways.domain.entities.Station;
 import com.github.alphameo.railways.domain.repositories.LineRepository;
 import com.github.alphameo.railways.domain.repositories.StationRepository;
+import com.github.alphameo.railways.domain.valueobjects.Id;
 import com.github.alphameo.railways.exceptions.application.services.EntityNotFoundException;
 import com.github.alphameo.railways.exceptions.application.services.ServiceException;
 
@@ -36,11 +37,11 @@ public class DefaultLineService implements LineService {
     }
 
     @Override
-    public List<StationDto> listLineStations(@NonNull final Long lineId) {
+    public List<StationDto> listLineStations(@NonNull final Id lineId) {
         try {
             final List<Station> stations = new ArrayList<>();
             final var stationIds = lineRepo.findById(lineId).get().getStationIdOrder();
-            for (final long id : stationIds) {
+            for (final var id : stationIds) {
                 stations.add(stationRepo.findById(id).get());
             }
             return StationMapper.toDtoList(stations);
@@ -50,7 +51,7 @@ public class DefaultLineService implements LineService {
     }
 
     @Override
-    public LineDto findById(@NonNull final Long id) {
+    public LineDto findById(@NonNull final Id id) {
         final Optional<Line> line;
         try {
             line = lineRepo.findById(id);
@@ -74,7 +75,7 @@ public class DefaultLineService implements LineService {
     }
 
     @Override
-    public void disbandLine(@NonNull final Long lineId) {
+    public void disbandLine(@NonNull final Id lineId) {
         try {
             lineRepo.deleteById(lineId);
         } catch (final Exception e) {

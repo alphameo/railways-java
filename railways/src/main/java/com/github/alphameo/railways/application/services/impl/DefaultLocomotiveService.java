@@ -8,6 +8,7 @@ import com.github.alphameo.railways.application.mapper.LocomotiveMapper;
 import com.github.alphameo.railways.application.services.LocomotiveService;
 import com.github.alphameo.railways.domain.entities.Locomotive;
 import com.github.alphameo.railways.domain.repositories.LocomotiveRepository;
+import com.github.alphameo.railways.domain.valueobjects.Id;
 import com.github.alphameo.railways.domain.valueobjects.MachineNumber;
 import com.github.alphameo.railways.exceptions.application.services.EntityNotFoundException;
 import com.github.alphameo.railways.exceptions.application.services.ServiceException;
@@ -31,7 +32,7 @@ public class DefaultLocomotiveService implements LocomotiveService {
     }
 
     @Override
-    public LocomotiveDto findById(@NonNull final Long id) {
+    public LocomotiveDto findById(@NonNull final Id id) {
         final Optional<Locomotive> out;
         try {
             out = repository.findById(id);
@@ -71,7 +72,7 @@ public class DefaultLocomotiveService implements LocomotiveService {
     }
 
     @Override
-    public void unregister(@NonNull final Long id) {
+    public void unregister(@NonNull final Id id) {
         try {
             repository.deleteById(id);
         } catch (final RuntimeException e) {
