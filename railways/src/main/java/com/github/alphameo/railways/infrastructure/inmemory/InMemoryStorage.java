@@ -8,6 +8,7 @@ import com.github.alphameo.railways.domain.entities.Locomotive;
 import com.github.alphameo.railways.domain.entities.Station;
 import com.github.alphameo.railways.domain.entities.Train;
 import com.github.alphameo.railways.domain.entities.TrainComposition;
+import com.github.alphameo.railways.domain.valueobjects.Id;
 import com.github.alphameo.railways.infrastructure.Storage;
 
 import lombok.Getter;
@@ -25,12 +26,12 @@ public class InMemoryStorage implements Storage {
     private final InMemoryTrainCompositionRepository trainCompositionRepository;
 
     private InMemoryStorage() {
-        final var carrStorage = new HashMap<Long, Carriage>();
-        final var lineStorage = new HashMap<Long, Line>();
-        final var locoStorage = new HashMap<Long, Locomotive>();
-        final var stationStorage = new HashMap<Long, Station>();
-        final var trainStorage = new HashMap<Long, Train>();
-        final var trainCompoStorage = new HashMap<Long, TrainComposition>();
+        final var carrStorage = new HashMap<Id, Carriage>();
+        final var lineStorage = new HashMap<Id, Line>();
+        final var locoStorage = new HashMap<Id, Locomotive>();
+        final var stationStorage = new HashMap<Id, Station>();
+        final var trainStorage = new HashMap<Id, Train>();
+        final var trainCompoStorage = new HashMap<Id, TrainComposition>();
         this.carriageRepository = new InMemoryCarriageRepository(carrStorage);
         this.lineRepository = new InMemoryLineRepository(lineStorage, stationStorage);
         this.locomotiveRepository = new InMemoryLocomotiveRepository(locoStorage);

@@ -8,21 +8,20 @@ import java.util.Optional;
 
 import com.github.alphameo.railways.domain.entities.Locomotive;
 import com.github.alphameo.railways.domain.repositories.LocomotiveRepository;
+import com.github.alphameo.railways.domain.valueobjects.Id;
 import com.github.alphameo.railways.domain.valueobjects.MachineNumber;
 import com.github.alphameo.railways.exceptions.infrastructure.inmemory.InMemoryEntityAlreadyExistsException;
 import com.github.alphameo.railways.exceptions.infrastructure.inmemory.InMemoryEntityNotExistsException;
-import com.github.alphameo.railways.exceptions.infrastructure.inmemory.InMemoryException;
 import com.github.alphameo.railways.exceptions.infrastructure.inmemory.InMemoryUniqueCounstraintException;
 
 import lombok.NonNull;
 
 public class InMemoryLocomotiveRepository implements LocomotiveRepository {
 
-    private final Map<Long, Locomotive> storage;
-    private final HashMap<MachineNumber, Long> uniqueNumberIds = new HashMap<>();
-    private Long idGenerator = 0L;
+    private final Map<Id, Locomotive> storage;
+    private final HashMap<MachineNumber, Id> uniqueNumberIds = new HashMap<>();
 
-    public InMemoryLocomotiveRepository(@NonNull final Map<Long, Locomotive> storage) {
+    public InMemoryLocomotiveRepository(@NonNull final Map<Id, Locomotive> storage) {
         this.storage = storage;
     }
 
@@ -33,22 +32,17 @@ public class InMemoryLocomotiveRepository implements LocomotiveRepository {
             throw new InMemoryUniqueCounstraintException("Locomotive.number");
         }
 
-        Long id = locomotive.getId();
-        if (id == null) {
-            id = ++idGenerator;
-        } else {
-            if (storage.containsKey(id)) {
-                throw new InMemoryEntityAlreadyExistsException("Locomotive", id);
-            }
+        final var id = locomotive.getId();
+        if (storage.containsKey(id)) {
+            throw new InMemoryEntityAlreadyExistsException("Locomotive", id);
         }
 
-        final var newLocomotive = createLocomotive(id, locomotive);
         uniqueNumberIds.put(number, id);
-        storage.put(id, newLocomotive);
+        storage.put(id, locomotive);
     }
 
     @Override
-    public Optional<Locomotive> findById(@NonNull final Long id) {
+    public Optional<Locomotive> findById(@NonNull final Id id) {
         return Optional.ofNullable(storage.get(id));
     }
 
@@ -60,9 +54,6 @@ public class InMemoryLocomotiveRepository implements LocomotiveRepository {
     @Override
     public void update(@NonNull final Locomotive locomotive) {
         final var id = locomotive.getId();
-        if (id == null) {
-            throw new InMemoryException("id cannot be null");
-        }
         if (!storage.containsKey(id)) {
             throw new InMemoryEntityNotExistsException(locomotive.getClass().toString(), id);
         }
@@ -76,12 +67,11 @@ public class InMemoryLocomotiveRepository implements LocomotiveRepository {
             uniqueNumberIds.put(number, locomotive.getId());
         }
 
-        final var newLocomotive = createLocomotive(id, locomotive);
-        storage.put(id, newLocomotive);
+        storage.put(id, locomotive);
     }
 
     @Override
-    public void deleteById(@NonNull final Long id) {
+    public void deleteById(@NonNull final Id id) {
         final var delCandidate = storage.remove(id);
         if (delCandidate != null) {
             uniqueNumberIds.remove(delCandidate.getNumber());
@@ -93,12 +83,5 @@ public class InMemoryLocomotiveRepository implements LocomotiveRepository {
         final var id = uniqueNumberIds.get(number);
         final var locomotive = storage.get(id);
         return Optional.ofNullable(locomotive);
-    }
-
-    private static Locomotive createLocomotive(long id, Locomotive l) {
-        return new Locomotive(
-                id,
-                l.getNumber(),
-                l.getModel());
     }
 }

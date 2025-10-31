@@ -8,6 +8,7 @@ import java.util.Optional;
 import com.github.alphameo.railways.domain.entities.Line;
 import com.github.alphameo.railways.domain.entities.Station;
 import com.github.alphameo.railways.domain.repositories.LineRepository;
+import com.github.alphameo.railways.domain.valueobjects.Id;
 import com.github.alphameo.railways.exceptions.infrastructure.inmemory.InMemoryEntityAlreadyExistsException;
 import com.github.alphameo.railways.exceptions.infrastructure.inmemory.InMemoryEntityNotExistsException;
 
@@ -15,12 +16,11 @@ import lombok.NonNull;
 
 public class InMemoryLineRepository implements LineRepository {
 
-    private final Map<Long, Line> storage;
-    private final Map<Long, Station> stationStorage;
-    private Long idGenerator = 0L;
+    private final Map<Id, Line> storage;
+    private final Map<Id, Station> stationStorage;
 
-    public InMemoryLineRepository(@NonNull final Map<Long, Line> storage,
-            @NonNull final Map<Long, Station> stationStorage) {
+    public InMemoryLineRepository(@NonNull final Map<Id, Line> storage,
+            @NonNull final Map<Id, Station> stationStorage) {
         this.storage = storage;
         this.stationStorage = stationStorage;
     }
@@ -29,21 +29,16 @@ public class InMemoryLineRepository implements LineRepository {
     public void create(@NonNull final Line line) {
         validate(line);
 
-        Long id = line.getId();
-        if (line.getId() == null) {
-            id = ++idGenerator;
-        } else {
-            if (storage.containsKey(id)) {
-                throw new InMemoryEntityAlreadyExistsException("Line", id);
-            }
+        final var id = line.getId();
+        if (storage.containsKey(id)) {
+            throw new InMemoryEntityAlreadyExistsException("Line", id);
         }
 
-        final var newLine = createLine(id, line);
-        storage.put(id, newLine);
+        storage.put(id, line);
     }
 
     @Override
-    public Optional<Line> findById(@NonNull final Long id) {
+    public Optional<Line> findById(@NonNull final Id id) {
         return Optional.ofNullable(storage.get(id));
     }
 
@@ -60,28 +55,20 @@ public class InMemoryLineRepository implements LineRepository {
             throw new InMemoryEntityNotExistsException(line.getClass().toString(), id);
         }
 
-        final var newLine = createLine(id, line);
-        storage.put(id, newLine);
+        storage.put(id, line);
     }
 
     @Override
-    public void deleteById(@NonNull final Long id) {
+    public void deleteById(@NonNull final Id id) {
         storage.remove(id);
     }
 
     private void validate(final Line line) {
         final var stationIds = line.getStationIdOrder();
-        for (final Long id : stationIds) {
+        for (final Id id : stationIds) {
             if (stationStorage.get(id) == null) {
                 throw new InMemoryEntityNotExistsException("Station", id);
             }
         }
-    }
-
-    private static Line createLine(final long id, final Line l) {
-        return new Line(
-                id,
-                l.getName(),
-                l.getStationIdOrder());
     }
 }

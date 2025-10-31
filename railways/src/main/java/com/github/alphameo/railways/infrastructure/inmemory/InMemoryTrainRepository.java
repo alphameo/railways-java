@@ -9,6 +9,7 @@ import java.util.Optional;
 import com.github.alphameo.railways.domain.entities.Train;
 import com.github.alphameo.railways.domain.entities.TrainComposition;
 import com.github.alphameo.railways.domain.repositories.TrainRepository;
+import com.github.alphameo.railways.domain.valueobjects.Id;
 import com.github.alphameo.railways.domain.valueobjects.MachineNumber;
 import com.github.alphameo.railways.exceptions.application.services.EntityNotFoundException;
 import com.github.alphameo.railways.exceptions.infrastructure.inmemory.InMemoryEntityAlreadyExistsException;
@@ -20,13 +21,13 @@ import lombok.NonNull;
 
 public class InMemoryTrainRepository implements TrainRepository {
 
-    private final Map<Long, Train> storage;
-    private final HashMap<MachineNumber, Long> uniqueNumberIds = new HashMap<>();
-    private final Map<Long, TrainComposition> trainCompoStorage;
-    private Long idGenerator = 0L;
+    private final Map<Id, Train> storage;
+    private final HashMap<MachineNumber, Id> uniqueNumberIds = new HashMap<>();
+    private final Map<Id, TrainComposition> trainCompoStorage;
 
-    public InMemoryTrainRepository(@NonNull final Map<Long, Train> storage,
-            @NonNull final Map<Long, TrainComposition> trainCompositionStorage) {
+    public InMemoryTrainRepository(
+            @NonNull final Map<Id, Train> storage,
+            @NonNull final Map<Id, TrainComposition> trainCompositionStorage) {
         this.storage = storage;
         this.trainCompoStorage = trainCompositionStorage;
     }
@@ -39,22 +40,17 @@ public class InMemoryTrainRepository implements TrainRepository {
             throw new InMemoryUniqueCounstraintException("Train.number");
         }
 
-        Long id = train.getId();
-        if (train.getId() == null) {
-            id = ++idGenerator;
-        } else {
-            if (storage.containsKey(id)) {
-                throw new InMemoryEntityAlreadyExistsException("Train", id);
-            }
+        var id = train.getId();
+        if (storage.containsKey(id)) {
+            throw new InMemoryEntityAlreadyExistsException("Train", id);
         }
 
-        final var newTrain = createTrain(id, train);
-        uniqueNumberIds.put(newTrain.getNumber(), id);
-        storage.put(id, newTrain);
+        uniqueNumberIds.put(train.getNumber(), id);
+        storage.put(id, train);
     }
 
     @Override
-    public Optional<Train> findById(@NonNull final Long id) {
+    public Optional<Train> findById(@NonNull final Id id) {
         return Optional.ofNullable(storage.get(id));
     }
 
@@ -84,12 +80,11 @@ public class InMemoryTrainRepository implements TrainRepository {
             uniqueNumberIds.put(number, id);
         }
 
-        final var newTrain = createTrain(id, train);
-        storage.put(id, newTrain);
+        storage.put(id, train);
     }
 
     @Override
-    public void deleteById(final Long id) {
+    public void deleteById(@NonNull final Id id) {
         final var delCandidate = storage.remove(id);
         if (delCandidate != null) {
             uniqueNumberIds.remove(delCandidate.getNumber());
@@ -108,13 +103,5 @@ public class InMemoryTrainRepository implements TrainRepository {
         if (trainCompoStorage.get(trainCompoId) == null) {
             throw new EntityNotFoundException("TrainComposition", trainCompoId);
         }
-    }
-
-    private static Train createTrain(final long id, final Train t) {
-        return new Train(
-                id,
-                t.getNumber(),
-                t.getTrainCompositionId(),
-                t.getSchedule());
     }
 }
