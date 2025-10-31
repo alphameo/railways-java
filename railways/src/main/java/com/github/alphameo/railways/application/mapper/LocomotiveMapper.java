@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.github.alphameo.railways.application.dto.LocomotiveDto;
 import com.github.alphameo.railways.domain.entities.Locomotive;
+import com.github.alphameo.railways.domain.valueobjects.Id;
 import com.github.alphameo.railways.domain.valueobjects.LocomotiveModel;
 import com.github.alphameo.railways.domain.valueobjects.MachineNumber;
 
@@ -30,7 +31,10 @@ public class LocomotiveMapper {
     }
 
     public static Locomotive toEntity(final LocomotiveDto locomotiveDto) {
-        final var id = locomotiveDto.id();
+        var id = locomotiveDto.id();
+        if (id == null) {
+            id = new Id();
+        }
         final var number = new MachineNumber(locomotiveDto.number());
         final var model = new LocomotiveModel(locomotiveDto.model());
         return new Locomotive(id, number, model);

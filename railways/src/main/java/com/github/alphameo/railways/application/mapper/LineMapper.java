@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.github.alphameo.railways.application.dto.LineDto;
 import com.github.alphameo.railways.domain.entities.Line;
+import com.github.alphameo.railways.domain.valueobjects.Id;
 import com.github.alphameo.railways.domain.valueobjects.ObjectName;
 
 public class LineMapper {
@@ -29,7 +30,10 @@ public class LineMapper {
     }
 
     public static Line toEntity(final LineDto lineDto) {
-        final var id = lineDto.id();
+        var id = lineDto.id();
+        if (id == null) {
+            id = new Id();
+        }
         final var name = new ObjectName(lineDto.name());
         final var stationIds = lineDto.stationIdOrder();
         return new Line(id, name, stationIds);

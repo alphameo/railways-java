@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.github.alphameo.railways.application.dto.TrainDto;
 import com.github.alphameo.railways.domain.entities.Train;
+import com.github.alphameo.railways.domain.valueobjects.Id;
 import com.github.alphameo.railways.domain.valueobjects.MachineNumber;
 
 public class TrainMapper {
@@ -31,7 +32,10 @@ public class TrainMapper {
     }
 
     public static Train toEntity(final TrainDto trainDto) {
-        final var id = trainDto.id();
+        var id = trainDto.id();
+        if (id == null) {
+            id = new Id();
+        }
         final var number = new MachineNumber(trainDto.number());
         final var trainCompositionId = trainDto.trainCompositionId();
         final var scheduleDto = trainDto.schedule();

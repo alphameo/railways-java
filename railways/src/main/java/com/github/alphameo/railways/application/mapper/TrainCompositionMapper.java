@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.github.alphameo.railways.application.dto.TrainCompositionDto;
 import com.github.alphameo.railways.domain.entities.TrainComposition;
+import com.github.alphameo.railways.domain.valueobjects.Id;
 
 public class TrainCompositionMapper {
 
@@ -27,7 +28,10 @@ public class TrainCompositionMapper {
     }
 
     public static TrainComposition toEntity(final TrainCompositionDto trainCompositionDto) {
-        final var id = trainCompositionDto.id();
+        var id = trainCompositionDto.id();
+        if (id == null) {
+            id = new Id();
+        }
         final var locomotiveId = trainCompositionDto.locomotiveId();
         final var carriageIds = trainCompositionDto.carriageIds();
         return new TrainComposition(id, locomotiveId, carriageIds);

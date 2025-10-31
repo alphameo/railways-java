@@ -6,6 +6,7 @@ import java.util.List;
 import com.github.alphameo.railways.application.dto.CarriageDto;
 import com.github.alphameo.railways.domain.entities.Carriage;
 import com.github.alphameo.railways.domain.valueobjects.CarriageContentType;
+import com.github.alphameo.railways.domain.valueobjects.Id;
 import com.github.alphameo.railways.domain.valueobjects.MachineNumber;
 
 public class CarriageMapper {
@@ -37,7 +38,10 @@ public class CarriageMapper {
     }
 
     public static Carriage toEntity(final CarriageDto carriageDto) {
-        final var id = carriageDto.id();
+        var id = carriageDto.id();
+        if (id == null) {
+            id = new Id();
+        }
         final var number = new MachineNumber(carriageDto.number());
         final var contentType = CarriageContentType.create(carriageDto.contentType());
         final var capacity = carriageDto.capacity();

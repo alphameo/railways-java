@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.github.alphameo.railways.application.dto.StationDto;
 import com.github.alphameo.railways.domain.entities.Station;
+import com.github.alphameo.railways.domain.valueobjects.Id;
 import com.github.alphameo.railways.domain.valueobjects.ObjectName;
 import com.github.alphameo.railways.domain.valueobjects.StationLocation;
 
@@ -29,7 +30,10 @@ public class StationMapper {
     }
 
     public static Station toEntity(final StationDto stationDto) {
-        final var id = stationDto.id();
+        var id = stationDto.id();
+        if (id == null) {
+            id = new Id();
+        }
         final var name = new ObjectName(stationDto.name());
         final var location = new StationLocation(stationDto.location());
         return new Station(id, name, location);

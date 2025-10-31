@@ -1,4 +1,6 @@
 package com.github.alphameo.railways.application.dto;
 
-public record StationDto(Long id, String name, String location) {
+import com.github.alphameo.railways.domain.valueobjects.Id;
+
+public record StationDto(Id id, String name, String location) {
 }

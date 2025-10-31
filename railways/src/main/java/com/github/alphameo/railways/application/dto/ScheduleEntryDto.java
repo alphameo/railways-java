@@ -2,5 +2,7 @@ package com.github.alphameo.railways.application.dto;
 
 import java.time.LocalDateTime;
 
-public record ScheduleEntryDto(Long stationId, LocalDateTime arrivalTime, LocalDateTime departureTime) {
+import com.github.alphameo.railways.domain.valueobjects.Id;
+
+public record ScheduleEntryDto(Id stationId, LocalDateTime arrivalTime, LocalDateTime departureTime) {
 }

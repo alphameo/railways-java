@@ -2,5 +2,7 @@ package com.github.alphameo.railways.application.dto;
 
 import java.util.List;
 
-public record LineDto(Long id, String name, List<Long> stationIdOrder) {
+import com.github.alphameo.railways.domain.valueobjects.Id;
+
+public record LineDto(Id id, String name, List<Id> stationIdOrder) {
 }
