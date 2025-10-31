@@ -22,7 +22,7 @@ public class StationLocation {
 
         if (trimmedValue.length() > MAX_LOCATION_NAME_LENGTH) {
             throw new ValidationException(
-                    String.format("StationLocation.value length should be <= %s", MAX_LOCATION_NAME_LENGTH));
+                    String.format("StationLocation.value length must be <= %s", MAX_LOCATION_NAME_LENGTH));
         }
 
         this.value = trimmedValue;

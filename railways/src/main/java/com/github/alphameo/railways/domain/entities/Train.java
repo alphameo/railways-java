@@ -119,7 +119,7 @@ public class Train {
             return;
         }
         if (past.getArrivalTime().isBefore(prev.getDepartureTime())) {
-            throw new ValidationException("Previous departureTime should be <= past arrivalTime");
+            throw new ValidationException("Previous departureTime must be <= past arrivalTime");
         }
     }
 }

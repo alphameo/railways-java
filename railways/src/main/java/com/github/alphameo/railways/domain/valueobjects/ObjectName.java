@@ -20,7 +20,7 @@ public class ObjectName {
         }
 
         if (trimmedValue.length() > MAX_OBJECT_NAME_LENGTH) {
-            throw new ValidationException(String.format("ObjectName.value length should be <= %s", MAX_OBJECT_NAME_LENGTH));
+            throw new ValidationException(String.format("ObjectName.value length must be <= %s", MAX_OBJECT_NAME_LENGTH));
         }
 
         this.value = trimmedValue;

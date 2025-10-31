@@ -21,7 +21,7 @@ public class MachineNumber {
 
         if (trimmedValue.length() > MAX_NUMBER_LENGTH) {
             throw new ValidationException(
-                    String.format("MachineNumber.value length should be <= %s", MAX_NUMBER_LENGTH));
+                    String.format("MachineNumber.value length must be <= %s", MAX_NUMBER_LENGTH));
         }
 
         this.value = trimmedValue;
