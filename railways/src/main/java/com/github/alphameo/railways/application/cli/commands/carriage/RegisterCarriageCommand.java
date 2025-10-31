@@ -42,7 +42,7 @@ public class RegisterCarriageCommand implements CliCommand {
     @Override
     public void setArgs(@NonNull final String[] args) {
         if (args.length < ARGS_MIN_COUNT || args.length > ARGS_MAX_COUNT) {
-            throw new CliArgsCountException(String.format("inside [%n;%n]", ARGS_MIN_COUNT, ARGS_MAX_COUNT));
+            throw new CliArgsCountException(String.format("inside [%s;%s]", ARGS_MIN_COUNT, ARGS_MAX_COUNT));
         }
         this.args = args;
     }
