@@ -2,6 +2,7 @@ package com.github.alphameo.railways.domain.valueobjects;
 
 import com.github.alphameo.railways.exceptions.domain.ValidationException;
 
+import lombok.NonNull;
 import lombok.Value;
 
 @Value
@@ -11,26 +12,18 @@ public class MachineNumber {
 
     private String value;
 
-    public MachineNumber(final String number) {
-        if (number == null) {
-            throw new ValidationException("MachineNumber.value cannot be null");
-        }
+    public MachineNumber(@NonNull final String value) {
+        var trimmedValue = value.trim();
 
-        var trimmedNumber = number.trim();
-
-        if (trimmedNumber.isBlank()) {
+        if (trimmedValue.isBlank()) {
             throw new ValidationException("MachineNumber.value cannot be blank");
         }
 
-        if (trimmedNumber.length() > MAX_NUMBER_LENGTH) {
+        if (trimmedValue.length() > MAX_NUMBER_LENGTH) {
             throw new ValidationException(
                     String.format("MachineNumber.value length should be <= %s", MAX_NUMBER_LENGTH));
         }
 
-        this.value = trimmedNumber;
-    }
-
-    public MachineNumber(final MachineNumber number) {
-        this.value = number.getValue();
+        this.value = trimmedValue;
     }
 }

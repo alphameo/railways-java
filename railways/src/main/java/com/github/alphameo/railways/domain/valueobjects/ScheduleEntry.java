@@ -31,10 +31,10 @@ public class ScheduleEntry {
         }
         if (arrT == null) {
             throw new ValidationException(
-                    "Schedule.arrival_time should be set if Schedule.departure_time already been set");
+                    "Schedule.arrivalTime should be set if Schedule.departureTime already been set");
         }
         if (arrT.isAfter(depT)) {
-            throw new ValidationException("Schedule.arrival_time should be <= Schedule.departure_time");
+            throw new ValidationException("Schedule.arrivalTime should be <= Schedule.departureTime");
         }
     }
 }

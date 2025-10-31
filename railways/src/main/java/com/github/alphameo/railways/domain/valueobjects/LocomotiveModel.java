@@ -2,35 +2,28 @@ package com.github.alphameo.railways.domain.valueobjects;
 
 import com.github.alphameo.railways.exceptions.domain.ValidationException;
 
+import lombok.NonNull;
 import lombok.Value;
 
 @Value
 public class LocomotiveModel {
 
-    private static int MAX_NUMBER_LENGTH = 50;
+    private static int MAX_MODEL_LENGTH = 50;
 
     private String value;
 
-    public LocomotiveModel(final String model) {
-        if (model == null) {
-            throw new ValidationException("LocomotiveModel.value cannot be null");
-        }
+    public LocomotiveModel(@NonNull final String value) {
+        var trimmedValue = value.trim();
 
-        var trimmedNumber = model.trim();
-
-        if (trimmedNumber.isBlank()) {
+        if (trimmedValue.isBlank()) {
             throw new ValidationException("LocomotiveModel.value cannot be blank");
         }
 
-        if (trimmedNumber.length() > MAX_NUMBER_LENGTH) {
+        if (trimmedValue.length() > MAX_MODEL_LENGTH) {
             throw new ValidationException(
-                    String.format("LocomotiveModel.value length should be <= %s", MAX_NUMBER_LENGTH));
+                    String.format("LocomotiveModel.value length should be <= %s", MAX_MODEL_LENGTH));
         }
 
-        this.value = trimmedNumber;
-    }
-
-    public LocomotiveModel(final LocomotiveModel number) {
-        this.value = number.getValue();
+        this.value = trimmedValue;
     }
 }

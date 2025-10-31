@@ -3,35 +3,28 @@ package com.github.alphameo.railways.domain.valueobjects;
 
 import com.github.alphameo.railways.exceptions.domain.ValidationException;
 
+import lombok.NonNull;
 import lombok.Value;
 
 @Value
 public class StationLocation {
 
-    private static int MAX_NAME_LENGTH = 255;
+    private static int MAX_LOCATION_NAME_LENGTH = 255;
 
     private String value;
 
-    public StationLocation(final String location) {
-        if (location == null) {
-            throw new ValidationException("StationLocation.value cannot be null");
-        }
+    public StationLocation(@NonNull final String value) {
+        var trimmedValue = value.trim();
 
-        var trimmedName = location.trim();
-
-        if (trimmedName.isBlank()) {
+        if (trimmedValue.isBlank()) {
             throw new ValidationException("StationLocation.value cannot be blank");
         }
 
-        if (trimmedName.length() > MAX_NAME_LENGTH) {
+        if (trimmedValue.length() > MAX_LOCATION_NAME_LENGTH) {
             throw new ValidationException(
-                    String.format("StationLocation.value length should be <= %s", MAX_NAME_LENGTH));
+                    String.format("StationLocation.value length should be <= %s", MAX_LOCATION_NAME_LENGTH));
         }
 
-        this.value = trimmedName;
-    }
-
-    public StationLocation(final StationLocation location) {
-        this.value = location.getValue();
+        this.value = trimmedValue;
     }
 }
