@@ -12,4 +12,4 @@ plugins {
 }
 
 rootProject.name = "railways"
-include("app")
+include("railways")
