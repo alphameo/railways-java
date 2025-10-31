@@ -16,12 +16,12 @@ public class MachineNumber {
         var trimmedValue = value.trim();
 
         if (trimmedValue.isBlank()) {
-            throw new ValidationException("MachineNumber.value cannot be blank");
+            throw new ValidationException("machineNumber: value cannot be blank");
         }
 
         if (trimmedValue.length() > MAX_NUMBER_LENGTH) {
             throw new ValidationException(
-                    String.format("MachineNumber.value length must be <= %s", MAX_NUMBER_LENGTH));
+                    String.format("machineNumber: value length must be <= %s", MAX_NUMBER_LENGTH));
         }
 
         this.value = trimmedValue;

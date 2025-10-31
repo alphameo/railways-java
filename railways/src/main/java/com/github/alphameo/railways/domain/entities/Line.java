@@ -23,7 +23,7 @@ public class Line {
 
     public Line(final Id id, final ObjectName name, final List<Id> stationIdOrder) {
         if (id == null) {
-            throw new ValidationException("Line.id cannot be null");
+            throw new ValidationException("line: id cannot be null");
         }
         this.id = id;
         this.rename(name);
@@ -40,7 +40,7 @@ public class Line {
 
     public void rename(final ObjectName name) {
         if (name == null) {
-            throw new ValidationException("Line.name cannot be null");
+            throw new ValidationException("line: name cannot be null");
         }
 
         this.name = name;
@@ -48,14 +48,14 @@ public class Line {
 
     public void updateStationIds(@NonNull final List<Id> stationIds) {
         if (stationIds.isEmpty()) {
-            throw new ValidationException("Line.stationIds cannot be empty");
+            throw new ValidationException("line: stationIds cannot be empty");
         }
 
         final var newIds = new ArrayList<Id>();
 
         for (Id id : stationIds) {
             if (id == null) {
-                throw new ValidationException("stationId cannot be null");
+                throw new ValidationException("line: stationId in stationIdOrder cannot be null");
             }
 
             newIds.add(id);
@@ -69,7 +69,7 @@ public class Line {
             this.stationIdOrder.add(position - 1, stationId);
         } catch (Exception e) {
             throw new ValidationException(
-                    String.format("Cannot insert station on position=%s: %s", position, e.getMessage()),
+                    String.format("line: cannot insert station on position=%s: %s", position, e.getMessage()),
                     e);
         }
 
@@ -84,7 +84,7 @@ public class Line {
             this.stationIdOrder.remove(position - 1);
         } catch (Exception e) {
             throw new ValidationException(
-                    String.format("Cannot remove station on position=%s: %s", position, e.getMessage()),
+                    String.format("line: cannot remove station on position=%s: %s", position, e.getMessage()),
                     e);
         }
     }

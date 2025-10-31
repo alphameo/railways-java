@@ -22,7 +22,7 @@ public class TrainComposition {
 
     public TrainComposition(final Id id, final Id locomotiveId, List<Id> carriageIds) {
         if (id == null) {
-            throw new ValidationException("TrainComposition.id cannot be null");
+            throw new ValidationException("trainComposition: id cannot be null");
         }
         this.id = id;
         this.setLocomotiveId(locomotiveId);
@@ -46,7 +46,7 @@ public class TrainComposition {
 
     public void setLocomotiveId(final Id locomotive) {
         if (locomotive == null) {
-            throw new ValidationException("TrainComposition.locomotiveId cannot be null");
+            throw new ValidationException("trainComposition: locomotiveId cannot be null");
         }
 
         this.locomotiveId = locomotive;
@@ -54,13 +54,13 @@ public class TrainComposition {
 
     public void updateCarriages(@NonNull final List<Id> carriageIds) {
         if (carriageIds.isEmpty()) {
-            throw new ValidationException("TrainComposition.carriageIds must not be empty");
+            throw new ValidationException("trainComposition: carriageIds must not be empty");
         }
 
         final var newIds = new ArrayList<Id>();
         for (final Id id : carriageIds) {
             if (id == null) {
-                throw new ValidationException("carriageId in TrainComposition cannot be null");
+                throw new ValidationException("trainComposition: carriageId cannot be null");
             }
         }
 
@@ -72,7 +72,7 @@ public class TrainComposition {
             this.carriageIds.add(position - 1, id);
         } catch (final Exception e) {
             throw new ValidationException(
-                    String.format("Cannot insert carriage on position=%s: %s", position, e.getMessage()),
+                    String.format("trainComposition: cannot insert carriage on position=%s: %s", position, e.getMessage()),
                     e);
         }
 
@@ -87,7 +87,7 @@ public class TrainComposition {
             this.carriageIds.remove(position - 1);
         } catch (final Exception e) {
             throw new ValidationException(
-                    String.format("Cannot remove carriage on position=%s: %s", position, e.getMessage()),
+                    String.format("trainComposition: cannot remove carriage on position=%s: %s", position, e.getMessage()),
                     e);
         }
     }

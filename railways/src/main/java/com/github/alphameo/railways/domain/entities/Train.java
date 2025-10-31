@@ -42,7 +42,7 @@ public class Train {
 
     public void changeNumber(final MachineNumber number) {
         if (number == null) {
-            throw new ValidationException("Train.number cannot be null");
+            throw new ValidationException("train: number cannot be null");
         }
 
         this.number = number;
@@ -50,7 +50,7 @@ public class Train {
 
     public void assignTrainComposition(final Id trainCompositionId) {
         if (trainCompositionId == null) {
-            throw new ValidationException("Train.trainCompositionId cannot be null");
+            throw new ValidationException("train: trainCompositionId cannot be null");
         }
 
         this.trainCompositionId = trainCompositionId;
@@ -58,14 +58,14 @@ public class Train {
 
     public void updateSchedule(@NonNull final List<ScheduleEntry> schedule) {
         if (schedule == null) {
-            throw new ValidationException("TrainComposition.schedule cannot be null");
+            throw new ValidationException("train: schedule cannot be null");
         }
 
         var newSchedule = new ArrayList<ScheduleEntry>();
         var prevEntry = this.schedule.get(0);
         for (ScheduleEntry entry : schedule) {
             if (entry == null) {
-                throw new ValidationException("ScheduleEntry cannot be null");
+                throw new ValidationException("train: scheduleEntry cannot be null");
             }
             validateCloseScheduleEntries(prevEntry, entry);
             newSchedule.add(entry);
@@ -89,7 +89,7 @@ public class Train {
             this.schedule.add(index, scheduleEntry);
         } catch (Exception e) {
             throw new ValidationException(
-                    String.format("Cannot insert station on orderIndex=%s: %s", orderIndex, e.getMessage()),
+                    String.format("train: cannot insert station on orderIndex=%s: %s", orderIndex, e.getMessage()),
                     e);
         }
     }
@@ -99,7 +99,7 @@ public class Train {
             this.schedule.remove(orderIndex - 1);
         } catch (Exception e) {
             throw new ValidationException(
-                    String.format("Cannot remove station on orderIndex=%s: %s", orderIndex, e.getMessage()),
+                    String.format("train: cannot remove station on orderIndex=%s: %s", orderIndex, e.getMessage()),
                     e);
         }
     }
@@ -112,14 +112,14 @@ public class Train {
         if (prev.getDepartureTime() == null) {
             if (past.getArrivalTime() != null) {
                 throw new ValidationException(
-                        "arrivalTime cannot be specified if last departureTime is not");
+                        "train: arrivalTime cannot be specified if last departureTime is not");
             }
         }
         if (past.getArrivalTime() == null) {
             return;
         }
         if (past.getArrivalTime().isBefore(prev.getDepartureTime())) {
-            throw new ValidationException("Previous departureTime must be <= past arrivalTime");
+            throw new ValidationException("train: previous departureTime must be <= past arrivalTime");
         }
     }
 }

@@ -17,12 +17,12 @@ public class StationLocation {
         var trimmedValue = value.trim();
 
         if (trimmedValue.isBlank()) {
-            throw new ValidationException("StationLocation.value cannot be blank");
+            throw new ValidationException("stationLocation: value cannot be blank");
         }
 
         if (trimmedValue.length() > MAX_LOCATION_NAME_LENGTH) {
             throw new ValidationException(
-                    String.format("StationLocation.value length must be <= %s", MAX_LOCATION_NAME_LENGTH));
+                    String.format("stationLocation: value length must be <= %s", MAX_LOCATION_NAME_LENGTH));
         }
 
         this.value = trimmedValue;

@@ -20,7 +20,7 @@ public class Locomotive {
 
     public Locomotive(final Id id, final MachineNumber number, final LocomotiveModel model) {
         if (id == null) {
-            throw new ValidationException("Locomotive.id cannot be null");
+            throw new ValidationException("locomotive: id cannot be null");
         }
         this.changeNumber(number);
         this.changeModel(model);
@@ -32,7 +32,7 @@ public class Locomotive {
 
     public void changeNumber(MachineNumber number) {
         if (number == null) {
-            throw new ValidationException("Locomotive.number cannot be null");
+            throw new ValidationException("locomotive: number cannot be null");
         }
 
         this.number = number;
@@ -40,7 +40,7 @@ public class Locomotive {
 
     public void changeModel(final LocomotiveModel model) {
         if (model == null) {
-            throw new ValidationException("Locomotive.model cannot be null");
+            throw new ValidationException("locomotive: model cannot be null");
         }
 
         this.model = model;

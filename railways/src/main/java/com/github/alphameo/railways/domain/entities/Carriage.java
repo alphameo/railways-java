@@ -27,7 +27,7 @@ public class Carriage {
             final CarriageContentType contentType,
             final Long capacity) {
         if (id == null) {
-            throw new ValidationException("Carriage.id cannot be null");
+            throw new ValidationException("carriage: id cannot be null");
         }
         this.id = id;
         this.changeNumber(number);
@@ -41,7 +41,7 @@ public class Carriage {
 
     public void changeNumber(final MachineNumber number) {
         if (number == null) {
-            throw new ValidationException("Carriage.number cannot be null");
+            throw new ValidationException("carriage: number cannot be null");
         }
 
         this.number = number;
@@ -53,7 +53,7 @@ public class Carriage {
             return;
         }
         if (capacity <= MIN_CAPACITY) {
-            throw new ValidationException(String.format("Carriage.capacity must be > %s", MIN_CAPACITY));
+            throw new ValidationException(String.format("carriage: capacity must be > %s", MIN_CAPACITY));
         }
 
         this.capacity = capacity;

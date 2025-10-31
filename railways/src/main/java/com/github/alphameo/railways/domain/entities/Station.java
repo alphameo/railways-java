@@ -20,7 +20,7 @@ public class Station {
 
     public Station(final Id id, final ObjectName name, final StationLocation location) {
         if (id == null) {
-            throw new ValidationException("Station.id cannot be null");
+            throw new ValidationException("station: id cannot be null");
         }
         this.changeName(name);
         this.changeLocation(location);
@@ -39,7 +39,7 @@ public class Station {
 
     public void changeName(final ObjectName name) {
         if (name == null) {
-            throw new ValidationException("Station.name cannot be null");
+            throw new ValidationException("station: name cannot be null");
         }
 
         this.name = name;
@@ -47,7 +47,7 @@ public class Station {
 
     public void changeLocation(final StationLocation location) {
         if (location == null) {
-            throw new ValidationException("Station.location cannot be null");
+            throw new ValidationException("station: location cannot be null");
         }
 
         this.location = location;

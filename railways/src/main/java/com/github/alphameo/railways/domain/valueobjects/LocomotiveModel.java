@@ -16,12 +16,12 @@ public class LocomotiveModel {
         var trimmedValue = value.trim();
 
         if (trimmedValue.isBlank()) {
-            throw new ValidationException("LocomotiveModel.value cannot be blank");
+            throw new ValidationException("locomotiveModel: value cannot be blank");
         }
 
         if (trimmedValue.length() > MAX_MODEL_LENGTH) {
             throw new ValidationException(
-                    String.format("LocomotiveModel.value length must be <= %s", MAX_MODEL_LENGTH));
+                    String.format("locomotiveModel: value length must be <= %s", MAX_MODEL_LENGTH));
         }
 
         this.value = trimmedValue;

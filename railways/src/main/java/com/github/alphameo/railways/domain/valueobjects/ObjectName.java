@@ -16,11 +16,11 @@ public class ObjectName {
         var trimmedValue = value.trim();
 
         if (trimmedValue.isBlank()) {
-            throw new ValidationException("ObjectName.value cannot be blank");
+            throw new ValidationException("objectName: value cannot be blank");
         }
 
         if (trimmedValue.length() > MAX_OBJECT_NAME_LENGTH) {
-            throw new ValidationException(String.format("ObjectName.value length must be <= %s", MAX_OBJECT_NAME_LENGTH));
+            throw new ValidationException(String.format("objectName: value length must be <= %s", MAX_OBJECT_NAME_LENGTH));
         }
 
         this.value = trimmedValue;
