@@ -1,5 +1,6 @@
 package com.github.alphameo.railways.domain.entities;
 
+import com.github.alphameo.railways.domain.valueobjects.Id;
 import com.github.alphameo.railways.domain.valueobjects.LocomotiveModel;
 import com.github.alphameo.railways.domain.valueobjects.MachineNumber;
 import com.github.alphameo.railways.exceptions.domain.ValidationException;
@@ -13,21 +14,20 @@ import lombok.ToString;
 @Getter
 public class Locomotive {
 
-    private Long id;
+    private Id id;
     private MachineNumber number;
     private LocomotiveModel model;
 
-    public Locomotive(final Long id, final MachineNumber number, final LocomotiveModel model) {
-        this.id = id;
+    public Locomotive(final Id id, final MachineNumber number, final LocomotiveModel model) {
+        if (id == null) {
+            throw new ValidationException("Locomotive.id cannot be null");
+        }
         this.changeNumber(number);
         this.changeModel(model);
     }
 
-    public Locomotive(Locomotive locomotive) {
-        new Locomotive(
-                locomotive.id,
-                locomotive.number,
-                locomotive.model);
+    public Locomotive(final MachineNumber number, final LocomotiveModel model) {
+        this(new Id(), number, model);
     }
 
     public void changeNumber(MachineNumber number) {

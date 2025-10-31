@@ -3,6 +3,7 @@ package com.github.alphameo.railways.domain.entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.github.alphameo.railways.domain.valueobjects.Id;
 import com.github.alphameo.railways.exceptions.domain.ValidationException;
 
 import lombok.EqualsAndHashCode;
@@ -15,14 +16,21 @@ import lombok.ToString;
 @Getter
 public class TrainComposition {
 
-    private Long id;
-    private Long locomotiveId;
-    private List<Long> carriageIds;
+    private Id id;
+    private Id locomotiveId;
+    private List<Id> carriageIds;
 
-    public TrainComposition(final Long id, Long locomotiveId, @NonNull List<Long> carriageIds) {
+    public TrainComposition(final Id id, final Id locomotiveId, List<Id> carriageIds) {
+        if (id == null) {
+            throw new ValidationException("TrainComposition.id cannot be null");
+        }
         this.id = id;
         this.setLocomotiveId(locomotiveId);
         this.updateCarriages(carriageIds);
+    }
+
+    public TrainComposition(final Id locomotiveId, final List<Id> carriageIds) {
+        this(new Id(), locomotiveId, carriageIds);
     }
 
     public TrainComposition(final TrainComposition trainComposition) {
@@ -32,11 +40,11 @@ public class TrainComposition {
                 trainComposition.carriageIds);
     }
 
-    public List<Long> getCarriageIds() {
+    public List<Id> getCarriageIds() {
         return List.copyOf(this.carriageIds);
     }
 
-    public void setLocomotiveId(Long locomotive) {
+    public void setLocomotiveId(final Id locomotive) {
         if (locomotive == null) {
             throw new ValidationException("TrainComposition.locomotiveId cannot be null");
         }
@@ -44,13 +52,13 @@ public class TrainComposition {
         this.locomotiveId = locomotive;
     }
 
-    public void updateCarriages(@NonNull List<Long> carriageIds) {
+    public void updateCarriages(@NonNull final List<Id> carriageIds) {
         if (carriageIds.isEmpty()) {
             throw new ValidationException("TrainComposition.carriageIds should not be empty");
         }
 
-        var newIds = new ArrayList<Long>();
-        for (Long id : carriageIds) {
+        final var newIds = new ArrayList<Id>();
+        for (final Id id : carriageIds) {
             if (id == null) {
                 throw new ValidationException("carriageId in TrainComposition cannot be null");
             }
@@ -59,10 +67,10 @@ public class TrainComposition {
         this.carriageIds = newIds;
     }
 
-    public void attachCarriage(@NonNull final Long id, final int position) {
+    public void attachCarriage(@NonNull final Id id, final int position) {
         try {
             this.carriageIds.add(position - 1, id);
-        } catch (Exception e) {
+        } catch (final Exception e) {
             throw new ValidationException(
                     String.format("Cannot insert carriage on position=%s: %s", position, e.getMessage()),
                     e);
@@ -70,14 +78,14 @@ public class TrainComposition {
 
     }
 
-    public void unattachCarriageWithId(@NonNull final Long id) {
+    public void unattachCarriageWithId(@NonNull final Id id) {
         this.carriageIds.remove(id);
     }
 
     public void unattachCarriageOnPosition(final int position) {
         try {
             this.carriageIds.remove(position - 1);
-        } catch (Exception e) {
+        } catch (final Exception e) {
             throw new ValidationException(
                     String.format("Cannot remove carriage on position=%s: %s", position, e.getMessage()),
                     e);

@@ -3,6 +3,7 @@ package com.github.alphameo.railways.domain.entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.github.alphameo.railways.domain.valueobjects.Id;
 import com.github.alphameo.railways.domain.valueobjects.MachineNumber;
 import com.github.alphameo.railways.domain.valueobjects.ScheduleEntry;
 import com.github.alphameo.railways.exceptions.domain.ValidationException;
@@ -17,23 +18,22 @@ import lombok.ToString;
 @Getter
 public class Train {
 
-    private Long id;
+    private Id id;
     private MachineNumber number;
-    private Long trainCompositionId;
+    private Id trainCompositionId;
     private List<ScheduleEntry> schedule;
 
-    public Train(final Long id, final MachineNumber number, final Long trainCompositionId,
-            List<ScheduleEntry> schedule) {
+    public Train(final Id id, final MachineNumber number, final Id trainCompositionId, List<ScheduleEntry> schedule) {
+        if (id == null) {
+            throw new ValidationException("Train.id cannot be null");
+        }
         this.id = id;
         this.changeNumber(number);
+        this.updateSchedule(schedule);
     }
 
-    public Train(final Train train) {
-        new Train(
-                train.id,
-                train.number,
-                train.trainCompositionId,
-                train.schedule);
+    public Train(final MachineNumber number, final Id trainCompositionId, List<ScheduleEntry> schedule) {
+        this(new Id(), number, trainCompositionId, schedule);
     }
 
     public List<ScheduleEntry> getSchedule() {
@@ -48,7 +48,7 @@ public class Train {
         this.number = number;
     }
 
-    public void assignTrainComposition(Long trainCompositionId) {
+    public void assignTrainComposition(final Id trainCompositionId) {
         if (trainCompositionId == null) {
             throw new ValidationException("Train.trainCompositionId cannot be null");
         }
@@ -57,15 +57,15 @@ public class Train {
     }
 
     public void updateSchedule(@NonNull final List<ScheduleEntry> schedule) {
-        if (schedule == null | schedule.isEmpty()) {
-            throw new ValidationException("TrainComposition.carriageIds should not be empty or null");
+        if (schedule == null) {
+            throw new ValidationException("TrainComposition.schedule cannot be null");
         }
 
         var newSchedule = new ArrayList<ScheduleEntry>();
         var prevEntry = this.schedule.get(0);
         for (ScheduleEntry entry : schedule) {
             if (entry == null) {
-                throw new ValidationException("carriageId in TrainComposition cannot be null");
+                throw new ValidationException("ScheduleEntry cannot be null");
             }
             validateCloseScheduleEntries(prevEntry, entry);
             newSchedule.add(entry);
@@ -100,7 +100,7 @@ public class Train {
         } catch (Exception e) {
             throw new ValidationException(
                     String.format("Cannot remove station on orderIndex=%s: %s", orderIndex, e.getMessage()),
-            e);
+                    e);
         }
     }
 

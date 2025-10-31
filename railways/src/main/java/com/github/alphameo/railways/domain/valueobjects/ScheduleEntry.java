@@ -9,11 +9,11 @@ import lombok.Value;
 @Value
 public class ScheduleEntry {
 
-    private Long stationId;
+    private Id stationId;
     private LocalDateTime arrivalTime;
     private LocalDateTime departureTime;
 
-    public ScheduleEntry(Long stationId, LocalDateTime arrivalTime, LocalDateTime departureTime) {
+    public ScheduleEntry(Id stationId, LocalDateTime arrivalTime, LocalDateTime departureTime) {
         if (stationId == null) {
             throw new ValidationException("Schedule.stationId cannot be null");
         }

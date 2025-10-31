@@ -1,6 +1,7 @@
 package com.github.alphameo.railways.domain.entities;
 
 import com.github.alphameo.railways.domain.valueobjects.CarriageContentType;
+import com.github.alphameo.railways.domain.valueobjects.Id;
 import com.github.alphameo.railways.domain.valueobjects.MachineNumber;
 import com.github.alphameo.railways.exceptions.domain.ValidationException;
 
@@ -15,25 +16,27 @@ public class Carriage {
 
     private static int MIN_CAPACITY = 0;
 
-    private Long id;
+    private Id id;
     private MachineNumber number;
     private CarriageContentType contentType;
     private Long capacity;
 
-    public Carriage(final Long id, final MachineNumber number,
-            final CarriageContentType contentType, final Long capacity) {
+    public Carriage(
+            final Id id,
+            final MachineNumber number,
+            final CarriageContentType contentType,
+            final Long capacity) {
+        if (id == null) {
+            throw new ValidationException("Carriage.id cannot be null");
+        }
         this.id = id;
         this.changeNumber(number);
         this.changeContentType(contentType);
         this.changeCapacity(capacity);
     }
 
-    public Carriage(final Carriage carriage) {
-        new Carriage(
-                carriage.id,
-                carriage.number,
-                carriage.contentType,
-                carriage.capacity);
+    public Carriage(final MachineNumber number, final CarriageContentType contentType, final Long capacity) {
+        this(new Id(), number, contentType, capacity);
     }
 
     public void changeNumber(final MachineNumber number) {

@@ -3,6 +3,7 @@ package com.github.alphameo.railways.domain.entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.github.alphameo.railways.domain.valueobjects.Id;
 import com.github.alphameo.railways.domain.valueobjects.ObjectName;
 import com.github.alphameo.railways.exceptions.domain.ValidationException;
 
@@ -16,17 +17,24 @@ import lombok.ToString;
 @Getter
 public class Line {
 
-    private Long id;
+    private Id id;
     private ObjectName name;
-    private List<Long> stationIdOrder;
+    private List<Id> stationIdOrder;
 
-    public Line(final Long id, final ObjectName name, final List<Long> stationIdOrder) {
+    public Line(final Id id, final ObjectName name, final List<Id> stationIdOrder) {
+        if (id == null) {
+            throw new ValidationException("Line.id cannot be null");
+        }
         this.id = id;
         this.rename(name);
         this.updateStationIds(stationIdOrder);
     }
 
-    public List<Long> getStationIdOrder() {
+    public Line(final ObjectName name, final List<Id> stationIdOrder) {
+        this(new Id(), name, stationIdOrder);
+    }
+
+    public List<Id> getStationIdOrder() {
         return List.copyOf(this.stationIdOrder);
     }
 
@@ -38,14 +46,14 @@ public class Line {
         this.name = name;
     }
 
-    public void updateStationIds(@NonNull final List<Long> stationIds) {
+    public void updateStationIds(@NonNull final List<Id> stationIds) {
         if (stationIds.isEmpty()) {
             throw new ValidationException("Line.stationIds cannot be empty");
         }
 
-        final var newIds = new ArrayList<Long>();
+        final var newIds = new ArrayList<Id>();
 
-        for (Long id : stationIds) {
+        for (Id id : stationIds) {
             if (id == null) {
                 throw new ValidationException("stationId cannot be null");
             }
@@ -56,7 +64,7 @@ public class Line {
         this.stationIdOrder = newIds;
     }
 
-    public void registerStation(@NonNull final Long stationId, final int position) {
+    public void registerStation(@NonNull final Id stationId, final int position) {
         try {
             this.stationIdOrder.add(position - 1, stationId);
         } catch (Exception e) {
@@ -67,7 +75,7 @@ public class Line {
 
     }
 
-    public void unregisterStationById(@NonNull final Long id) {
+    public void unregisterStationById(@NonNull final Id id) {
         this.stationIdOrder.remove(id);
     }
 
