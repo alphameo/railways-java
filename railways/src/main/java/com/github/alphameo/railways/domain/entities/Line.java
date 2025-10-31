@@ -27,7 +27,7 @@ public class Line {
         }
         this.id = id;
         this.rename(name);
-        this.updateStationIds(stationIdOrder);
+        this.updateStationIdOrder(stationIdOrder);
     }
 
     public Line(final ObjectName name, final List<Id> stationIdOrder) {
@@ -46,14 +46,14 @@ public class Line {
         this.name = name;
     }
 
-    public void updateStationIds(@NonNull final List<Id> stationIds) {
-        if (stationIds.isEmpty()) {
-            throw new ValidationException("line: stationIds cannot be empty");
+    public void updateStationIdOrder(@NonNull final List<Id> stationIdOrder) {
+        if (stationIdOrder.isEmpty()) {
+            throw new ValidationException("line: stationIdOrder cannot be empty");
         }
 
         final var newIds = new ArrayList<Id>();
 
-        for (Id id : stationIds) {
+        for (Id id : stationIdOrder) {
             if (id == null) {
                 throw new ValidationException("line: stationId in stationIdOrder cannot be null");
             }
