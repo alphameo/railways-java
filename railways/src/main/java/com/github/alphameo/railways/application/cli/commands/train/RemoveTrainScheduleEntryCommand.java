@@ -3,6 +3,7 @@ package com.github.alphameo.railways.application.cli.commands.train;
 import com.github.alphameo.railways.application.cli.Renderer;
 import com.github.alphameo.railways.application.cli.commands.CliCommand;
 import com.github.alphameo.railways.application.services.TrainService;
+import com.github.alphameo.railways.domain.valueobjects.Id;
 import com.github.alphameo.railways.exceptions.application.cli.CliArgsCountException;
 
 import lombok.NonNull;
@@ -47,7 +48,7 @@ public class RemoveTrainScheduleEntryCommand implements CliCommand {
 
     @Override
     public void execute() {
-        final var id = Long.parseLong(args[0]);
+        final var id = Id.fromString(args[0]);
         final var orderIndex = Integer.parseInt(args[1]);
         this.service.removeScheduleEntry(id, orderIndex);
     }

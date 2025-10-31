@@ -3,6 +3,7 @@ package com.github.alphameo.railways.application.cli.commands.carriage;
 import com.github.alphameo.railways.application.cli.Renderer;
 import com.github.alphameo.railways.application.cli.commands.CliCommand;
 import com.github.alphameo.railways.application.services.CarriageService;
+import com.github.alphameo.railways.domain.valueobjects.Id;
 import com.github.alphameo.railways.exceptions.application.cli.CliArgsCountException;
 
 import lombok.NonNull;
@@ -46,7 +47,7 @@ public class FindCarriageByIdCommand implements CliCommand {
 
     @Override
     public void execute() {
-        final var id = Long.parseLong(args[0]);
+        final var id = Id.fromString(args[0]);
         final var entity = this.service.findById(id);
         System.out.println(entity);
     }

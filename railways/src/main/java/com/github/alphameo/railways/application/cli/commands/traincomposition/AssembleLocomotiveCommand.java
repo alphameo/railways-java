@@ -7,6 +7,7 @@ import com.github.alphameo.railways.application.cli.Renderer;
 import com.github.alphameo.railways.application.cli.commands.CliCommand;
 import com.github.alphameo.railways.application.dto.TrainCompositionDto;
 import com.github.alphameo.railways.application.services.TrainCompositionService;
+import com.github.alphameo.railways.domain.valueobjects.Id;
 import com.github.alphameo.railways.exceptions.application.cli.CliArgsCountException;
 
 import lombok.NonNull;
@@ -51,10 +52,10 @@ public class AssembleLocomotiveCommand implements CliCommand {
 
     @Override
     public void execute() {
-        final var locomotiveId = Long.parseLong(args[0]);
-        final List<Long> carriageIds = new ArrayList<>();
+        final var locomotiveId = Id.fromString(args[0]);
+        final List<Id> carriageIds = new ArrayList<>();
         for (int i = 1; i < args.length; i++) {
-            carriageIds.add(Long.parseLong(args[i]));
+            carriageIds.add(Id.fromString(args[0]));
         }
         final var dto = new TrainCompositionDto(null, locomotiveId, carriageIds);
         this.service.assembleTrainComposition(dto);

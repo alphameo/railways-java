@@ -7,6 +7,7 @@ import com.github.alphameo.railways.application.cli.Renderer;
 import com.github.alphameo.railways.application.cli.commands.CliCommand;
 import com.github.alphameo.railways.application.dto.LineDto;
 import com.github.alphameo.railways.application.services.LineService;
+import com.github.alphameo.railways.domain.valueobjects.Id;
 import com.github.alphameo.railways.exceptions.application.cli.CliArgsCountException;
 
 import lombok.NonNull;
@@ -52,9 +53,9 @@ public class DeclareLineCommand implements CliCommand {
     @Override
     public void execute() {
         final var name = args[0];
-        final List<Long> stationIds = new ArrayList<>();
+        final List<Id> stationIds = new ArrayList<>();
         for (int i = 1; i < args.length; i++) {
-            stationIds.add(Long.parseLong(args[i]));
+            stationIds.add(Id.fromString(args[0]));
         }
         final var dto = new LineDto(null, name, stationIds);
         this.service.declareLine(dto);
