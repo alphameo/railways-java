@@ -35,9 +35,6 @@ public class LineMapper {
 
     public static Line toEntity(final LineDto lineDto) {
         var id = Id.fromString(lineDto.id());
-        if (id == null) {
-            id = new Id();
-        }
         final var name = new ObjectName(lineDto.name());
         final var sIds = lineDto.stationIdOrder();
         final var stationIds = new ArrayList<Id>();

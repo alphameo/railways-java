@@ -31,9 +31,6 @@ public class StationMapper {
 
     public static Station toEntity(final StationDto stationDto) {
         var id = Id.fromString(stationDto.id());
-        if (id == null) {
-            id = new Id();
-        }
         final var name = new ObjectName(stationDto.name());
         final var location = new StationLocation(stationDto.location());
         return new Station(id, name, location);
