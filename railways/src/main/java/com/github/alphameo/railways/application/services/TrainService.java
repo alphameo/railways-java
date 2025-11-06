@@ -16,11 +16,11 @@ public interface TrainService {
 
     List<TrainDto> listAll();
 
-    void unregister(Id id);
+    void unregister(String id);
 
-    void insertScheduleEntry(Id trainId, ScheduleEntryDto scheduleEntry, int orderIndex);
+    void insertScheduleEntry(String trainId, ScheduleEntryDto scheduleEntry, int orderIndex);
 
-    void removeScheduleEntry(Id trainId, int orderIndex);
+    void removeScheduleEntry(String trainId, int orderIndex);
 
-    void updateSchedule(Id trainId, List<ScheduleEntryDto> schedule);
+    void updateSchedule(String trainId, List<ScheduleEntryDto> schedule);
 }

@@ -37,10 +37,11 @@ public class DefaultLineService implements LineService {
     }
 
     @Override
-    public List<StationDto> listLineStations(@NonNull final Id lineId) {
+    public List<StationDto> listLineStations(@NonNull final String lineId) {
         try {
+            final var valId = Id.fromString(lineId);
             final List<Station> stations = new ArrayList<>();
-            final var stationIds = lineRepo.findById(lineId).get().getStationIdOrder();
+            final var stationIds = lineRepo.findById(valId).get().getStationIdOrder();
             for (final var id : stationIds) {
                 stations.add(stationRepo.findById(id).get());
             }
@@ -51,10 +52,11 @@ public class DefaultLineService implements LineService {
     }
 
     @Override
-    public LineDto findById(@NonNull final Id id) {
+    public LineDto findById(@NonNull final String id) {
         final Optional<Line> line;
         try {
-            line = lineRepo.findById(id);
+            final var valId = Id.fromString(id);
+            line = lineRepo.findById(valId);
         } catch (final Exception e) {
             throw new ServiceException(e);
         }
@@ -75,9 +77,10 @@ public class DefaultLineService implements LineService {
     }
 
     @Override
-    public void disbandLine(@NonNull final Id lineId) {
+    public void disbandLine(@NonNull final String lineId) {
         try {
-            lineRepo.deleteById(lineId);
+            final var valId = Id.fromString(lineId);
+            lineRepo.deleteById(valId);
         } catch (final Exception e) {
             throw new ServiceException(e);
         }

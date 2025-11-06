@@ -4,16 +4,15 @@ import java.util.List;
 
 import com.github.alphameo.railways.application.dto.LineDto;
 import com.github.alphameo.railways.application.dto.StationDto;
-import com.github.alphameo.railways.domain.valueobjects.Id;
 
 public interface LineService {
     void declareLine(LineDto line);
 
-    List<StationDto> listLineStations(Id lineId);
+    List<StationDto> listLineStations(String lineId);
 
-    LineDto findById(Id id);
+    LineDto findById(String id);
 
     List<LineDto> listAll();
 
-    void disbandLine(Id lineId);
+    void disbandLine(String lineId);
 }

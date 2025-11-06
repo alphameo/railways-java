@@ -31,10 +31,11 @@ public class DefaultStationService implements StationService {
     }
 
     @Override
-    public StationDto findById(@NonNull final Id id) {
+    public StationDto findById(@NonNull final String id) {
         final Optional<Station> out;
         try {
-            out = stationRepo.findById(id);
+            final var valId = Id.fromString(id);
+            out = stationRepo.findById(valId);
         } catch (final Exception e) {
             throw new ServiceException(e);
         }
@@ -55,9 +56,10 @@ public class DefaultStationService implements StationService {
     }
 
     @Override
-    public void unregister(final Id id) {
+    public void unregister(@NonNull final String id) {
         try {
-            stationRepo.deleteById(id);
+            final var valId = Id.fromString(id);
+            stationRepo.deleteById(valId);
         } catch (final RuntimeException e) {
             throw new ServiceException(e);
         }

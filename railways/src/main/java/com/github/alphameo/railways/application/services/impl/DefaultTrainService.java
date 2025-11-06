@@ -93,9 +93,10 @@ public class DefaultTrainService implements TrainService {
     }
 
     @Override
-    public void unregister(final Id id) {
+    public void unregister(@NonNull final String id) {
         try {
-            trainRepo.deleteById(id);
+            final var valId = Id.fromString(id);
+            trainRepo.deleteById(valId);
         } catch (final RuntimeException e) {
             throw new ServiceException(e);
         }
@@ -103,10 +104,11 @@ public class DefaultTrainService implements TrainService {
 
     @Override
     public void insertScheduleEntry(
-            @NonNull final Id trainId,
+            @NonNull final String trainId,
             @NonNull final ScheduleEntryDto scheduleEntry,
             final int orderIndex) {
-        final var trainOpt = trainRepo.findById(trainId);
+        final var valId = Id.fromString(trainId);
+        final var trainOpt = trainRepo.findById(valId);
         if (trainOpt.isEmpty()) {
             throw new EntityNotFoundException("Train", trainId);
         }
@@ -121,8 +123,9 @@ public class DefaultTrainService implements TrainService {
     }
 
     @Override
-    public void removeScheduleEntry(@NonNull final Id trainId, final int orderIndex) {
-        final var trainOpt = trainRepo.findById(trainId);
+    public void removeScheduleEntry(@NonNull final String trainId, final int orderIndex) {
+        final var valId = Id.fromString(trainId);
+        final var trainOpt = trainRepo.findById(valId);
         if (trainOpt.isEmpty()) {
             throw new EntityNotFoundException("Train", trainId);
         }
@@ -136,8 +139,9 @@ public class DefaultTrainService implements TrainService {
     }
 
     @Override
-    public void updateSchedule(@NonNull final Id trainId, @NonNull final List<ScheduleEntryDto> schedule) {
-        final var trainOpt = trainRepo.findById(trainId);
+    public void updateSchedule(@NonNull final String trainId, @NonNull final List<ScheduleEntryDto> schedule) {
+        final var valId = Id.fromString(trainId);
+        final var trainOpt = trainRepo.findById(valId);
         if (trainOpt.isEmpty()) {
             throw new EntityNotFoundException("Train", trainId);
         }

@@ -51,10 +51,11 @@ public class DefaultTrainCompositionService implements TrainCompositionService {
     }
 
     @Override
-    public TrainCompositionDto findById(@NonNull final Id id) {
+    public TrainCompositionDto findById(@NonNull final String id) {
         final Optional<TrainComposition> out;
         try {
-            out = trainCompositionRepo.findById(id);
+            final var valId = Id.fromString(id);
+            out = trainCompositionRepo.findById(valId);
         } catch (final Exception e) {
             throw new ServiceException(e);
         }
@@ -75,9 +76,10 @@ public class DefaultTrainCompositionService implements TrainCompositionService {
     }
 
     @Override
-    public void disassembleTrainComposition(@NonNull final Id id) {
+    public void disassembleTrainComposition(@NonNull final String id) {
         try {
-            trainCompositionRepo.deleteById(id);
+            final var valId = Id.fromString(id);
+            trainCompositionRepo.deleteById(valId);
         } catch (final Exception e) {
             throw new ServiceException(e);
         }

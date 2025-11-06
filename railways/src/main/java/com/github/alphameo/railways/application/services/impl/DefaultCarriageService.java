@@ -24,6 +24,10 @@ public class DefaultCarriageService implements CarriageService {
     @Override
     public void register(@NonNull final CarriageDto carriage) {
         try {
+            final var id = carriage.id();
+            if (id == null) {
+
+            }
             final var valCarriage = CarriageMapper.toEntity(carriage);
             repository.create(valCarriage);
         } catch (final RuntimeException e) {
@@ -32,10 +36,11 @@ public class DefaultCarriageService implements CarriageService {
     }
 
     @Override
-    public CarriageDto findById(@NonNull final Id id) {
+    public CarriageDto findById(@NonNull final String id) {
         final Optional<Carriage> carr;
         try {
-            carr = repository.findById(id);
+            final var valId = Id.fromString(id);
+            carr = repository.findById(valId);
         } catch (final Exception e) {
             throw new ServiceException(e);
         }
@@ -73,9 +78,10 @@ public class DefaultCarriageService implements CarriageService {
     }
 
     @Override
-    public void unregister(@NonNull final Id id) {
+    public void unregister(@NonNull final String id) {
         try {
-            repository.deleteById(id);
+            final var valId = Id.fromString(id);
+            repository.deleteById(valId);
         } catch (final RuntimeException e) {
             throw new ServiceException(e);
         }

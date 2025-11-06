@@ -32,10 +32,11 @@ public class DefaultLocomotiveService implements LocomotiveService {
     }
 
     @Override
-    public LocomotiveDto findById(@NonNull final Id id) {
+    public LocomotiveDto findById(@NonNull final String id) {
         final Optional<Locomotive> out;
         try {
-            out = repository.findById(id);
+            final var valId = Id.fromString(id);
+            out = repository.findById(valId);
         } catch (final Exception e) {
             throw new ServiceException(e);
         }
@@ -72,9 +73,10 @@ public class DefaultLocomotiveService implements LocomotiveService {
     }
 
     @Override
-    public void unregister(@NonNull final Id id) {
+    public void unregister(@NonNull final String id) {
         try {
-            repository.deleteById(id);
+            final var valId = Id.fromString(id);
+            repository.deleteById(valId);
         } catch (final RuntimeException e) {
             throw new ServiceException(e);
         }
