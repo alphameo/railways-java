@@ -12,7 +12,7 @@ import com.github.alphameo.railways.domain.valueobjects.MachineNumber;
 public class LocomotiveMapper {
 
     public static LocomotiveDto toDto(final Locomotive locomotive) {
-        final var id = locomotive.getId();
+        final var id = locomotive.getId().toString();
         final var number = locomotive.getNumber().getValue();
         final var model = locomotive.getModel().getValue();
         return new LocomotiveDto(
@@ -31,10 +31,7 @@ public class LocomotiveMapper {
     }
 
     public static Locomotive toEntity(final LocomotiveDto locomotiveDto) {
-        var id = locomotiveDto.id();
-        if (id == null) {
-            id = new Id();
-        }
+        var id = Id.fromString(locomotiveDto.id());
         final var number = new MachineNumber(locomotiveDto.number());
         final var model = new LocomotiveModel(locomotiveDto.model());
         return new Locomotive(id, number, model);

@@ -54,7 +54,7 @@ public class InsertTrainScheduleEntryCommand implements CliCommand {
     public void execute() {
         final var id = Id.fromString(args[0]);
         final var orderIndex = Integer.parseInt(args[1]);
-        final var stationId = Id.fromString(args[2]);
+        final var stationId = args[2];
         final LocalDateTime arrivalTime;
         final LocalDateTime departureTime;
         if (args.length >= 4) {

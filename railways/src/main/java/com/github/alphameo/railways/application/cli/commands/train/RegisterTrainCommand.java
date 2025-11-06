@@ -7,7 +7,6 @@ import com.github.alphameo.railways.application.cli.commands.CliCommand;
 import com.github.alphameo.railways.application.dto.ScheduleEntryDto;
 import com.github.alphameo.railways.application.dto.TrainDto;
 import com.github.alphameo.railways.application.services.TrainService;
-import com.github.alphameo.railways.domain.valueobjects.Id;
 import com.github.alphameo.railways.exceptions.application.cli.CliArgsCountException;
 
 import lombok.NonNull;
@@ -53,7 +52,7 @@ public class RegisterTrainCommand implements CliCommand {
     @Override
     public void execute() {
         final var number = args[0];
-        final var trainCompositionId = Id.fromString(args[0]);
+        final var trainCompositionId = args[0];
         final var schedule = new ArrayList<ScheduleEntryDto>();
         final var dto = new TrainDto(null, number, trainCompositionId, schedule);
         this.service.register(dto);

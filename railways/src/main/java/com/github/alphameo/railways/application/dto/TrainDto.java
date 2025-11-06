@@ -2,7 +2,5 @@ package com.github.alphameo.railways.application.dto;
 
 import java.util.List;
 
-import com.github.alphameo.railways.domain.valueobjects.Id;
-
-public record TrainDto(Id id, String number, Id trainCompositionId, List<ScheduleEntryDto> schedule) {
+public record TrainDto(String id, String number, String trainCompositionId, List<ScheduleEntryDto> schedule) {
 }

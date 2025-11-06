@@ -12,7 +12,7 @@ import com.github.alphameo.railways.domain.valueobjects.StationLocation;
 public class StationMapper {
 
     public static StationDto toDto(final Station station) {
-        final var id = station.getId();
+        final var id = station.getId().toString();
         final var name = station.getName().getValue();
         final var location = station.getLocation().getValue();
         return new StationDto(
@@ -30,7 +30,7 @@ public class StationMapper {
     }
 
     public static Station toEntity(final StationDto stationDto) {
-        var id = stationDto.id();
+        var id = Id.fromString(stationDto.id());
         if (id == null) {
             id = new Id();
         }

@@ -29,18 +29,20 @@ public class DefaultTrainService implements TrainService {
 
     @Override
     public void register(@NonNull final TrainDto train) {
-        final var trainCompoId = train.trainCompositionId();
+        final var trainEntity = TrainMapper.toEntity(train);
+        final var trainCompoId = trainEntity.getTrainCompositionId();
         final var trainCompo = trainCompositionRepo.findById(trainCompoId);
         if (trainCompo.isEmpty()) {
             throw new EntityNotFoundException("TrainComposition", trainCompoId);
         }
         try {
             final var number = new MachineNumber(train.number());
-            final var schedule = train.schedule();
+            final var schedule = trainEntity.getSchedule();
             final List<ScheduleEntry> valSchedule = new ArrayList<>();
             for (final var scheduleEntry : schedule) {
-                final var valScheduleEntry = new ScheduleEntry(scheduleEntry.stationId(), scheduleEntry.arrivalTime(),
-                        scheduleEntry.departureTime());
+                final var valScheduleEntry = new ScheduleEntry(scheduleEntry.getStationId(),
+                        scheduleEntry.getArrivalTime(),
+                        scheduleEntry.getDepartureTime());
                 valSchedule.add(valScheduleEntry);
             }
             final var valTrain = new Train(number, trainCompoId);

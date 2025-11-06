@@ -28,8 +28,9 @@ public class DefaultTrainCompositionService implements TrainCompositionService {
 
     @Override
     public void assembleTrainComposition(@NonNull final TrainCompositionDto trainComposition) {
-        final var locomotiveId = trainComposition.locomotiveId();
-        final var carriageIds = trainComposition.carriageIds();
+        final var trainCompoEntity = TrainCompositionMapper.toEntity(trainComposition);
+        final var locomotiveId = trainCompoEntity.getLocomotiveId();
+        final var carriageIds = trainCompoEntity.getCarriageIds();
 
         final Optional<Locomotive> loc = locomotiveRepo.findById(locomotiveId);
         if (loc.isEmpty()) {

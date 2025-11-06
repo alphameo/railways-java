@@ -10,9 +10,13 @@ import com.github.alphameo.railways.domain.valueobjects.Id;
 public class TrainCompositionMapper {
 
     public static TrainCompositionDto toDto(final TrainComposition trainComposition) {
-        final var id = trainComposition.getId();
-        final var locomotiveId = trainComposition.getLocomotiveId();
-        final var carriageIds = trainComposition.getCarriageIds();
+        final var id = trainComposition.getId().toString();
+        final var locomotiveId = trainComposition.getLocomotiveId().toString();
+        final var cIds = trainComposition.getCarriageIds();
+        final var carriageIds = new ArrayList<String>();
+        for (final var cId : cIds) {
+            carriageIds.add(cId.toString());
+        }
         return new TrainCompositionDto(
                 id,
                 locomotiveId,
@@ -28,12 +32,13 @@ public class TrainCompositionMapper {
     }
 
     public static TrainComposition toEntity(final TrainCompositionDto trainCompositionDto) {
-        var id = trainCompositionDto.id();
-        if (id == null) {
-            id = new Id();
+        var id = Id.fromString(trainCompositionDto.id());
+        final var locomotiveId = Id.fromString(trainCompositionDto.locomotiveId());
+        final var cIds = trainCompositionDto.carriageIds();
+        final var carriageIds = new ArrayList<Id>();
+        for (final var cId : cIds) {
+            carriageIds.add(Id.fromString(cId));
         }
-        final var locomotiveId = trainCompositionDto.locomotiveId();
-        final var carriageIds = trainCompositionDto.carriageIds();
         return new TrainComposition(id, locomotiveId, carriageIds);
     }
 

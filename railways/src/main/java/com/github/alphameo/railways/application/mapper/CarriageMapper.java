@@ -12,7 +12,7 @@ import com.github.alphameo.railways.domain.valueobjects.MachineNumber;
 public class CarriageMapper {
 
     public static CarriageDto toDto(final Carriage carriage) {
-        final var id = carriage.getId();
+        final var id = carriage.getId().toString();
         final var number = carriage.getNumber().getValue();
         final var contentTypeVO = carriage.getContentType();
         String contentType;
@@ -38,10 +38,7 @@ public class CarriageMapper {
     }
 
     public static Carriage toEntity(final CarriageDto carriageDto) {
-        var id = carriageDto.id();
-        if (id == null) {
-            id = new Id();
-        }
+        var id = Id.fromString(carriageDto.id());
         final var number = new MachineNumber(carriageDto.number());
         final var contentType = CarriageContentType.create(carriageDto.contentType());
         final var capacity = carriageDto.capacity();

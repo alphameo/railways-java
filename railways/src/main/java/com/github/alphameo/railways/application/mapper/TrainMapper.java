@@ -11,9 +11,9 @@ import com.github.alphameo.railways.domain.valueobjects.MachineNumber;
 public class TrainMapper {
 
     public static TrainDto toDto(final Train train) {
-        final var id = train.getId();
+        final var id = train.getId().toString();
         final var number = train.getNumber().getValue();
-        final var trainCompositionId = train.getTrainCompositionId();
+        final var trainCompositionId = train.getTrainCompositionId().toString();
         final var schedule = train.getSchedule();
         final var scheduleDto = ScheduleEntryMapper.toDtoList(schedule);
         return new TrainDto(
@@ -32,12 +32,9 @@ public class TrainMapper {
     }
 
     public static Train toEntity(final TrainDto trainDto) {
-        var id = trainDto.id();
-        if (id == null) {
-            id = new Id();
-        }
+        var id = Id.fromString(trainDto.id());
         final var number = new MachineNumber(trainDto.number());
-        final var trainCompositionId = trainDto.trainCompositionId();
+        final var trainCompositionId = Id.fromString(trainDto.trainCompositionId());
         final var scheduleDto = trainDto.schedule();
         final var schedule = ScheduleEntryMapper.toValueObjectList(scheduleDto);
         final var train = new Train(id, number, trainCompositionId);
