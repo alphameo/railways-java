@@ -42,7 +42,7 @@ public class DefaultTrainCompositionService implements TrainCompositionService {
             }
         }
         try {
-            final var trainComp = new TrainComposition(null, locomotiveId, carriageIds);
+            final var trainComp = new TrainComposition(locomotiveId, carriageIds);
             trainCompositionRepo.create(trainComp);
         } catch (final Exception e) {
             throw new ServiceException(e);
