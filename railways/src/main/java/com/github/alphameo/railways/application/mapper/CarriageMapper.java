@@ -38,11 +38,17 @@ public class CarriageMapper {
     }
 
     public static Carriage toEntity(final CarriageDto carriageDto) {
-        var id = Id.fromString(carriageDto.id());
         final var number = new MachineNumber(carriageDto.number());
         final var contentType = CarriageContentType.create(carriageDto.contentType());
         final var capacity = carriageDto.capacity();
-        final var carriage = new Carriage(id, number);
+        final Carriage carriage;
+        final var strId = carriageDto.id();
+        if (strId == null) {
+            carriage = new Carriage(number);
+        } else {
+            var id = Id.fromString(strId);
+            carriage = new Carriage(id, number);
+        }
         carriage.changeContentType(contentType);
         carriage.changeCapacity(capacity);
         return carriage;

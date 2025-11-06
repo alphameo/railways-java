@@ -31,10 +31,17 @@ public class LocomotiveMapper {
     }
 
     public static Locomotive toEntity(final LocomotiveDto locomotiveDto) {
-        var id = Id.fromString(locomotiveDto.id());
         final var number = new MachineNumber(locomotiveDto.number());
         final var model = new LocomotiveModel(locomotiveDto.model());
-        return new Locomotive(id, number, model);
+        final Locomotive locomotive;
+        final var strId = locomotiveDto.id();
+        if (strId == null) {
+            locomotive = new Locomotive(number, model);
+        } else {
+            var id = Id.fromString(strId);
+            locomotive = new Locomotive(id, number, model);
+        }
+        return locomotive;
     }
 
     public static Iterable<Locomotive> toEntityList(final Iterable<LocomotiveDto> locomotiveDtos) {

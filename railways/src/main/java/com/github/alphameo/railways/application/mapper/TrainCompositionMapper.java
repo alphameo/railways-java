@@ -32,14 +32,21 @@ public class TrainCompositionMapper {
     }
 
     public static TrainComposition toEntity(final TrainCompositionDto trainCompositionDto) {
-        var id = Id.fromString(trainCompositionDto.id());
         final var locomotiveId = Id.fromString(trainCompositionDto.locomotiveId());
         final var cIds = trainCompositionDto.carriageIds();
         final var carriageIds = new ArrayList<Id>();
         for (final var cId : cIds) {
             carriageIds.add(Id.fromString(cId));
         }
-        return new TrainComposition(id, locomotiveId, carriageIds);
+        final TrainComposition trainComposition;
+        final var strId = trainCompositionDto.id();
+        if (strId == null) {
+            trainComposition = new TrainComposition(locomotiveId, carriageIds);
+        } else {
+            var id = Id.fromString(strId);
+            trainComposition = new TrainComposition(id, locomotiveId, carriageIds);
+        }
+        return trainComposition;
     }
 
     public static Iterable<TrainComposition> toEntityList(final Iterable<TrainCompositionDto> trainCompositionDtos) {

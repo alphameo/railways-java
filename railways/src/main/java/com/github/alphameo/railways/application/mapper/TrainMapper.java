@@ -32,12 +32,18 @@ public class TrainMapper {
     }
 
     public static Train toEntity(final TrainDto trainDto) {
-        var id = Id.fromString(trainDto.id());
         final var number = new MachineNumber(trainDto.number());
         final var trainCompositionId = Id.fromString(trainDto.trainCompositionId());
         final var scheduleDto = trainDto.schedule();
         final var schedule = ScheduleEntryMapper.toValueObjectList(scheduleDto);
-        final var train = new Train(id, number, trainCompositionId);
+        final Train train;
+        final var strId = trainDto.id();
+        if (strId == null) {
+            train = new Train(number, trainCompositionId);
+        } else {
+            var id = Id.fromString(strId);
+            train = new Train(id, number, trainCompositionId);
+        }
         train.updateSchedule(schedule);
         return train;
     }

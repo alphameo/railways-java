@@ -30,10 +30,17 @@ public class StationMapper {
     }
 
     public static Station toEntity(final StationDto stationDto) {
-        var id = Id.fromString(stationDto.id());
         final var name = new ObjectName(stationDto.name());
         final var location = new StationLocation(stationDto.location());
-        return new Station(id, name, location);
+        final Station station;
+        final var strId = stationDto.id();
+        if (strId == null) {
+            station = new Station(name, location);
+        } else {
+            var id = Id.fromString(strId);
+            station = new Station(id, name, location);
+        }
+        return station;
     }
 
     public static Iterable<Station> toEntityList(final Iterable<StationDto> stationDtos) {

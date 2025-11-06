@@ -34,14 +34,21 @@ public class LineMapper {
     }
 
     public static Line toEntity(final LineDto lineDto) {
-        var id = Id.fromString(lineDto.id());
         final var name = new ObjectName(lineDto.name());
         final var sIds = lineDto.stationIdOrder();
         final var stationIds = new ArrayList<Id>();
         for (final var sId : sIds) {
             stationIds.add(Id.fromString(sId));
         }
-        return new Line(id, name, stationIds);
+        final Line line;
+        final var strId = lineDto.id();
+        if (strId == null) {
+            line = new Line(name, stationIds);
+        } else {
+            var id = Id.fromString(strId);
+            line = new Line(id, name, stationIds);
+        }
+        return line;
     }
 
     public static Iterable<Line> toEntityList(final Iterable<LineDto> lineDtos) {
