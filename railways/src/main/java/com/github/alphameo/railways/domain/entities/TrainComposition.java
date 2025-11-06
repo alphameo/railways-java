@@ -25,7 +25,7 @@ public class TrainComposition {
             throw new ValidationException("trainComposition: id cannot be null");
         }
         this.id = id;
-        this.setLocomotiveId(locomotiveId);
+        this.setLocomotive(locomotiveId);
         this.updateCarriages(carriageIds);
     }
 
@@ -44,12 +44,12 @@ public class TrainComposition {
         return List.copyOf(this.carriageIds);
     }
 
-    public void setLocomotiveId(final Id locomotive) {
-        if (locomotive == null) {
+    public void setLocomotive(final Id locomotiveId) {
+        if (locomotiveId == null) {
             throw new ValidationException("trainComposition: locomotiveId cannot be null");
         }
 
-        this.locomotiveId = locomotive;
+        this.locomotiveId = locomotiveId;
     }
 
     public void updateCarriages(@NonNull final List<Id> carriageIds) {
@@ -72,7 +72,8 @@ public class TrainComposition {
             this.carriageIds.add(position - 1, id);
         } catch (final Exception e) {
             throw new ValidationException(
-                    String.format("trainComposition: cannot insert carriage on position=%s: %s", position, e.getMessage()),
+                    String.format("trainComposition: cannot attach carriage to position=%s: %s", position,
+                            e.getMessage()),
                     e);
         }
 
@@ -87,7 +88,8 @@ public class TrainComposition {
             this.carriageIds.remove(position - 1);
         } catch (final Exception e) {
             throw new ValidationException(
-                    String.format("trainComposition: cannot remove carriage on position=%s: %s", position, e.getMessage()),
+                    String.format("trainComposition: cannot unattach carriage from position=%s: %s", position,
+                            e.getMessage()),
                     e);
         }
     }
