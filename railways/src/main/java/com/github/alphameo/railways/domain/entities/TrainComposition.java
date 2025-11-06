@@ -54,7 +54,7 @@ public class TrainComposition {
 
     public void updateCarriages(@NonNull final List<Id> carriageIds) {
         if (carriageIds.isEmpty()) {
-            throw new ValidationException("trainComposition: carriageIds must not be empty");
+            throw new ValidationException("trainComposition: carriageIds cannot not be empty");
         }
 
         final var newIds = new ArrayList<Id>();
