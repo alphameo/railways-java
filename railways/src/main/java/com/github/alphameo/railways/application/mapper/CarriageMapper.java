@@ -41,6 +41,7 @@ public class CarriageMapper {
         final var number = new MachineNumber(carriageDto.number());
         final var contentType = CarriageContentType.create(carriageDto.contentType());
         final var capacity = carriageDto.capacity();
+
         final Carriage carriage;
         final var strId = carriageDto.id();
         if (strId == null) {
@@ -51,6 +52,7 @@ public class CarriageMapper {
         }
         carriage.changeContentType(contentType);
         carriage.changeCapacity(capacity);
+
         return carriage;
     }
 

@@ -38,6 +38,7 @@ public class TrainMapper {
         final var schedule = ScheduleEntryMapper.toValueObjectList(scheduleDto);
         final Train train;
         final var strId = trainDto.id();
+
         if (strId == null) {
             train = new Train(number, trainCompositionId);
         } else {
@@ -45,6 +46,7 @@ public class TrainMapper {
             train = new Train(id, number, trainCompositionId);
         }
         train.updateSchedule(schedule);
+
         return train;
     }
 

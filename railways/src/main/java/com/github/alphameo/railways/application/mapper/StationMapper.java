@@ -32,6 +32,7 @@ public class StationMapper {
     public static Station toEntity(final StationDto stationDto) {
         final var name = new ObjectName(stationDto.name());
         final var location = new StationLocation(stationDto.location());
+
         final Station station;
         final var strId = stationDto.id();
         if (strId == null) {
@@ -40,6 +41,7 @@ public class StationMapper {
             var id = Id.fromString(strId);
             station = new Station(id, name, location);
         }
+
         return station;
     }
 

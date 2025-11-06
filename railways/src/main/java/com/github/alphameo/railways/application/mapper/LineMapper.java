@@ -13,11 +13,7 @@ public class LineMapper {
     public static LineDto toDto(final Line line) {
         final var id = line.getId().toString();
         final var name = line.getName().getValue();
-        final var sIds = line.getStationIdOrder();
-        final var stationIds = new ArrayList<String>();
-        for (final var sId : sIds) {
-            stationIds.add(sId.toString());
-        }
+        final var stationIds = IdMapper.toStringList(line.getStationIdOrder());
         return new LineDto(
                 id,
                 name,
@@ -35,11 +31,8 @@ public class LineMapper {
 
     public static Line toEntity(final LineDto lineDto) {
         final var name = new ObjectName(lineDto.name());
-        final var sIds = lineDto.stationIdOrder();
-        final var stationIds = new ArrayList<Id>();
-        for (final var sId : sIds) {
-            stationIds.add(Id.fromString(sId));
-        }
+        final var stationIds = IdMapper.toIdList(lineDto.stationIdOrder());
+
         final Line line;
         final var strId = lineDto.id();
         if (strId == null) {
@@ -48,6 +41,7 @@ public class LineMapper {
             var id = Id.fromString(strId);
             line = new Line(id, name, stationIds);
         }
+
         return line;
     }
 

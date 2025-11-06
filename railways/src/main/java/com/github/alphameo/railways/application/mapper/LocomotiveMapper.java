@@ -33,6 +33,7 @@ public class LocomotiveMapper {
     public static Locomotive toEntity(final LocomotiveDto locomotiveDto) {
         final var number = new MachineNumber(locomotiveDto.number());
         final var model = new LocomotiveModel(locomotiveDto.model());
+
         final Locomotive locomotive;
         final var strId = locomotiveDto.id();
         if (strId == null) {
@@ -41,6 +42,7 @@ public class LocomotiveMapper {
             var id = Id.fromString(strId);
             locomotive = new Locomotive(id, number, model);
         }
+
         return locomotive;
     }
 
