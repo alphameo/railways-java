@@ -57,13 +57,11 @@ public class Train {
     }
 
     public void updateSchedule(@NonNull final List<ScheduleEntry> schedule) {
-        if (schedule == null) {
-            throw new ValidationException("train: schedule cannot be null");
-        }
-
         var newSchedule = new ArrayList<ScheduleEntry>();
-        var prevEntry = this.schedule.get(0);
-        for (ScheduleEntry entry : schedule) {
+        var prevEntry = schedule.get(0);
+        newSchedule.add(prevEntry);
+        for (int i = 1; i < schedule.size(); i++) {
+            final var entry = schedule.get(i);
             if (entry == null) {
                 throw new ValidationException("train: scheduleEntry cannot be null");
             }
