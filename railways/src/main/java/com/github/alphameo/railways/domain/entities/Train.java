@@ -23,17 +23,17 @@ public class Train {
     private Id trainCompositionId;
     private List<ScheduleEntry> schedule;
 
-    public Train(final Id id, final MachineNumber number, final Id trainCompositionId, List<ScheduleEntry> schedule) {
+    public Train(final Id id, final MachineNumber number, final Id trainCompositionId) {
         if (id == null) {
             throw new ValidationException("Train.id cannot be null");
         }
         this.id = id;
+        this.assignTrainComposition(trainCompositionId);
         this.changeNumber(number);
-        this.updateSchedule(schedule);
     }
 
-    public Train(final MachineNumber number, final Id trainCompositionId, List<ScheduleEntry> schedule) {
-        this(new Id(), number, trainCompositionId, schedule);
+    public Train(final MachineNumber number, final Id trainCompositionId) {
+        this(new Id(), number, trainCompositionId);
     }
 
     public List<ScheduleEntry> getSchedule() {

@@ -43,7 +43,7 @@ public class DefaultTrainService implements TrainService {
                         scheduleEntry.departureTime());
                 valSchedule.add(valScheduleEntry);
             }
-            final var valTrain = new Train(number, trainCompoId, valSchedule);
+            final var valTrain = new Train(number, trainCompoId);
             trainRepo.create(valTrain);
         } catch (final RuntimeException e) {
             throw new ServiceException(e);

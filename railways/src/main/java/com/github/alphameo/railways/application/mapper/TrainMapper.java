@@ -40,7 +40,9 @@ public class TrainMapper {
         final var trainCompositionId = trainDto.trainCompositionId();
         final var scheduleDto = trainDto.schedule();
         final var schedule = ScheduleEntryMapper.toValueObjectList(scheduleDto);
-        return new Train(id, number, trainCompositionId, schedule);
+        final var train = new Train(id, number, trainCompositionId);
+        train.updateSchedule(schedule);
+        return train;
     }
 
     public static Iterable<Train> toEntityList(final Iterable<TrainDto> trainDtos) {

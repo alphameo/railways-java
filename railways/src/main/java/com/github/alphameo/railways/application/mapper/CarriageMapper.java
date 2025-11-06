@@ -45,7 +45,10 @@ public class CarriageMapper {
         final var number = new MachineNumber(carriageDto.number());
         final var contentType = CarriageContentType.create(carriageDto.contentType());
         final var capacity = carriageDto.capacity();
-        return new Carriage(id, number, contentType, capacity);
+        final var carriage = new Carriage(id, number);
+        carriage.changeContentType(contentType);
+        carriage.changeCapacity(capacity);
+        return carriage;
     }
 
     public static Iterable<Carriage> toEntityList(final Iterable<CarriageDto> carriageDtos) {

@@ -21,22 +21,16 @@ public class Carriage {
     private CarriageContentType contentType;
     private Long capacity;
 
-    public Carriage(
-            final Id id,
-            final MachineNumber number,
-            final CarriageContentType contentType,
-            final Long capacity) {
+    public Carriage(final Id id, final MachineNumber number) {
         if (id == null) {
             throw new ValidationException("carriage: id cannot be null");
         }
         this.id = id;
         this.changeNumber(number);
-        this.changeContentType(contentType);
-        this.changeCapacity(capacity);
     }
 
-    public Carriage(final MachineNumber number, final CarriageContentType contentType, final Long capacity) {
-        this(new Id(), number, contentType, capacity);
+    public Carriage(final MachineNumber number) {
+        this(new Id(), number);
     }
 
     public void changeNumber(final MachineNumber number) {
