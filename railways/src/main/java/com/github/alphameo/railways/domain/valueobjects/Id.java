@@ -2,6 +2,7 @@ package com.github.alphameo.railways.domain.valueobjects;
 
 import java.util.UUID;
 
+import lombok.NonNull;
 import lombok.Value;
 
 @Value
@@ -16,10 +17,7 @@ public class Id {
         this.value = UUID.randomUUID();
     }
 
-    public static Id fromString(final String string) {
-        if (string == null) {
-            return new Id();
-        }
+    public static Id fromString(@NonNull final String string) {
         return new Id(UUID.fromString(string));
     }
 
