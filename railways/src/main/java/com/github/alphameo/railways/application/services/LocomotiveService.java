@@ -14,5 +14,5 @@ public interface LocomotiveService {
 
      List<LocomotiveDto> listAllLocomotives();
 
-     void unregisterLocomotiveById(String id);
+     void unregisterLocomotive(String id);
 }

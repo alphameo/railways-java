@@ -8,7 +8,7 @@ import com.github.alphameo.railways.application.dto.StationDto;
 public interface LineService {
     void declareLine(LineDto line);
 
-    List<StationDto> listLineStations(String lineId);
+    List<StationDto> listStationsOfLine(String lineId);
 
     LineDto findLineById(String id);
 

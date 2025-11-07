@@ -48,6 +48,6 @@ public class UnregisterLocomotiveCommand implements CliCommand {
     @Override
     public void execute() {
         final var id = args[0];
-        this.service.unregisterLocomotiveById(id);
+        this.service.unregisterLocomotive(id);
     }
 }

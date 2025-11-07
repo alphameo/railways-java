@@ -73,7 +73,7 @@ public class DefaultLocomotiveService implements LocomotiveService {
     }
 
     @Override
-    public void unregisterLocomotiveById(@NonNull final String id) {
+    public void unregisterLocomotive(@NonNull final String id) {
         try {
             final var valId = Id.fromString(id);
             repository.deleteById(valId);

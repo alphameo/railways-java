@@ -37,7 +37,7 @@ public class DefaultLineService implements LineService {
     }
 
     @Override
-    public List<StationDto> listLineStations(@NonNull final String lineId) {
+    public List<StationDto> listStationsOfLine(@NonNull final String lineId) {
         try {
             final var valId = Id.fromString(lineId);
             final List<Station> stations = new ArrayList<>();

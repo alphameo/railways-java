@@ -48,7 +48,7 @@ public class ListLineStationsCommand implements CliCommand {
     @Override
     public void execute() {
         final var id = args[0];
-        final var list = this.service.listLineStations(id);
+        final var list = this.service.listStationsOfLine(id);
         final var out = Renderer.renderList(
                 String.format(
                         "Station order list for line (id=%s)",

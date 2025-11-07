@@ -14,5 +14,5 @@ public interface CarriageService {
 
     public List<CarriageDto> listAllCarriages();
 
-    public void unregisterCarriageById(String id);
+    public void unregisterCarriage(String id);
 }

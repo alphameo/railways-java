@@ -78,7 +78,7 @@ public class DefaultCarriageService implements CarriageService {
     }
 
     @Override
-    public void unregisterCarriageById(@NonNull final String id) {
+    public void unregisterCarriage(@NonNull final String id) {
         try {
             final var valId = Id.fromString(id);
             repository.deleteById(valId);
