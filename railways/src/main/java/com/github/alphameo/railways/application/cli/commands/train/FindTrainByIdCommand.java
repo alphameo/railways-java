@@ -3,7 +3,6 @@ package com.github.alphameo.railways.application.cli.commands.train;
 import com.github.alphameo.railways.application.cli.Renderer;
 import com.github.alphameo.railways.application.cli.commands.CliCommand;
 import com.github.alphameo.railways.application.services.TrainService;
-import com.github.alphameo.railways.domain.valueobjects.Id;
 import com.github.alphameo.railways.exceptions.application.cli.CliArgsCountException;
 
 import lombok.NonNull;
@@ -40,7 +39,7 @@ public class FindTrainByIdCommand implements CliCommand {
 
     @Override
     public void setArgs(@NonNull final String[] args) {
-        if (args.length != ARGS_COUNT ) {
+        if (args.length != ARGS_COUNT) {
             throw new CliArgsCountException("== " + ARGS_COUNT);
         }
         this.args = args;
@@ -48,7 +47,7 @@ public class FindTrainByIdCommand implements CliCommand {
 
     @Override
     public void execute() {
-        final var id = Id.fromString(args[0]);
+        final var id = args[0];
         final var entity = this.service.findTrainById(id);
         System.out.println(entity);
     }

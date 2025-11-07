@@ -53,10 +53,11 @@ public class DefaultTrainService implements TrainService {
     }
 
     @Override
-    public TrainDto findTrainById(@NonNull final Id id) {
+    public TrainDto findTrainById(@NonNull final String id) {
         final Optional<Train> out;
         try {
-            out = trainRepo.findById(id);
+            final var valId = Id.fromString(id);
+            out = trainRepo.findById(valId);
         } catch (final Exception e) {
             throw new ServiceException(e);
         }

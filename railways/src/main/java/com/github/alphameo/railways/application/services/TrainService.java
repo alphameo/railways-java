@@ -4,13 +4,12 @@ import java.util.List;
 
 import com.github.alphameo.railways.application.dto.ScheduleEntryDto;
 import com.github.alphameo.railways.application.dto.TrainDto;
-import com.github.alphameo.railways.domain.valueobjects.Id;
 
 public interface TrainService {
 
     void registerTrain(TrainDto train);
 
-    TrainDto findTrainById(Id id);
+    TrainDto findTrainById(String id);
 
     TrainDto findTrainByNumber(String number);
 
