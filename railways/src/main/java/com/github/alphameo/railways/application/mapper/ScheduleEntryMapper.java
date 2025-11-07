@@ -1,5 +1,7 @@
 package com.github.alphameo.railways.application.mapper;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,14 +11,20 @@ import com.github.alphameo.railways.domain.valueobjects.ScheduleEntry;
 
 public class ScheduleEntryMapper {
 
+    public static final DateTimeFormatter DATE_TIME_FORMAT = DateTimeFormatter.ofPattern("dd-mm-yyyy HH:mm");
+
+    public static LocalDateTime parseDate(String date) {
+        return LocalDateTime.parse(date, DATE_TIME_FORMAT);
+    }
+
     public static ScheduleEntryDto toDto(final ScheduleEntry scheduleEntry) {
         final var stationId = scheduleEntry.getStationId().toString();
         final var arrivalTime = scheduleEntry.getArrivalTime();
         final var departureTime = scheduleEntry.getDepartureTime();
         return new ScheduleEntryDto(
                 stationId,
-                arrivalTime,
-                departureTime);
+                arrivalTime.toString(),
+                departureTime.toString());
     }
 
     public static List<ScheduleEntryDto> toDtoList(final Iterable<ScheduleEntry> scheduleEntries) {
@@ -31,7 +39,7 @@ public class ScheduleEntryMapper {
         final var stationId = Id.fromString(scheduleEntryDto.stationId());
         final var arrivalTime = scheduleEntryDto.arrivalTime();
         final var departureTime = scheduleEntryDto.departureTime();
-        return new ScheduleEntry(stationId, arrivalTime, departureTime);
+        return new ScheduleEntry(stationId, parseDate(arrivalTime), parseDate(departureTime));
     }
 
     public static List<ScheduleEntry> toValueObjectList(final Iterable<ScheduleEntryDto> scheduleEntryDtos) {

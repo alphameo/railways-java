@@ -1,8 +1,5 @@
 package com.github.alphameo.railways.application.cli.commands.train;
 
-import java.time.LocalDateTime;
-
-import com.github.alphameo.railways.application.cli.DateParser;
 import com.github.alphameo.railways.application.cli.Renderer;
 import com.github.alphameo.railways.application.cli.commands.CliCommand;
 import com.github.alphameo.railways.application.dto.ScheduleEntryDto;
@@ -54,15 +51,15 @@ public class InsertTrainScheduleEntryCommand implements CliCommand {
         final var id = args[0];
         final var orderIndex = Integer.parseInt(args[1]);
         final var stationId = args[2];
-        final LocalDateTime arrivalTime;
-        final LocalDateTime departureTime;
+        final String arrivalTime;
+        final String departureTime;
         if (args.length >= 4) {
-            arrivalTime = DateParser.parse(args[3]);
+            arrivalTime = args[3];
         } else {
             arrivalTime = null;
         }
         if (args.length >= 5) {
-            departureTime = DateParser.parse(args[4]);
+            departureTime = args[4];
         } else {
             departureTime = null;
         }
