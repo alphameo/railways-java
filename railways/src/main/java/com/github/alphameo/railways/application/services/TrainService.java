@@ -13,7 +13,7 @@ public interface TrainService {
 
     TrainDto findTrainByNumber(String number);
 
-    List<TrainDto> listAll();
+    List<TrainDto> listAllTrains();
 
     void unregisterTrain(String id);
 

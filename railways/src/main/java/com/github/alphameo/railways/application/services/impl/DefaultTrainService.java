@@ -85,7 +85,7 @@ public class DefaultTrainService implements TrainService {
     }
 
     @Override
-    public List<TrainDto> listAll() {
+    public List<TrainDto> listAllTrains() {
         try {
             return TrainMapper.toDtoList(trainRepo.findAll());
         } catch (final RuntimeException e) {
