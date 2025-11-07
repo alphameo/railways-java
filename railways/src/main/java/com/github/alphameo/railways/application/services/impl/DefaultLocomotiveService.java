@@ -22,7 +22,7 @@ public class DefaultLocomotiveService implements LocomotiveService {
     private LocomotiveRepository repository;
 
     @Override
-    public void register(@NonNull final LocomotiveDto locomotive) {
+    public void registerLocomotive(@NonNull final LocomotiveDto locomotive) {
         try {
             final var valLocomotive = LocomotiveMapper.toEntity(locomotive);
             repository.create(valLocomotive);
@@ -32,7 +32,7 @@ public class DefaultLocomotiveService implements LocomotiveService {
     }
 
     @Override
-    public LocomotiveDto findById(@NonNull final String id) {
+    public LocomotiveDto findLocomotiveById(@NonNull final String id) {
         final Optional<Locomotive> out;
         try {
             final var valId = Id.fromString(id);
@@ -48,7 +48,7 @@ public class DefaultLocomotiveService implements LocomotiveService {
     }
 
     @Override
-    public LocomotiveDto findByNumber(@NonNull final String number) {
+    public LocomotiveDto findLocomotiveByNumber(@NonNull final String number) {
         final Optional<Locomotive> out;
         try {
             final var valNumber = new MachineNumber(number);
@@ -64,7 +64,7 @@ public class DefaultLocomotiveService implements LocomotiveService {
     }
 
     @Override
-    public List<LocomotiveDto> listAll() {
+    public List<LocomotiveDto> listAllLocomotives() {
         try {
             return LocomotiveMapper.toDtoList(repository.findAll());
         } catch (final RuntimeException e) {
@@ -73,7 +73,7 @@ public class DefaultLocomotiveService implements LocomotiveService {
     }
 
     @Override
-    public void unregister(@NonNull final String id) {
+    public void unregisterLocomotiveById(@NonNull final String id) {
         try {
             final var valId = Id.fromString(id);
             repository.deleteById(valId);

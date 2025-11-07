@@ -48,6 +48,6 @@ public class UnregisterCarriageCommand implements CliCommand {
     @Override
     public void execute() {
         final var id = args[0];
-        this.service.unregister(id);
+        this.service.unregisterCarriageById(id);
     }
 }

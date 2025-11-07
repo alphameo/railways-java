@@ -6,13 +6,13 @@ import com.github.alphameo.railways.application.dto.CarriageDto;
 
 public interface CarriageService {
 
-    public void register(CarriageDto carriage);
+    public void registerCarriage(CarriageDto carriage);
 
-    public CarriageDto findById(String id);
+    public CarriageDto findCarriageById(String id);
 
-    public CarriageDto findByNumber(String number);
+    public CarriageDto findCarriageByNumber(String number);
 
-    public List<CarriageDto> listAll();
+    public List<CarriageDto> listAllCarriages();
 
-    public void unregister(String id);
+    public void unregisterCarriageById(String id);
 }

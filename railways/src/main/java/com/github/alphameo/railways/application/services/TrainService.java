@@ -8,15 +8,15 @@ import com.github.alphameo.railways.domain.valueobjects.Id;
 
 public interface TrainService {
 
-    void register(TrainDto train);
+    void registerTrain(TrainDto train);
 
-    TrainDto findById(Id id);
+    TrainDto findTrainById(Id id);
 
-    TrainDto findByNumber(String number);
+    TrainDto findTrainByNumber(String number);
 
     List<TrainDto> listAll();
 
-    void unregister(String id);
+    void unregisterTrain(String id);
 
     void insertScheduleEntry(String trainId, ScheduleEntryDto scheduleEntry, int orderIndex);
 

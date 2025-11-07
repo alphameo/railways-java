@@ -63,6 +63,6 @@ public class RegisterCarriageCommand implements CliCommand {
             capacity = null;
         }
         final var dto = new CarriageDto(null, number, contentType, capacity);
-        this.service.register(dto);
+        this.service.registerCarriage(dto);
     }
 }

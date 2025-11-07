@@ -52,7 +52,7 @@ public class DefaultLineService implements LineService {
     }
 
     @Override
-    public LineDto findById(@NonNull final String id) {
+    public LineDto findLineById(@NonNull final String id) {
         final Optional<Line> line;
         try {
             final var valId = Id.fromString(id);
@@ -68,7 +68,7 @@ public class DefaultLineService implements LineService {
     }
 
     @Override
-    public List<LineDto> listAll() {
+    public List<LineDto> listAllLines() {
         try {
             return LineMapper.toDtoList(lineRepo.findAll());
         } catch (final RuntimeException e) {

@@ -45,7 +45,7 @@ public class ListCarriagesCommand implements CliCommand {
 
     @Override
     public void execute() {
-        final var list = this.service.listAll();
+        final var list = this.service.listAllCarriages();
         System.out.println(Renderer.renderList("All Carriages", list));
     }
 }

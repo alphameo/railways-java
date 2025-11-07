@@ -51,7 +51,7 @@ public class DefaultTrainCompositionService implements TrainCompositionService {
     }
 
     @Override
-    public TrainCompositionDto findById(@NonNull final String id) {
+    public TrainCompositionDto findTrainCompositionById(@NonNull final String id) {
         final Optional<TrainComposition> out;
         try {
             final var valId = Id.fromString(id);
@@ -67,7 +67,7 @@ public class DefaultTrainCompositionService implements TrainCompositionService {
     }
 
     @Override
-    public List<TrainCompositionDto> listAll() {
+    public List<TrainCompositionDto> listAllTrainCompositions() {
         try {
             return TrainCompositionMapper.toDtoList(trainCompositionRepo.findAll());
         } catch (final RuntimeException e) {

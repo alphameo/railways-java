@@ -21,7 +21,7 @@ public class DefaultStationService implements StationService {
     private StationRepository stationRepo;
 
     @Override
-    public void register(@NonNull final StationDto station) {
+    public void registerStation(@NonNull final StationDto station) {
         try {
             final var valStation = StationMapper.toEntity(station);
             stationRepo.create(valStation);
@@ -31,7 +31,7 @@ public class DefaultStationService implements StationService {
     }
 
     @Override
-    public StationDto findById(@NonNull final String id) {
+    public StationDto findStationById(@NonNull final String id) {
         final Optional<Station> out;
         try {
             final var valId = Id.fromString(id);
@@ -47,7 +47,7 @@ public class DefaultStationService implements StationService {
     }
 
     @Override
-    public List<StationDto> listAll() {
+    public List<StationDto> listAllStations() {
         try {
             return StationMapper.toDtoList(stationRepo.findAll());
         } catch (final RuntimeException e) {
@@ -56,7 +56,7 @@ public class DefaultStationService implements StationService {
     }
 
     @Override
-    public void unregister(@NonNull final String id) {
+    public void unregisterStation(@NonNull final String id) {
         try {
             final var valId = Id.fromString(id);
             stationRepo.deleteById(valId);

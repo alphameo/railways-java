@@ -10,9 +10,9 @@ public interface LineService {
 
     List<StationDto> listLineStations(String lineId);
 
-    LineDto findById(String id);
+    LineDto findLineById(String id);
 
-    List<LineDto> listAll();
+    List<LineDto> listAllLines();
 
     void disbandLine(String lineId);
 }

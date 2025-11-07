@@ -51,6 +51,6 @@ public class RegisterStationCommand implements CliCommand {
         final var number = args[0];
         final var model = args[1];
         final var dto = new StationDto(null, number, model);
-        this.service.register(dto);
+        this.service.registerStation(dto);
     }
 }

@@ -45,7 +45,7 @@ public class ListLinesCommand implements CliCommand {
 
     @Override
     public void execute() {
-        final var list = this.service.listAll();
+        final var list = this.service.listAllLines();
         System.out.println(Renderer.renderList("All Lines", list));
     }
 }

@@ -22,7 +22,7 @@ public class DefaultCarriageService implements CarriageService {
     private final CarriageRepository repository;
 
     @Override
-    public void register(@NonNull final CarriageDto carriage) {
+    public void registerCarriage(@NonNull final CarriageDto carriage) {
         try {
             final var id = carriage.id();
             if (id == null) {
@@ -36,7 +36,7 @@ public class DefaultCarriageService implements CarriageService {
     }
 
     @Override
-    public CarriageDto findById(@NonNull final String id) {
+    public CarriageDto findCarriageById(@NonNull final String id) {
         final Optional<Carriage> carr;
         try {
             final var valId = Id.fromString(id);
@@ -52,7 +52,7 @@ public class DefaultCarriageService implements CarriageService {
     }
 
     @Override
-    public CarriageDto findByNumber(@NonNull final String number) {
+    public CarriageDto findCarriageByNumber(@NonNull final String number) {
         final Optional<Carriage> carr;
         try {
             final var valNumber = new MachineNumber(number);
@@ -68,7 +68,7 @@ public class DefaultCarriageService implements CarriageService {
     }
 
     @Override
-    public List<CarriageDto> listAll() {
+    public List<CarriageDto> listAllCarriages() {
         try {
             final var carriages = repository.findAll();
             return CarriageMapper.toDtoList(carriages);
@@ -78,7 +78,7 @@ public class DefaultCarriageService implements CarriageService {
     }
 
     @Override
-    public void unregister(@NonNull final String id) {
+    public void unregisterCarriageById(@NonNull final String id) {
         try {
             final var valId = Id.fromString(id);
             repository.deleteById(valId);

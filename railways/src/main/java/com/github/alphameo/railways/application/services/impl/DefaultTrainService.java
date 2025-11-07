@@ -28,7 +28,7 @@ public class DefaultTrainService implements TrainService {
     private final TrainCompositionRepository trainCompositionRepo;
 
     @Override
-    public void register(@NonNull final TrainDto train) {
+    public void registerTrain(@NonNull final TrainDto train) {
         final var trainEntity = TrainMapper.toEntity(train);
         final var trainCompoId = trainEntity.getTrainCompositionId();
         final var trainCompo = trainCompositionRepo.findById(trainCompoId);
@@ -53,7 +53,7 @@ public class DefaultTrainService implements TrainService {
     }
 
     @Override
-    public TrainDto findById(@NonNull final Id id) {
+    public TrainDto findTrainById(@NonNull final Id id) {
         final Optional<Train> out;
         try {
             out = trainRepo.findById(id);
@@ -68,7 +68,7 @@ public class DefaultTrainService implements TrainService {
     }
 
     @Override
-    public TrainDto findByNumber(@NonNull final String number) {
+    public TrainDto findTrainByNumber(@NonNull final String number) {
         final Optional<Train> out;
         try {
             final var valNumber = new MachineNumber(number);
@@ -93,7 +93,7 @@ public class DefaultTrainService implements TrainService {
     }
 
     @Override
-    public void unregister(@NonNull final String id) {
+    public void unregisterTrain(@NonNull final String id) {
         try {
             final var valId = Id.fromString(id);
             trainRepo.deleteById(valId);

@@ -45,7 +45,7 @@ public class ListTrainCompositionsCommand implements CliCommand {
 
     @Override
     public void execute() {
-        final var list = this.service.listAll();
+        final var list = this.service.listAllTrainCompositions();
         System.out.println(Renderer.renderList("All Locomotives", list));
     }
 }

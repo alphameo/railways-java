@@ -49,7 +49,7 @@ public class FindTrainByIdCommand implements CliCommand {
     @Override
     public void execute() {
         final var id = Id.fromString(args[0]);
-        final var entity = this.service.findById(id);
+        final var entity = this.service.findTrainById(id);
         System.out.println(entity);
     }
 }

@@ -6,11 +6,11 @@ import com.github.alphameo.railways.application.dto.StationDto;
 
 public interface StationService {
 
-    void register(StationDto station);
+    void registerStation(StationDto station);
 
-    StationDto findById(String id);
+    StationDto findStationById(String id);
 
-    List<StationDto> listAll();
+    List<StationDto> listAllStations();
 
-    void unregister(String id);
+    void unregisterStation(String id);
 }

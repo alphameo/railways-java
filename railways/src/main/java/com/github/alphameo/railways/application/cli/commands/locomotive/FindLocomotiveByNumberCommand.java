@@ -48,7 +48,7 @@ public class FindLocomotiveByNumberCommand implements CliCommand {
     @Override
     public void execute() {
         final var number = args[0];
-        final var entity = this.service.findByNumber(number);
+        final var entity = this.service.findLocomotiveByNumber(number);
         System.out.println(entity);
     }
 }

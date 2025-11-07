@@ -55,6 +55,6 @@ public class RegisterTrainCommand implements CliCommand {
         final var trainCompositionId = args[0];
         final var schedule = new ArrayList<ScheduleEntryDto>();
         final var dto = new TrainDto(null, number, trainCompositionId, schedule);
-        this.service.register(dto);
+        this.service.registerTrain(dto);
     }
 }

@@ -48,7 +48,7 @@ public class FindTrainCompositionByIdCommand implements CliCommand {
     @Override
     public void execute() {
         final var id = args[0];
-        final var entity = this.service.findById(id);
+        final var entity = this.service.findTrainCompositionById(id);
         System.out.println(entity);
     }
 }

@@ -51,6 +51,6 @@ public class RegisterLocomotiveCommand implements CliCommand {
         final var number = args[0];
         final var model = args[1];
         final var dto = new LocomotiveDto(null, number, model);
-        this.service.register(dto);
+        this.service.registerLocomotive(dto);
     }
 }

@@ -8,9 +8,9 @@ public interface TrainCompositionService {
 
     void assembleTrainComposition(TrainCompositionDto trainComposition);
 
-    TrainCompositionDto findById(String id);
+    TrainCompositionDto findTrainCompositionById(String id);
 
-    List<TrainCompositionDto> listAll();
+    List<TrainCompositionDto> listAllTrainCompositions();
 
     void disassembleTrainComposition(String id);
 }
