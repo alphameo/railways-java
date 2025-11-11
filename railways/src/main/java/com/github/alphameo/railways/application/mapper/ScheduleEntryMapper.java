@@ -1,7 +1,5 @@
 package com.github.alphameo.railways.application.mapper;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,12 +8,6 @@ import com.github.alphameo.railways.domain.valueobjects.Id;
 import com.github.alphameo.railways.domain.valueobjects.ScheduleEntry;
 
 public class ScheduleEntryMapper {
-
-    public static final DateTimeFormatter DATE_TIME_FORMAT = DateTimeFormatter.ofPattern("dd-mm-yyyy HH:mm");
-
-    public static LocalDateTime parseDate(String date) {
-        return LocalDateTime.parse(date, DATE_TIME_FORMAT);
-    }
 
     public static ScheduleEntryDto toDto(final ScheduleEntry scheduleEntry) {
         final var stationId = scheduleEntry.getStationId().toString();
