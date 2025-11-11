@@ -1,6 +1,7 @@
 package com.github.alphameo.railways;
 
-import com.github.alphameo.railways.application.cli.CliApp;
+
+import com.github.alphameo.railways.adapters.cli.CliApp;
 import com.github.alphameo.railways.application.services.ServiceProvider;
 import com.github.alphameo.railways.application.services.impl.DefaultServiceProvider;
 import com.github.alphameo.railways.infrastructure.inmemory.InMemoryStorage;
