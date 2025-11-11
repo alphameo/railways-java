@@ -23,8 +23,8 @@ public class ScheduleEntryMapper {
         final var departureTime = scheduleEntry.getDepartureTime();
         return new ScheduleEntryDto(
                 stationId,
-                arrivalTime.toString(),
-                departureTime.toString());
+                arrivalTime,
+                departureTime);
     }
 
     public static List<ScheduleEntryDto> toDtoList(final Iterable<ScheduleEntry> scheduleEntries) {
@@ -39,7 +39,7 @@ public class ScheduleEntryMapper {
         final var stationId = Id.fromString(scheduleEntryDto.stationId());
         final var arrivalTime = scheduleEntryDto.arrivalTime();
         final var departureTime = scheduleEntryDto.departureTime();
-        return new ScheduleEntry(stationId, parseDate(arrivalTime), parseDate(departureTime));
+        return new ScheduleEntry(stationId, arrivalTime, departureTime);
     }
 
     public static List<ScheduleEntry> toValueObjectList(final Iterable<ScheduleEntryDto> scheduleEntryDtos) {
