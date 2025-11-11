@@ -1,4 +1,4 @@
-package com.github.alphameo.railways.application.mapper;
+package com.github.alphameo.railways.application.mappers;
 
 import java.util.ArrayList;
 import java.util.List;

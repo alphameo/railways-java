@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.github.alphameo.railways.application.dto.TrainCompositionDto;
-import com.github.alphameo.railways.application.mapper.TrainCompositionMapper;
+import com.github.alphameo.railways.application.mappers.TrainCompositionMapper;
 import com.github.alphameo.railways.application.services.TrainCompositionService;
 import com.github.alphameo.railways.domain.entities.Carriage;
 import com.github.alphameo.railways.domain.entities.Locomotive;

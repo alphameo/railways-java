@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.github.alphameo.railways.application.dto.StationDto;
-import com.github.alphameo.railways.application.mapper.StationMapper;
+import com.github.alphameo.railways.application.mappers.StationMapper;
 import com.github.alphameo.railways.application.services.StationService;
 import com.github.alphameo.railways.domain.entities.Station;
 import com.github.alphameo.railways.domain.repositories.StationRepository;

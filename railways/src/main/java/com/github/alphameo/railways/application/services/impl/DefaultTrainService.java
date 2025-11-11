@@ -6,8 +6,8 @@ import java.util.Optional;
 
 import com.github.alphameo.railways.application.dto.ScheduleEntryDto;
 import com.github.alphameo.railways.application.dto.TrainDto;
-import com.github.alphameo.railways.application.mapper.ScheduleEntryMapper;
-import com.github.alphameo.railways.application.mapper.TrainMapper;
+import com.github.alphameo.railways.application.mappers.ScheduleEntryMapper;
+import com.github.alphameo.railways.application.mappers.TrainMapper;
 import com.github.alphameo.railways.application.services.TrainService;
 import com.github.alphameo.railways.domain.entities.Train;
 import com.github.alphameo.railways.domain.repositories.TrainCompositionRepository;

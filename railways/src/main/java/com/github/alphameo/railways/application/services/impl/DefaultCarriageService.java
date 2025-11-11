@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.github.alphameo.railways.application.dto.CarriageDto;
-import com.github.alphameo.railways.application.mapper.CarriageMapper;
+import com.github.alphameo.railways.application.mappers.CarriageMapper;
 import com.github.alphameo.railways.application.services.CarriageService;
 import com.github.alphameo.railways.domain.entities.Carriage;
 import com.github.alphameo.railways.domain.repositories.CarriageRepository;
