@@ -30,6 +30,7 @@ public class Train {
         this.id = id;
         this.assignTrainComposition(trainCompositionId);
         this.changeNumber(number);
+        this.schedule = new ArrayList<>();
     }
 
     public Train(final MachineNumber number, final Id trainCompositionId) {
