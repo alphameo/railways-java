@@ -11,4 +11,8 @@ public class InfrastructureException extends RailwaysException {
     public InfrastructureException(String msg, Throwable cause) {
         super(msg, cause);
     }
+
+    public InfrastructureException(Throwable cause) {
+        super(cause);
+    }
 }
