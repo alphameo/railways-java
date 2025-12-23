@@ -17,7 +17,7 @@ import com.github.alphameo.railways.domain.valueobjects.ScheduleEntry;
 import com.github.alphameo.railways.exceptions.infrastructure.InfrastructureException;
 
 public class MariaDBTrainRepository implements TrainRepository {
-    private Connection connection;
+    private final Connection connection;
 
     private static String CREATE_TRAIN_SQL = "INSERT INTO train (id, train_composition_id, number) VALUES (?, ?, ?)";
     private static String FIND_TRAIN_BY_ID = "SELECT id, train_composition_id, number FROM train WHERE id = ?";
@@ -28,19 +28,19 @@ public class MariaDBTrainRepository implements TrainRepository {
     private static String FIND_SCHEDULE_ENTRY_IDS_BY_TRAIN_ID = "SELECT id FROM schedule_entry WHERE train_id = ? ORDER BY order_number";
     private static String DELETE_SCHEDULE_ENTRIES_BY_TRAIN_ID = "DELETE FROM schedule_entry WHERE train_id = ?";
 
-    public MariaDBTrainRepository(Connection connection) {
+    public MariaDBTrainRepository(final Connection connection) {
         this.connection = connection;
     }
 
     @Override
-    public void create(Train entity) {
-        Id id = entity.getId();
-        var byId = findById(id);
+    public void create(final Train entity) {
+        final Id id = entity.getId();
+        final var byId = findById(id);
         if (byId.isPresent()) {
             throw new InfrastructureException("Carriage with id already exists: " + id);
         }
-        MachineNumber number = entity.getNumber();
-        var byNumber = findByNumber(number);
+        final MachineNumber number = entity.getNumber();
+        final var byNumber = findByNumber(number);
         if (byNumber.isPresent()) {
             throw new InfrastructureException("Carriage number already exists: " + number);
         }
@@ -51,26 +51,26 @@ public class MariaDBTrainRepository implements TrainRepository {
             stmt.setString(3, number.toString());
             stmt.executeUpdate();
             createScheduleEntries(entity.getSchedule(), id);
-        } catch (Exception e) {
+        } catch (final Exception e) {
             throw new InfrastructureException(e);
         }
     }
 
     @Override
-    public Optional<Train> findById(Id id) {
+    public Optional<Train> findById(final Id id) {
         try (PreparedStatement stmt = connection.prepareStatement(FIND_TRAIN_BY_ID)) {
             stmt.setString(1, id.toString());
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    Id trainCompositionId = Id.fromString(rs.getString("train_composition_id"));
-                    MachineNumber number = new MachineNumber(rs.getString("number"));
-                    List<ScheduleEntry> schedule = findScheduleEntriesByTrainId(id);
-                    Train train = new Train(id, number, trainCompositionId);
+                    final Id trainCompositionId = Id.fromString(rs.getString("train_composition_id"));
+                    final MachineNumber number = new MachineNumber(rs.getString("number"));
+                    final List<ScheduleEntry> schedule = findScheduleEntriesByTrainId(id);
+                    final Train train = new Train(id, number, trainCompositionId);
                     train.updateSchedule(schedule);
                     return Optional.of(train);
                 }
             }
-        } catch (Exception e) {
+        } catch (final Exception e) {
             throw new InfrastructureException(e);
         }
         return Optional.empty();
@@ -78,29 +78,29 @@ public class MariaDBTrainRepository implements TrainRepository {
 
     @Override
     public List<Train> findAll() {
-        List<Train> trains = new ArrayList<>();
+        final List<Train> trains = new ArrayList<>();
         try (PreparedStatement stmt = connection.prepareStatement(FIND_ALL_TRAINS);
                 ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
-                Id id = Id.fromString(rs.getString("id"));
-                Id trainCompositionId = Id.fromString(rs.getString("train_composition_id"));
-                MachineNumber number = new MachineNumber(rs.getString("number"));
-                List<ScheduleEntry> schedule = findScheduleEntriesByTrainId(id);
-                Train train = new Train(id, number, trainCompositionId);
+                final Id id = Id.fromString(rs.getString("id"));
+                final Id trainCompositionId = Id.fromString(rs.getString("train_composition_id"));
+                final MachineNumber number = new MachineNumber(rs.getString("number"));
+                final List<ScheduleEntry> schedule = findScheduleEntriesByTrainId(id);
+                final Train train = new Train(id, number, trainCompositionId);
                 train.updateSchedule(schedule);
                 trains.add(train);
             }
-        } catch (Exception e) {
+        } catch (final Exception e) {
             throw new InfrastructureException(e);
         }
         return trains;
     }
 
     @Override
-    public void update(Train entity) {
-        Id id = entity.getId();
-        MachineNumber number = entity.getNumber();
-        var byNumber = findByNumber(number);
+    public void update(final Train entity) {
+        final Id id = entity.getId();
+        final MachineNumber number = entity.getNumber();
+        final var byNumber = findByNumber(number);
         if (!byNumber.get().getId().equals(id)) {
             throw new InfrastructureException("Carriage number already exists: " + number);
         }
@@ -112,68 +112,68 @@ public class MariaDBTrainRepository implements TrainRepository {
             stmt.executeUpdate();
             deleteScheduleEntriesByTrainId(id);
             createScheduleEntries(entity.getSchedule(), id);
-        } catch (Exception e) {
+        } catch (final Exception e) {
             throw new InfrastructureException(e);
         }
     }
 
     @Override
-    public void deleteById(Id id) {
+    public void deleteById(final Id id) {
         try (PreparedStatement stmt = connection.prepareStatement(DELETE_TRAIN_BY_ID)) {
             stmt.setString(1, id.toString());
             stmt.executeUpdate();
-        } catch (Exception e) {
+        } catch (final Exception e) {
             throw new InfrastructureException(e);
         }
     }
 
     @Override
-    public Optional<Train> findByNumber(MachineNumber number) {
+    public Optional<Train> findByNumber(final MachineNumber number) {
         try (PreparedStatement stmt = connection.prepareStatement(FIND_TRAIN_BY_NUMBER)) {
             stmt.setString(1, number.toString());
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    Id id = Id.fromString(rs.getString("id"));
-                    Id trainCompositionId = Id.fromString(rs.getString("train_composition_id"));
-                    List<ScheduleEntry> schedule = findScheduleEntriesByTrainId(id);
-                    Train train = new Train(id, number, trainCompositionId);
+                    final Id id = Id.fromString(rs.getString("id"));
+                    final Id trainCompositionId = Id.fromString(rs.getString("train_composition_id"));
+                    final List<ScheduleEntry> schedule = findScheduleEntriesByTrainId(id);
+                    final Train train = new Train(id, number, trainCompositionId);
                     train.updateSchedule(schedule);
                     return Optional.of(train);
                 }
             }
-        } catch (Exception e) {
+        } catch (final Exception e) {
             throw new InfrastructureException(e);
         }
         return Optional.empty();
     }
 
-    private List<ScheduleEntry> findScheduleEntriesByTrainId(Id trainId) {
-        List<ScheduleEntry> entries = new ArrayList<>();
+    private List<ScheduleEntry> findScheduleEntriesByTrainId(final Id trainId) {
+        final List<ScheduleEntry> entries = new ArrayList<>();
         try (PreparedStatement stmt = connection.prepareStatement(
                 "SELECT station_id, arrival_time, departure_time FROM schedule_entry WHERE train_id = ? ORDER BY order_number")) {
             stmt.setString(1, trainId.toString());
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
-                    Id stationId = Id.fromString(rs.getString("station_id"));
-                    Timestamp arrTs = rs.getTimestamp("arrival_time");
-                    LocalDateTime arrivalTime = arrTs != null ? arrTs.toLocalDateTime() : null;
-                    Timestamp depTs = rs.getTimestamp("departure_time");
-                    LocalDateTime departureTime = depTs != null ? depTs.toLocalDateTime() : null;
+                    final Id stationId = Id.fromString(rs.getString("station_id"));
+                    final Timestamp arrTs = rs.getTimestamp("arrival_time");
+                    final LocalDateTime arrivalTime = arrTs != null ? arrTs.toLocalDateTime() : null;
+                    final Timestamp depTs = rs.getTimestamp("departure_time");
+                    final LocalDateTime departureTime = depTs != null ? depTs.toLocalDateTime() : null;
                     entries.add(new ScheduleEntry(stationId, arrivalTime, departureTime));
                 }
             }
-        } catch (Exception e) {
+        } catch (final Exception e) {
             throw new InfrastructureException(e);
         }
         return entries;
     }
 
-    private void createScheduleEntries(List<ScheduleEntry> scheduleEntries, Id trainId) {
+    private void createScheduleEntries(final List<ScheduleEntry> scheduleEntries, final Id trainId) {
         if (!scheduleEntries.isEmpty()) {
-            String sql = "INSERT INTO schedule_entry (id, train_id, station_id, arrival_time, departure_time, order_number) VALUES (?, ?, ?, ?, ?, ?)";
+            final String sql = "INSERT INTO schedule_entry (id, train_id, station_id, arrival_time, departure_time, order_number) VALUES (?, ?, ?, ?, ?, ?)";
             try (PreparedStatement stmt = connection.prepareStatement(sql)) {
                 for (int i = 0; i < scheduleEntries.size(); i++) {
-                    ScheduleEntry se = scheduleEntries.get(i);
+                    final ScheduleEntry se = scheduleEntries.get(i);
                     stmt.setString(1, new Id().toString());
                     stmt.setString(2, trainId.toString());
                     stmt.setString(3, se.getStationId().toString());
@@ -183,17 +183,17 @@ public class MariaDBTrainRepository implements TrainRepository {
                     stmt.setInt(6, i + 1);
                     stmt.executeUpdate();
                 }
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 throw new InfrastructureException(e);
             }
         }
     }
 
-    private void deleteScheduleEntriesByTrainId(Id trainId) {
+    private void deleteScheduleEntriesByTrainId(final Id trainId) {
         try (PreparedStatement stmt = connection.prepareStatement(DELETE_SCHEDULE_ENTRIES_BY_TRAIN_ID)) {
             stmt.setString(1, trainId.toString());
             stmt.executeUpdate();
-        } catch (Exception e) {
+        } catch (final Exception e) {
             throw new InfrastructureException(e);
         }
     }
