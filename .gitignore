@@ -33,3 +33,6 @@ replay_pid*
 
 # Do not ignore Gradle wrapper
 !gradle/wrapper/*
+
+# ENV
+.env
