@@ -77,11 +77,21 @@ public class DefaultLineService implements LineService {
     }
 
     @Override
+    public void updateLine(@NonNull final LineDto line) {
+        try {
+            final var valLine = LineMapper.toEntity(line);
+            lineRepo.update(valLine);
+        } catch (final RuntimeException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
     public void disbandLine(@NonNull final String lineId) {
         try {
             final var valId = Id.fromString(lineId);
             lineRepo.deleteById(valId);
-        } catch (final Exception e) {
+        } catch (final RuntimeException e) {
             throw new ServiceException(e);
         }
     }

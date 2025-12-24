@@ -8,6 +8,8 @@ public interface TrainCompositionService {
 
     void assembleTrainComposition(TrainCompositionDto trainComposition);
 
+    void updateTrainComposition(TrainCompositionDto trainComposition);
+
     TrainCompositionDto findTrainCompositionById(String id);
 
     List<TrainCompositionDto> listAllTrainCompositions();

@@ -73,6 +73,16 @@ public class DefaultLocomotiveService implements LocomotiveService {
     }
 
     @Override
+    public void updateLocomotive(@NonNull final LocomotiveDto locomotive) {
+        try {
+            final var valLocomotive = LocomotiveMapper.toEntity(locomotive);
+            repository.update(valLocomotive);
+        } catch (final RuntimeException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
     public void unregisterLocomotive(@NonNull final String id) {
         try {
             final var valId = Id.fromString(id);

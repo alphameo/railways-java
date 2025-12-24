@@ -76,11 +76,21 @@ public class DefaultTrainCompositionService implements TrainCompositionService {
     }
 
     @Override
+    public void updateTrainComposition(@NonNull final TrainCompositionDto trainComposition) {
+        try {
+            final var valTrainComposition = TrainCompositionMapper.toEntity(trainComposition);
+            trainCompositionRepo.update(valTrainComposition);
+        } catch (final RuntimeException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
     public void disassembleTrainComposition(@NonNull final String id) {
         try {
             final var valId = Id.fromString(id);
             trainCompositionRepo.deleteById(valId);
-        } catch (final Exception e) {
+        } catch (final RuntimeException e) {
             throw new ServiceException(e);
         }
     }

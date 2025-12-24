@@ -9,6 +9,8 @@ public interface TrainService {
 
     void registerTrain(TrainDto train);
 
+    void updateTrain(TrainDto train);
+
     TrainDto findTrainById(String id);
 
     TrainDto findTrainByNumber(String number);

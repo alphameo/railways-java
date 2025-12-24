@@ -56,6 +56,16 @@ public class DefaultStationService implements StationService {
     }
 
     @Override
+    public void updateStation(@NonNull final StationDto station) {
+        try {
+            final var valStation = StationMapper.toEntity(station);
+            stationRepo.update(valStation);
+        } catch (final RuntimeException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
     public void unregisterStation(@NonNull final String id) {
         try {
             final var valId = Id.fromString(id);
