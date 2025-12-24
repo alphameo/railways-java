@@ -22,6 +22,7 @@ public class Locomotive {
         if (id == null) {
             throw new ValidationException("locomotive: id cannot be null");
         }
+        this.id = id;
         this.changeNumber(number);
         this.changeModel(model);
     }
