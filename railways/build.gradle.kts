@@ -9,6 +9,8 @@
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     application
+    war
+    id("org.gretty") version "5.0.1"
 }
 
 repositories {
@@ -19,11 +21,18 @@ repositories {
 dependencies {
     compileOnly("org.projectlombok:lombok:1.18.42")
     annotationProcessor("org.projectlombok:lombok:1.18.42")
-	
+
     testCompileOnly("org.projectlombok:lombok:1.18.42")
     testAnnotationProcessor("org.projectlombok:lombok:1.18.42")
 
     implementation("org.mariadb.jdbc:mariadb-java-client:3.4.1")
+
+    compileOnly("jakarta.servlet:jakarta.servlet-api:6.1.0")
+    implementation("org.apache.tomcat.embed:tomcat-embed-core:11.0.15")
+    implementation("org.apache.tomcat:tomcat-jasper:11.0.15")
+    implementation(libs.jackson.databind)
+    implementation("jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api:3.0.2")
+    implementation("org.glassfish.web:jakarta.servlet.jsp.jstl:3.0.1")
 }
 
 // Apply a specific Java toolchain to ease working on different environments.

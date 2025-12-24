@@ -3,6 +3,13 @@
 
 [versions]
 guava = "33.4.6-jre"
+tomcat = "10.1.24"
+jackson = "2.17.1"
+jstl = "1.2"
 
 [libraries]
 guava = { module = "com.google.guava:guava", version.ref = "guava" }
+tomcat-embed-core = { module = "org.apache.tomcat.embed:tomcat-embed-core", version.ref = "tomcat" }
+tomcat-embed-jasper = { module = "org.apache.tomcat.embed:tomcat-embed-jasper", version.ref = "tomcat" }
+jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson" }
+jstl = { module = "javax.servlet:jstl", version.ref = "jstl" }
