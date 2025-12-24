@@ -4,17 +4,7 @@
 <html>
 <head>
     <title>Add Carriage - Railways Management System</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        .nav { margin-bottom: 20px; }
-        .nav a { margin-right: 15px; text-decoration: none; padding: 5px 10px; background: #f0f0f0; }
-        .nav a:hover { background: #e0e0e0; }
-        form { max-width: 400px; }
-        label { display: block; margin-top: 10px; }
-        input, select { width: 100%; padding: 5px; margin-top: 5px; }
-        button { margin-top: 20px; padding: 10px 20px; background: #28a745; color: white; border: none; }
-        button:hover { background: #218838; }
-    </style>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css">
 </head>
 <body>
     <h1>Add New Carriage</h1>

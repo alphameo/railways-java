@@ -4,21 +4,7 @@
 <html>
 <head>
     <title>Train Compositions - Railways Management System</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        .nav { margin-bottom: 20px; }
-        .nav a { margin-right: 15px; text-decoration: none; padding: 5px 10px; background: #f0f0f0; }
-        .nav a:hover { background: #e0e0e0; }
-        table { border-collapse: collapse; width: 100%; }
-        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-        th { background-color: #f2f2f2; }
-        .actions { white-space: nowrap; }
-        .actions a { margin-right: 5px; text-decoration: none; padding: 2px 5px; background: #007bff; color: white; }
-        .actions a:hover { background: #0056b3; }
-        .add-button { margin-bottom: 10px; }
-        .add-button a { text-decoration: none; padding: 5px 10px; background: #28a745; color: white; }
-        .add-button a:hover { background: #218838; }
-    </style>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css">
 </head>
 <body>
     <h1>Train Compositions</h1>
