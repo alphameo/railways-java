@@ -5,19 +5,12 @@
 <head>
     <title>Carriage Details - Railways Management System</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css">
+    <jsp:include page="/WEB-INF/jspf/navbar.jspf"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css">
 </head>
 <body>
     <h1>Carriage Details</h1>
 
-    <div class="nav">
-        <a href="${pageContext.request.contextPath}/">Home</a>
-        <a href="${pageContext.request.contextPath}/carriages">Carriages</a>
-        <a href="${pageContext.request.contextPath}/trains">Trains</a>
-        <a href="${pageContext.request.contextPath}/stations">Stations</a>
-        <a href="${pageContext.request.contextPath}/locomotives">Locomotives</a>
-        <a href="${pageContext.request.contextPath}/lines">Lines</a>
-        <a href="${pageContext.request.contextPath}/train-compositions">Train Compositions</a>
-    </div>
 
     <div class="details">
         <p><strong>ID:</strong> ${carriage.id}</p>

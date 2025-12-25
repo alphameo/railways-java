@@ -5,18 +5,12 @@
 <head>
     <title>Stations - Railways Management System</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css">
+    <jsp:include page="/WEB-INF/jspf/navbar.jspf"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css">
 </head>
 <body>
     <h1>Stations</h1>
 
-    <div class="nav">
-        <a href="${pageContext.request.contextPath}/">Home</a>
-        <a href="${pageContext.request.contextPath}/carriages">Carriages</a>
-        <a href="${pageContext.request.contextPath}/trains">Trains</a>
-        <a href="${pageContext.request.contextPath}/locomotives">Locomotives</a>
-        <a href="${pageContext.request.contextPath}/lines">Lines</a>
-        <a href="${pageContext.request.contextPath}/train-compositions">Train Compositions</a>
-    </div>
 
     <div class="add-button">
         <a href="${pageContext.request.contextPath}/stations/create">Add New Station</a>
