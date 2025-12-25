@@ -1,11 +1,16 @@
 package com.github.alphameo.railways.adapters.web;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.alphameo.railways.application.dto.CarriageDto;
+import com.github.alphameo.railways.application.dto.LocomotiveDto;
 import com.github.alphameo.railways.application.dto.TrainCompositionDto;
+import com.github.alphameo.railways.application.services.CarriageService;
+import com.github.alphameo.railways.application.services.LocomotiveService;
 import com.github.alphameo.railways.application.services.TrainCompositionService;
 
 import jakarta.servlet.ServletException;
@@ -16,10 +21,14 @@ import jakarta.servlet.http.HttpServletResponse;
 public class TrainCompositionControllerServlet extends HttpServlet {
 
     private final TrainCompositionService trainCompositionService;
+    private final CarriageService carriageService;
+    private final LocomotiveService locomotiveService;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    public TrainCompositionControllerServlet(TrainCompositionService trainCompositionService) {
+    public TrainCompositionControllerServlet(TrainCompositionService trainCompositionService, CarriageService carriageService, LocomotiveService locomotiveService) {
         this.trainCompositionService = trainCompositionService;
+        this.carriageService = carriageService;
+        this.locomotiveService = locomotiveService;
     }
 
     @Override
@@ -128,10 +137,16 @@ public class TrainCompositionControllerServlet extends HttpServlet {
             throws ServletException, IOException {
 
         try {
+            // Parse form data or JSON
             String locomotiveId = request.getParameter("locomotiveId");
-            String carriageIdsStr = request.getParameter("carriageIds");
-            List<String> carriageIds = carriageIdsStr != null && !carriageIdsStr.isEmpty() ?
-                Arrays.asList(carriageIdsStr.split(",")) : List.of();
+            List<String> carriageIds = new ArrayList<>();
+            for (int i = 0; ; i++) {
+                String carriageId = request.getParameter("position" + i);
+                if (carriageId == null || carriageId.isEmpty()) {
+                    break;
+                }
+                carriageIds.add(carriageId);
+            }
 
             TrainCompositionDto trainCompositionDto = new TrainCompositionDto(null, locomotiveId, carriageIds);
             trainCompositionService.assembleTrainComposition(trainCompositionDto);
@@ -140,6 +155,7 @@ public class TrainCompositionControllerServlet extends HttpServlet {
                 response.setStatus(HttpServletResponse.SC_CREATED);
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");
+                // Return the created train composition by finding it
                 TrainCompositionDto created = trainCompositionService.findTrainCompositionById(trainCompositionDto.id());
                 objectMapper.writeValue(response.getWriter(), created);
             } else {
@@ -152,6 +168,10 @@ public class TrainCompositionControllerServlet extends HttpServlet {
 
     private void handleCreateForm(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        List<CarriageDto> carriages = carriageService.listAllCarriages();
+        List<LocomotiveDto> locomotives = locomotiveService.listAllLocomotives();
+        request.setAttribute("carriages", carriages);
+        request.setAttribute("locomotives", locomotives);
         request.getRequestDispatcher("/jsp/train-compositions/create.jsp").forward(request, response);
     }
 
@@ -159,7 +179,11 @@ public class TrainCompositionControllerServlet extends HttpServlet {
             throws ServletException, IOException {
         try {
             TrainCompositionDto trainComposition = trainCompositionService.findTrainCompositionById(id);
+            List<CarriageDto> carriages = carriageService.listAllCarriages();
+            List<LocomotiveDto> locomotives = locomotiveService.listAllLocomotives();
             request.setAttribute("trainComposition", trainComposition);
+            request.setAttribute("carriages", carriages);
+            request.setAttribute("locomotives", locomotives);
             request.getRequestDispatcher("/jsp/train-compositions/edit.jsp").forward(request, response);
         } catch (Exception e) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND, e.getMessage());
@@ -170,11 +194,17 @@ public class TrainCompositionControllerServlet extends HttpServlet {
             throws ServletException, IOException {
 
         try {
+            // Parse form data or JSON
             String id = request.getParameter("id");
             String locomotiveId = request.getParameter("locomotiveId");
-            String carriageIdsStr = request.getParameter("carriageIds");
-            List<String> carriageIds = carriageIdsStr != null && !carriageIdsStr.isEmpty() ?
-                Arrays.asList(carriageIdsStr.split(",")) : List.of();
+            List<String> carriageIds = new ArrayList<>();
+            for (int i = 0; ; i++) {
+                String carriageId = request.getParameter("position" + i);
+                if (carriageId == null || carriageId.isEmpty()) {
+                    break;
+                }
+                carriageIds.add(carriageId);
+            }
 
             TrainCompositionDto trainCompositionDto = new TrainCompositionDto(id, locomotiveId, carriageIds);
             trainCompositionService.updateTrainComposition(trainCompositionDto);

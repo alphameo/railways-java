@@ -70,11 +70,11 @@ public class WebAppInitializer {
         ctx.addServletMappingDecoded("/api/trains/*", "trainServlet");
         ctx.addServletMappingDecoded("/trains/*", "trainServlet");
 
-        Tomcat.addServlet(ctx, "lineServlet", new LineControllerServlet(serviceProvider.getLineService()));
+        Tomcat.addServlet(ctx, "lineServlet", new LineControllerServlet(serviceProvider.getLineService(), serviceProvider.getStationService()));
         ctx.addServletMappingDecoded("/api/lines/*", "lineServlet");
         ctx.addServletMappingDecoded("/lines/*", "lineServlet");
 
-        Tomcat.addServlet(ctx, "trainCompositionServlet", new TrainCompositionControllerServlet(serviceProvider.getTrainCompositionService()));
+        Tomcat.addServlet(ctx, "trainCompositionServlet", new TrainCompositionControllerServlet(serviceProvider.getTrainCompositionService(), serviceProvider.getCarriageService(), serviceProvider.getLocomotiveService()));
         ctx.addServletMappingDecoded("/api/train-compositions/*", "trainCompositionServlet");
         ctx.addServletMappingDecoded("/train-compositions/*", "trainCompositionServlet");
     }

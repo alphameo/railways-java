@@ -1,12 +1,15 @@
 package com.github.alphameo.railways.adapters.web;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.alphameo.railways.application.dto.LineDto;
+import com.github.alphameo.railways.application.dto.StationDto;
 import com.github.alphameo.railways.application.services.LineService;
+import com.github.alphameo.railways.application.services.StationService;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -16,10 +19,12 @@ import jakarta.servlet.http.HttpServletResponse;
 public class LineControllerServlet extends HttpServlet {
 
     private final LineService lineService;
+    private final StationService stationService;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    public LineControllerServlet(LineService lineService) {
+    public LineControllerServlet(LineService lineService, StationService stationService) {
         this.lineService = lineService;
+        this.stationService = stationService;
     }
 
     @Override
@@ -128,11 +133,16 @@ public class LineControllerServlet extends HttpServlet {
             throws ServletException, IOException {
 
         try {
+            // Parse form data or JSON
             String name = request.getParameter("name");
-            String stationIdOrderStr = request.getParameter("stationIdOrder");
-            List<String> stationIdOrder = stationIdOrderStr != null && !stationIdOrderStr.isEmpty()
-                    ? Arrays.asList(stationIdOrderStr.split(","))
-                    : List.of();
+            List<String> stationIdOrder = new ArrayList<>();
+            for (int i = 0; ; i++) {
+                String stationId = request.getParameter("position" + i);
+                if (stationId == null || stationId.isEmpty()) {
+                    break;
+                }
+                stationIdOrder.add(stationId);
+            }
 
             LineDto lineDto = new LineDto(null, name, stationIdOrder);
             lineService.declareLine(lineDto);
@@ -141,6 +151,7 @@ public class LineControllerServlet extends HttpServlet {
                 response.setStatus(HttpServletResponse.SC_CREATED);
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");
+                // Return the created line by finding it
                 LineDto created = lineService.findLineById(lineDto.id());
                 objectMapper.writeValue(response.getWriter(), created);
             } else {
@@ -153,6 +164,8 @@ public class LineControllerServlet extends HttpServlet {
 
     private void handleCreateForm(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        List<StationDto> stations = stationService.listAllStations();
+        request.setAttribute("stations", stations);
         request.getRequestDispatcher("/jsp/lines/create.jsp").forward(request, response);
     }
 
@@ -160,7 +173,9 @@ public class LineControllerServlet extends HttpServlet {
             throws ServletException, IOException {
         try {
             LineDto line = lineService.findLineById(id);
+            List<StationDto> stations = stationService.listAllStations();
             request.setAttribute("line", line);
+            request.setAttribute("stations", stations);
             request.getRequestDispatcher("/jsp/lines/edit.jsp").forward(request, response);
         } catch (Exception e) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND, e.getMessage());
@@ -171,12 +186,17 @@ public class LineControllerServlet extends HttpServlet {
             throws ServletException, IOException {
 
         try {
+            // Parse form data or JSON
             String id = request.getParameter("id");
             String name = request.getParameter("name");
-            String stationIdOrderStr = request.getParameter("stationIdOrder");
-            List<String> stationIdOrder = stationIdOrderStr != null && !stationIdOrderStr.isEmpty()
-                    ? Arrays.asList(stationIdOrderStr.split(","))
-                    : List.of();
+            List<String> stationIdOrder = new ArrayList<>();
+            for (int i = 0; ; i++) {
+                String stationId = request.getParameter("position" + i);
+                if (stationId == null || stationId.isEmpty()) {
+                    break;
+                }
+                stationIdOrder.add(stationId);
+            }
 
             LineDto lineDto = new LineDto(id, name, stationIdOrder);
             lineService.updateLine(lineDto);
