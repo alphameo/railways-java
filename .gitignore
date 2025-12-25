@@ -36,3 +36,9 @@ replay_pid*
 
 # ENV
 .env
+
+# nvim database viewer config
+sql/connections.json
+
+# Tomcat
+temp
