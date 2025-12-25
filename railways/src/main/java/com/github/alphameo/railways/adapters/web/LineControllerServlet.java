@@ -2,7 +2,6 @@ package com.github.alphameo.railways.adapters.web;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -133,7 +132,6 @@ public class LineControllerServlet extends HttpServlet {
             throws ServletException, IOException {
 
         try {
-            // Parse form data or JSON
             String name = request.getParameter("name");
             List<String> stationIdOrder = new ArrayList<>();
             for (int i = 0; ; i++) {
@@ -151,7 +149,7 @@ public class LineControllerServlet extends HttpServlet {
                 response.setStatus(HttpServletResponse.SC_CREATED);
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");
-                // Return the created line by finding it
+                
                 LineDto created = lineService.findLineById(lineDto.id());
                 objectMapper.writeValue(response.getWriter(), created);
             } else {
@@ -186,7 +184,6 @@ public class LineControllerServlet extends HttpServlet {
             throws ServletException, IOException {
 
         try {
-            // Parse form data or JSON
             String id = request.getParameter("id");
             String name = request.getParameter("name");
             List<String> stationIdOrder = new ArrayList<>();

@@ -2,7 +2,6 @@ package com.github.alphameo.railways.adapters.web;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -137,7 +136,6 @@ public class TrainCompositionControllerServlet extends HttpServlet {
             throws ServletException, IOException {
 
         try {
-            // Parse form data or JSON
             String locomotiveId = request.getParameter("locomotiveId");
             List<String> carriageIds = new ArrayList<>();
             for (int i = 0; ; i++) {
@@ -155,7 +153,7 @@ public class TrainCompositionControllerServlet extends HttpServlet {
                 response.setStatus(HttpServletResponse.SC_CREATED);
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");
-                // Return the created train composition by finding it
+
                 TrainCompositionDto created = trainCompositionService.findTrainCompositionById(trainCompositionDto.id());
                 objectMapper.writeValue(response.getWriter(), created);
             } else {
@@ -194,7 +192,6 @@ public class TrainCompositionControllerServlet extends HttpServlet {
             throws ServletException, IOException {
 
         try {
-            // Parse form data or JSON
             String id = request.getParameter("id");
             String locomotiveId = request.getParameter("locomotiveId");
             List<String> carriageIds = new ArrayList<>();
