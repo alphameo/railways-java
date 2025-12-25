@@ -27,7 +27,7 @@ dependencies {
 
     implementation("org.mariadb.jdbc:mariadb-java-client:3.4.1")
 
-    compileOnly("jakarta.servlet:jakarta.servlet-api:6.1.0")
+    implementation("jakarta.servlet:jakarta.servlet-api:6.1.0")
     implementation("org.apache.tomcat.embed:tomcat-embed-core:11.0.15")
     implementation("org.apache.tomcat:tomcat-jasper:11.0.15")
     implementation(libs.jackson.databind)
