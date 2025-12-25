@@ -86,7 +86,7 @@ public class MariaDBCarriageRepository implements CarriageRepository {
         final Id id = entity.getId();
         final MachineNumber number = entity.getNumber();
         final var byNumber = findByNumber(number);
-        if (!byNumber.get().getId().equals(id)) {
+        if (byNumber.isPresent() && !byNumber.get().getId().equals(id)) {
             throw new InfrastructureException("Carriage number already exists: " + number);
         }
 

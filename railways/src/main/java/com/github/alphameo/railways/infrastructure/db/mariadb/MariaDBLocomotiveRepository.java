@@ -85,7 +85,7 @@ public class MariaDBLocomotiveRepository implements LocomotiveRepository {
         final Id id = entity.getId();
         final MachineNumber number = entity.getNumber();
         final var byNumber = findByNumber(number);
-        if (!byNumber.get().getId().equals(id)) {
+        if (byNumber.isPresent() && !byNumber.get().getId().equals(id)) {
             throw new InfrastructureException("Locomotive number already exists: " + number);
         }
 
