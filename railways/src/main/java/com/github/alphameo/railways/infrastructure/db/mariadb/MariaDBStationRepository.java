@@ -31,8 +31,8 @@ public class MariaDBStationRepository implements StationRepository {
     public void create(final Station entity) {
         try (PreparedStatement stmt = connection.prepareStatement(CREATE_STATION_SQL)) {
             stmt.setString(1, entity.getId().toString());
-            stmt.setString(2, entity.getName().toString());
-            stmt.setString(3, entity.getLocation().toString());
+            stmt.setString(2, entity.getName().getValue());
+            stmt.setString(3, entity.getLocation().getValue());
             stmt.executeUpdate();
         } catch (final Exception e) {
             throw new InfrastructureException(e);
@@ -58,7 +58,7 @@ public class MariaDBStationRepository implements StationRepository {
     public List<Station> findAll() {
         final List<Station> stations = new ArrayList<>();
         try (PreparedStatement stmt = connection.prepareStatement(FIND_ALL_STATIONS);
-             ResultSet rs = stmt.executeQuery()) {
+                ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
                 stations.add(mapResultSetToStation(rs));
             }
@@ -71,8 +71,8 @@ public class MariaDBStationRepository implements StationRepository {
     @Override
     public void update(final Station entity) {
         try (PreparedStatement stmt = connection.prepareStatement(UPDATE_STATION_SQL)) {
-            stmt.setString(1, entity.getName().toString());
-            stmt.setString(2, entity.getLocation().toString());
+            stmt.setString(1, entity.getName().getValue());
+            stmt.setString(2, entity.getLocation().getValue());
             stmt.setString(3, entity.getId().toString());
             stmt.executeUpdate();
         } catch (final Exception e) {

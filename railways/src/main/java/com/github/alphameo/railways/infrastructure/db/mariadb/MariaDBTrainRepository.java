@@ -48,7 +48,7 @@ public class MariaDBTrainRepository implements TrainRepository {
         try (PreparedStatement stmt = connection.prepareStatement(CREATE_TRAIN_SQL)) {
             stmt.setString(1, id.toString());
             stmt.setString(2, entity.getTrainCompositionId().toString());
-            stmt.setString(3, number.toString());
+            stmt.setString(3, number.getValue());
             stmt.executeUpdate();
             createScheduleEntries(entity.getSchedule(), id);
         } catch (final Exception e) {
@@ -107,7 +107,7 @@ public class MariaDBTrainRepository implements TrainRepository {
 
         try (PreparedStatement stmt = connection.prepareStatement(UPDATE_TRAIN_SQL)) {
             stmt.setString(1, entity.getTrainCompositionId().toString());
-            stmt.setString(2, number.toString());
+            stmt.setString(2, number.getValue());
             stmt.setString(3, id.toString());
             stmt.executeUpdate();
             deleteScheduleEntriesByTrainId(id);

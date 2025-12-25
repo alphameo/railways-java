@@ -43,8 +43,8 @@ public class MariaDBLocomotiveRepository implements LocomotiveRepository {
 
         try (PreparedStatement stmt = connection.prepareStatement(CREATE_LOCOMOTIVE_SQL)) {
             stmt.setString(1, id.toString());
-            stmt.setString(2, number.toString());
-            stmt.setString(3, entity.getModel().toString());
+            stmt.setString(2, number.getValue());
+            stmt.setString(3, entity.getModel().getValue());
             stmt.executeUpdate();
         } catch (final Exception e) {
             throw new InfrastructureException(e);
@@ -90,8 +90,8 @@ public class MariaDBLocomotiveRepository implements LocomotiveRepository {
         }
 
         try (PreparedStatement stmt = connection.prepareStatement(UPDATE_LOCOMOTIVE_SQL)) {
-            stmt.setString(1, number.toString());
-            stmt.setString(2, entity.getModel().toString());
+            stmt.setString(1, number.getValue());
+            stmt.setString(2, entity.getModel().getValue());
             stmt.setString(3, id.toString());
             stmt.executeUpdate();
         } catch (
