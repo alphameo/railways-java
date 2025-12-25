@@ -152,7 +152,9 @@ public class CarriageControllerServlet extends HttpServlet {
         try {
             String number = request.getParameter("number");
             String contentType = request.getParameter("contentType");
-            int capacity = Integer.parseInt(request.getParameter("capacity"));
+
+            var capStr = request.getParameter("capacity");
+            Long capacity = capStr.isBlank() ? null : Long.parseLong(capStr);
 
             CarriageDto carriageDto = new CarriageDto(null, number, contentType, capacity);
             carriageService.registerCarriage(carriageDto);
@@ -194,11 +196,12 @@ public class CarriageControllerServlet extends HttpServlet {
             String id = request.getParameter("id");
             String number = request.getParameter("number");
             String contentType = request.getParameter("contentType");
-            int capacity = Integer.parseInt(request.getParameter("capacity"));
+
+            var capStr = request.getParameter("capacity");
+            Long capacity = capStr.isBlank() ? null : Long.parseLong(capStr);
 
             CarriageDto carriageDto = new CarriageDto(id, number, contentType, capacity);
             carriageService.updateCarriage(carriageDto);
-
             if (isApiRequest) {
                 response.setStatus(HttpServletResponse.SC_OK);
                 response.setContentType("application/json");
