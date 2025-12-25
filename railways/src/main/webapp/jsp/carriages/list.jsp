@@ -12,6 +12,10 @@
     <h1>Carriages</h1>
 
 
+    <div class="add-button">
+        <a href="${pageContext.request.contextPath}/carriages/create">Add New Carriage</a>
+    </div>
+
     <table>
         <thead>
             <tr>

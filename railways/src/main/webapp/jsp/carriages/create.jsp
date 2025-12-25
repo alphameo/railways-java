@@ -18,13 +18,13 @@
 
         <label for="contentType">Content Type:</label>
         <select id="contentType" name="contentType">
+            <option value="none">none</option>
             <option value="PASSENGER">Passenger</option>
             <option value="CARGO">Cargo</option>
-            <option value="SPECIAL">Special</option>
         </select>
 
         <label for="capacity">Capacity:</label>
-        <input type="number" id="capacity" name="capacity" required>
+        <input type="number" id="capacity" name="capacity">
 
         <button type="submit">Add Carriage</button>
     </form>

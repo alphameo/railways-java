@@ -20,13 +20,13 @@
 
         <label for="contentType">Content Type:</label>
         <select id="contentType" name="contentType">
+            <option value="none" ${carriage.contentType == 'none' ? 'selected' : ''}>none</option>
             <option value="PASSENGER" ${carriage.contentType == 'PASSENGER' ? 'selected' : ''}>Passenger</option>
             <option value="CARGO" ${carriage.contentType == 'CARGO' ? 'selected' : ''}>Cargo</option>
-            <option value="SPECIAL" ${carriage.contentType == 'SPECIAL' ? 'selected' : ''}>Special</option>
         </select>
 
         <label for="capacity">Capacity:</label>
-        <input type="number" id="capacity" name="capacity" value="${carriage.capacity}" required>
+        <input type="number" id="capacity" name="capacity" value="${carriage.capacity}">
 
         <button type="submit">Update Carriage</button>
     </form>
