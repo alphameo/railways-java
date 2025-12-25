@@ -78,6 +78,16 @@ public class DefaultCarriageService implements CarriageService {
     }
 
     @Override
+    public void updateCarriage(@NonNull final CarriageDto carriage) {
+        try {
+            final var valCarriage = CarriageMapper.toEntity(carriage);
+            repository.update(valCarriage);
+        } catch (final RuntimeException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
     public void unregisterCarriage(@NonNull final String id) {
         try {
             final var valId = Id.fromString(id);

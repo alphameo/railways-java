@@ -3,6 +3,7 @@ package com.github.alphameo.railways.infrastructure.db.mariadb;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -43,9 +44,17 @@ public class MariaDBCarriageRepository implements CarriageRepository {
 
         try (PreparedStatement stmt = connection.prepareStatement(CREATE_CARRIAGE_SQL)) {
             stmt.setString(1, id.toString());
-            stmt.setString(2, number.toString());
-            stmt.setString(3, entity.getContentType().toString());
-            stmt.setLong(4, entity.getCapacity());
+            stmt.setString(2, number.getValue());
+            if (entity.getContentType() == null) {
+                stmt.setNull(3, Types.VARCHAR);
+            } else {
+                stmt.setString(3, entity.getContentType().toString());
+            }
+            if (entity.getCapacity() == null) {
+                stmt.setNull(4, Types.INTEGER);
+            } else {
+                stmt.setLong(4, entity.getCapacity());
+            }
             stmt.executeUpdate();
         } catch (final Exception e) {
             throw new InfrastructureException(e);
@@ -86,14 +95,22 @@ public class MariaDBCarriageRepository implements CarriageRepository {
         final Id id = entity.getId();
         final MachineNumber number = entity.getNumber();
         final var byNumber = findByNumber(number);
-        if (!byNumber.get().getId().equals(id)) {
+        if (byNumber.isPresent() && !byNumber.get().getId().equals(id)) {
             throw new InfrastructureException("Carriage number already exists: " + number);
         }
 
         try (PreparedStatement stmt = connection.prepareStatement(UPDATE_CARRIAGE_SQL)) {
-            stmt.setString(1, number.toString());
-            stmt.setString(2, entity.getContentType().toString());
-            stmt.setLong(3, entity.getCapacity());
+            stmt.setString(1, number.getValue());
+            if (entity.getContentType() == null) {
+                stmt.setNull(2, Types.VARCHAR);
+            } else {
+                stmt.setString(2, entity.getContentType().toString());
+            }
+            if (entity.getCapacity() == null) {
+                stmt.setNull(3, Types.INTEGER);
+            } else {
+                stmt.setLong(3, entity.getCapacity());
+            }
             stmt.setString(4, id.toString());
             stmt.executeUpdate();
         } catch (final Exception e) {
@@ -114,7 +131,7 @@ public class MariaDBCarriageRepository implements CarriageRepository {
     @Override
     public Optional<Carriage> findByNumber(final MachineNumber number) {
         try (PreparedStatement stmt = connection.prepareStatement(FIND_CARRIAGE_BY_NUMBER)) {
-            stmt.setString(1, number.toString());
+            stmt.setString(1, number.getValue());
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     return Optional.of(mapResultSetToCarriage(rs));
@@ -130,7 +147,8 @@ public class MariaDBCarriageRepository implements CarriageRepository {
         final Id id = Id.fromString(rs.getString("id"));
         final MachineNumber number = new MachineNumber(rs.getString("number"));
         final CarriageContentType contentType = CarriageContentType.create(rs.getString("content_type"));
-        final Long capacity = rs.getLong("capacity");
+        final var capObj = rs.getObject("capacity");
+        final var capacity = capObj == null ? null : (Long) capObj;
         final Carriage carriage = new Carriage(id, number);
         carriage.changeContentType(contentType);
         carriage.changeCapacity(capacity);

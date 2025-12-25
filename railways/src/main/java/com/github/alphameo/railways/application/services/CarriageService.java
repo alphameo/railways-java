@@ -8,6 +8,8 @@ public interface CarriageService {
 
     public void registerCarriage(CarriageDto carriage);
 
+    public void updateCarriage(CarriageDto carriage);
+
     public CarriageDto findCarriageById(String id);
 
     public CarriageDto findCarriageByNumber(String number);

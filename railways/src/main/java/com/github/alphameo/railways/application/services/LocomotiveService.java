@@ -6,13 +6,15 @@ import com.github.alphameo.railways.application.dto.LocomotiveDto;
 
 public interface LocomotiveService {
 
-     void registerLocomotive(LocomotiveDto locomotive);
+    void registerLocomotive(LocomotiveDto locomotive);
 
-     LocomotiveDto findLocomotiveById(String id);
+    void updateLocomotive(LocomotiveDto locomotive);
 
-     LocomotiveDto findLocomotiveByNumber(String number);
+    LocomotiveDto findLocomotiveById(String id);
 
-     List<LocomotiveDto> listAllLocomotives();
+    LocomotiveDto findLocomotiveByNumber(String number);
 
-     void unregisterLocomotive(String id);
+    List<LocomotiveDto> listAllLocomotives();
+
+    void unregisterLocomotive(String id);
 }

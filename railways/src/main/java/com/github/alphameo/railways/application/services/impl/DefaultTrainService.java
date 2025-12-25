@@ -94,6 +94,16 @@ public class DefaultTrainService implements TrainService {
     }
 
     @Override
+    public void updateTrain(@NonNull final TrainDto train) {
+        try {
+            final var valTrain = TrainMapper.toEntity(train);
+            trainRepo.update(valTrain);
+        } catch (final RuntimeException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
     public void unregisterTrain(@NonNull final String id) {
         try {
             final var valId = Id.fromString(id);

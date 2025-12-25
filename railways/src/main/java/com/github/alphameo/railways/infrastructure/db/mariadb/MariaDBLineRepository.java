@@ -33,7 +33,7 @@ public class MariaDBLineRepository implements LineRepository {
     public void create(final Line entity) {
         try (PreparedStatement stmt = connection.prepareStatement(CREATE_LINE_SQL)) {
             stmt.setString(1, entity.getId().toString());
-            stmt.setString(2, entity.getName().toString());
+            stmt.setString(2, entity.getName().getValue());
             stmt.executeUpdate();
             attachStations(entity.getId(), entity.getStationIdOrder());
         } catch (final Exception e) {
@@ -80,7 +80,7 @@ public class MariaDBLineRepository implements LineRepository {
         final Id id = entity.getId();
         detachStations(id);
         try (PreparedStatement stmt = connection.prepareStatement(UPDATE_LINE_SQL)) {
-            stmt.setString(1, entity.getName().toString());
+            stmt.setString(1, entity.getName().getValue());
             stmt.setString(2, id.toString());
             stmt.executeUpdate();
         } catch (final Exception e) {
@@ -128,7 +128,7 @@ public class MariaDBLineRepository implements LineRepository {
             for (int i = 0; i < stationIds.size(); i++) {
                 stmt.setString(1, lineId.toString());
                 stmt.setString(2, stationIds.get(i).toString());
-                stmt.setInt(3, i + 1); 
+                stmt.setInt(3, i + 1);
                 stmt.executeUpdate();
             }
         } catch (final Exception e) {

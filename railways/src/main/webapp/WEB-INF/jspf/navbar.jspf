@@ -1,0 +1,10 @@
+<%@ page isELIgnored="false" %>
+<div class="nav">
+    <a href="${pageContext.request.contextPath}/">Home</a>
+    <a href="${pageContext.request.contextPath}/carriages">Carriages</a>
+    <a href="${pageContext.request.contextPath}/trains">Trains</a>
+    <a href="${pageContext.request.contextPath}/stations">Stations</a>
+    <a href="${pageContext.request.contextPath}/locomotives">Locomotives</a>
+    <a href="${pageContext.request.contextPath}/lines">Lines</a>
+    <a href="${pageContext.request.contextPath}/train-compositions">Train Compositions</a>
+</div>

@@ -48,7 +48,7 @@ public class MariaDBTrainRepository implements TrainRepository {
         try (PreparedStatement stmt = connection.prepareStatement(CREATE_TRAIN_SQL)) {
             stmt.setString(1, id.toString());
             stmt.setString(2, entity.getTrainCompositionId().toString());
-            stmt.setString(3, number.toString());
+            stmt.setString(3, number.getValue());
             stmt.executeUpdate();
             createScheduleEntries(entity.getSchedule(), id);
         } catch (final Exception e) {
@@ -101,13 +101,13 @@ public class MariaDBTrainRepository implements TrainRepository {
         final Id id = entity.getId();
         final MachineNumber number = entity.getNumber();
         final var byNumber = findByNumber(number);
-        if (!byNumber.get().getId().equals(id)) {
+        if (byNumber.isPresent() && !byNumber.get().getId().equals(id)) {
             throw new InfrastructureException("Carriage number already exists: " + number);
         }
 
         try (PreparedStatement stmt = connection.prepareStatement(UPDATE_TRAIN_SQL)) {
             stmt.setString(1, entity.getTrainCompositionId().toString());
-            stmt.setString(2, number.toString());
+            stmt.setString(2, number.getValue());
             stmt.setString(3, id.toString());
             stmt.executeUpdate();
             deleteScheduleEntriesByTrainId(id);
@@ -130,7 +130,7 @@ public class MariaDBTrainRepository implements TrainRepository {
     @Override
     public Optional<Train> findByNumber(final MachineNumber number) {
         try (PreparedStatement stmt = connection.prepareStatement(FIND_TRAIN_BY_NUMBER)) {
-            stmt.setString(1, number.toString());
+            stmt.setString(1, number.getValue());
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     final Id id = Id.fromString(rs.getString("id"));

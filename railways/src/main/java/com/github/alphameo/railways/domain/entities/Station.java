@@ -22,6 +22,7 @@ public class Station {
         if (id == null) {
             throw new ValidationException("station: id cannot be null");
         }
+        this.id = id;
         this.changeName(name);
         this.changeLocation(location);
     }

@@ -8,6 +8,8 @@ public interface StationService {
 
     void registerStation(StationDto station);
 
+    void updateStation(StationDto station);
+
     StationDto findStationById(String id);
 
     List<StationDto> listAllStations();
