@@ -34,7 +34,7 @@
                     <td class="actions">
                         <a href="${pageContext.request.contextPath}/locomotives/${locomotive.id}">View</a>
                         <a href="${pageContext.request.contextPath}/locomotives/${locomotive.id}/edit">Edit</a>
-                        <a href="${pageContext.request.contextPath}/locomotives/${locomotive.id}/delete" onclick="return confirm('Are you sure you want to delete this locomotive?')">Delete</a>
+                        <button onclick="delFrom('${locomotive.id}', 'locomotives')" >Delete</button>
                     </td>
                 </tr>
             </c:forEach>
@@ -44,5 +44,7 @@
     <c:if test="${empty locomotives}">
         <p>No locomotives found.</p>
     </c:if>
+
+    <script src="${pageContext.request.contextPath}/js/scripts.js"></script>
 </body>
 </html>

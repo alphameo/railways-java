@@ -36,7 +36,7 @@
                     <td class="actions">
                         <a href="${pageContext.request.contextPath}/carriages/${carriage.id}">View</a>
                         <a href="${pageContext.request.contextPath}/carriages/${carriage.id}/edit">Edit</a>
-                        <a href="${pageContext.request.contextPath}/carriages/${carriage.id}/delete" onclick="return confirm('Are you sure you want to delete this carriage?')">Delete</a>
+                        <button onclick="delFrom('${carriage.id}', 'carriages')" >Delete</button>
                     </td>
                 </tr>
             </c:forEach>
@@ -46,5 +46,7 @@
     <c:if test="${empty carriages}">
         <p>No carriages found.</p>
     </c:if>
+
+    <script src="${pageContext.request.contextPath}/js/scripts.js"></script>
 </body>
 </html>

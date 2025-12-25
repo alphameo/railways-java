@@ -25,7 +25,8 @@ table {
     width: 100%;
 }
 
-th, td {
+th,
+td {
     border: 1px solid #ddd;
     padding: 8px;
     text-align: left;
@@ -39,7 +40,12 @@ th {
     white-space: nowrap;
 }
 
-.actions a {
+.actions a,
+.actions button {
+    font-size: 12pt;
+    font-family: Arial, sans-serif;
+    margin: 0px;
+    padding: 0px;
     margin-right: 5px;
     text-decoration: none;
     padding: 2px 5px;
@@ -47,7 +53,8 @@ th {
     color: white;
 }
 
-.actions a:hover {
+.actions a:hover,
+.actions button:hover {
     background: #0056b3;
 }
 
@@ -81,7 +88,8 @@ label {
     margin-top: 10px;
 }
 
-input, select {
+input,
+select {
     width: 100%;
     padding: 5px;
     margin-top: 5px;
@@ -100,10 +108,11 @@ button:hover {
 }
 
 /* Specific for edit forms */
-button[type="submit"] {
+button[type='submit'] {
     background: #007bff;
 }
 
-button[type="submit"]:hover {
+button[type='submit']:hover {
     background: #0056b3;
 }
+

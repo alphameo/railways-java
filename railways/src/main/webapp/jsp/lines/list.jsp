@@ -34,7 +34,7 @@
                     <td class="actions">
                         <a href="${pageContext.request.contextPath}/lines/${line.id}">View</a>
                         <a href="${pageContext.request.contextPath}/lines/${line.id}/edit">Edit</a>
-                        <a href="${pageContext.request.contextPath}/lines/${line.id}/delete" onclick="return confirm('Are you sure you want to delete this line?')">Delete</a>
+                        <button onclick="delFrom('${line.id}', 'lines')" >Delete</button>
                     </td>
                 </tr>
             </c:forEach>
@@ -44,5 +44,7 @@
     <c:if test="${empty lines}">
         <p>No lines found.</p>
     </c:if>
+
+    <script src="${pageContext.request.contextPath}/js/scripts.js"></script>
 </body>
 </html>

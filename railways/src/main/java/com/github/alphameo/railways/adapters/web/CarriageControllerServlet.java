@@ -82,6 +82,7 @@ public class CarriageControllerServlet extends HttpServlet {
         if (pathInfo != null && !pathInfo.equals("/")) {
             String id = pathInfo.substring(1);
             handleUnregisterCarriage(request, response, id, isApiRequest);
+            // response.sendRedirect(request.getContextPath() + "/carriages");
         } else {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
