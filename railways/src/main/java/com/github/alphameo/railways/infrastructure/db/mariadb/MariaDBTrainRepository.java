@@ -130,7 +130,7 @@ public class MariaDBTrainRepository implements TrainRepository {
     @Override
     public Optional<Train> findByNumber(final MachineNumber number) {
         try (PreparedStatement stmt = connection.prepareStatement(FIND_TRAIN_BY_NUMBER)) {
-            stmt.setString(1, number.toString());
+            stmt.setString(1, number.getValue());
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     final Id id = Id.fromString(rs.getString("id"));

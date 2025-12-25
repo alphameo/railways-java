@@ -91,7 +91,7 @@ public class MariaDBCarriageRepository implements CarriageRepository {
         }
 
         try (PreparedStatement stmt = connection.prepareStatement(UPDATE_CARRIAGE_SQL)) {
-            stmt.setString(1, number.toString());
+            stmt.setString(1, number.getValue());
             stmt.setString(2, entity.getContentType().toString());
             stmt.setLong(3, entity.getCapacity());
             stmt.setString(4, id.toString());

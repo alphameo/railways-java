@@ -114,7 +114,7 @@ public class MariaDBLocomotiveRepository implements LocomotiveRepository {
     @Override
     public Optional<Locomotive> findByNumber(final MachineNumber number) {
         try (PreparedStatement stmt = connection.prepareStatement(FIND_LOCOMOTIVE_BY_NUMBER)) {
-            stmt.setString(1, number.toString());
+            stmt.setString(1, number.getValue());
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     return Optional.of(mapResultSetToLocomotive(rs));
