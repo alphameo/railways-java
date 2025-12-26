@@ -47,9 +47,10 @@ public class Line {
     }
 
     public void updateStationIdOrder(@NonNull final List<Id> stationIdOrder) {
-        if (stationIdOrder.isEmpty()) {
-            throw new ValidationException("line: stationIdOrder cannot be empty");
-        }
+        // NOTE: business logic, but hard to show in demo
+        // if (stationIdOrder.isEmpty()) {
+        //     throw new ValidationException("line: stationIdOrder cannot be empty");
+        // }
 
         final var newIds = new ArrayList<Id>();
 
