@@ -1,10 +1,20 @@
 package com.github.alphameo.railways.adapters.web;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.alphameo.railways.application.dto.CarriageDto;
+import com.github.alphameo.railways.application.dto.LocomotiveDto;
+import com.github.alphameo.railways.application.dto.TrainCompositionDto;
 import com.github.alphameo.railways.application.dto.TrainDto;
+import com.github.alphameo.railways.application.services.CarriageService;
+import com.github.alphameo.railways.application.services.LocomotiveService;
+import com.github.alphameo.railways.application.services.ServiceProvider;
+import com.github.alphameo.railways.application.services.TrainCompositionService;
 import com.github.alphameo.railways.application.services.TrainService;
 
 import jakarta.servlet.ServletException;
@@ -15,10 +25,16 @@ import jakarta.servlet.http.HttpServletResponse;
 public class TrainControllerServlet extends HttpServlet {
 
     private final TrainService trainService;
+    private final TrainCompositionService trainCompositionService;
+    private final LocomotiveService locomotiveService;
+    private final CarriageService carriageService;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    public TrainControllerServlet(TrainService trainService) {
-        this.trainService = trainService;
+    public TrainControllerServlet(ServiceProvider serviceProvider) {
+        this.trainService = serviceProvider.getTrainService();
+        this.trainCompositionService = serviceProvider.getTrainCompositionService();
+        this.locomotiveService = serviceProvider.getLocomotiveService();
+        this.carriageService = serviceProvider.getCarriageService();
     }
 
     @Override
@@ -98,7 +114,36 @@ public class TrainControllerServlet extends HttpServlet {
                 response.setCharacterEncoding("UTF-8");
                 objectMapper.writeValue(response.getWriter(), trains);
             } else {
-                request.setAttribute("trains", trains);
+                List<Map<String, Object>> enrichedTrains = new ArrayList<>();
+                for (TrainDto train : trains) {
+                    Map<String, Object> trainMap = new HashMap<>();
+                    trainMap.put("id", train.id());
+                    trainMap.put("number", train.number());
+                    try {
+                        TrainCompositionDto composition = trainCompositionService.findTrainCompositionById(train.trainCompositionId());
+                        try {
+                            LocomotiveDto loco = locomotiveService.findLocomotiveById(composition.locomotiveId());
+                            trainMap.put("locomotiveNumber", loco.number());
+                        } catch (Exception e) {
+                            trainMap.put("locomotiveNumber", "N/A");
+                        }
+                        List<String> carriageNumbers = new ArrayList<>();
+                        for (String carriageId : composition.carriageIds()) {
+                            try {
+                                CarriageDto carriage = carriageService.findCarriageById(carriageId);
+                                carriageNumbers.add(carriage.number());
+                            } catch (Exception e) {
+                                carriageNumbers.add("N/A");
+                            }
+                        }
+                        trainMap.put("carriageNumbers", String.join(", ", carriageNumbers));
+                    } catch (Exception e) {
+                        trainMap.put("locomotiveNumber", "N/A");
+                        trainMap.put("carriageNumbers", "N/A");
+                    }
+                    enrichedTrains.add(trainMap);
+                }
+                request.setAttribute("trains", enrichedTrains);
                 request.getRequestDispatcher("/jsp/trains/list.jsp").forward(request, response);
             }
         } catch (Exception e) {

@@ -67,7 +67,7 @@ public class WebAppInitializer {
         ctx.addServletMappingDecoded("/api/locomotives/*", "locomotiveServlet");
         ctx.addServletMappingDecoded("/locomotives/*", "locomotiveServlet");
 
-        Tomcat.addServlet(ctx, "trainServlet", new TrainControllerServlet(serviceProvider.getTrainService()));
+        Tomcat.addServlet(ctx, "trainServlet", new TrainControllerServlet(serviceProvider));
         ctx.addServletMappingDecoded("/api/trains/*", "trainServlet");
         ctx.addServletMappingDecoded("/trains/*", "trainServlet");
 
