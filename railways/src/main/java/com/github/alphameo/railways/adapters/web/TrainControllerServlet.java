@@ -164,6 +164,12 @@ public class TrainControllerServlet extends HttpServlet {
                 objectMapper.writeValue(response.getWriter(), train);
             } else {
                 request.setAttribute("train", train);
+                try {
+                    TrainCompositionDto composition = trainCompositionService.findTrainCompositionById(train.trainCompositionId());
+                    request.setAttribute("composition", composition);
+                } catch (Exception e) {
+                    // Composition not found, leave attribute unset
+                }
                 request.getRequestDispatcher("/jsp/trains/detail.jsp").forward(request, response);
             }
         } catch (Exception e) {
