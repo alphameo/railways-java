@@ -53,3 +53,16 @@ function removePosition(index) {
         positionCount--;
     }
 }
+
+function updateSummary() {
+    var select = document.getElementById('trainCompositionId');
+    var selectedOption = select.options[select.selectedIndex];
+    var summary = selectedOption.getAttribute('data-summary');
+    document.getElementById('compositionSummary').innerHTML = `${summary}` || '';
+}
+
+function addListenerToTrainCompoSummary() {
+    document
+        .getElementById('trainCompositionId')
+        .addEventListener('change', updateSummary);
+}

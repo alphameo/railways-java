@@ -223,6 +223,8 @@ public class TrainControllerServlet extends HttpServlet {
 
     private void handleCreateForm(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        List<Map<String, Object>> enrichedCompositions = enrichCompositions();
+        request.setAttribute("compositions", enrichedCompositions);
         request.getRequestDispatcher("/jsp/trains/create.jsp").forward(request, response);
     }
 
@@ -231,6 +233,8 @@ public class TrainControllerServlet extends HttpServlet {
         try {
             TrainDto train = trainService.findTrainById(id);
             request.setAttribute("train", train);
+            List<Map<String, Object>> enrichedCompositions = enrichCompositions();
+            request.setAttribute("compositions", enrichedCompositions);
             request.getRequestDispatcher("/jsp/trains/edit.jsp").forward(request, response);
         } catch (Exception e) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND, e.getMessage());
@@ -276,6 +280,35 @@ public class TrainControllerServlet extends HttpServlet {
         } catch (Exception e) {
             handleError(response, e, isApiRequest);
         }
+    }
+
+    private List<Map<String, Object>> enrichCompositions() {
+        List<TrainCompositionDto> compositions = trainCompositionService.listAllTrainCompositions();
+        List<Map<String, Object>> enrichedCompositions = new ArrayList<>();
+        for (TrainCompositionDto comp : compositions) {
+            Map<String, Object> compMap = new HashMap<>();
+            compMap.put("id", comp.id());
+            String locoSummary = "N/A";
+            try {
+                LocomotiveDto loco = locomotiveService.findLocomotiveById(comp.locomotiveId());
+                locoSummary = String.format("%s (%s)", loco.number(), comp.locomotiveId());
+            } catch (Exception e) {
+                // Handle missing locomotive
+            }
+            List<String> carriageSummaries = new ArrayList<>();
+            for (String carriageId : comp.carriageIds()) {
+                try {
+                    CarriageDto carriage = carriageService.findCarriageById(carriageId);
+                    carriageSummaries.add(carriage.number());
+                } catch (Exception e) {
+                    carriageSummaries.add("N/A");
+                }
+            }
+            String summary = "<strong>Locomotive:</strong> " + locoSummary + "<br><strong>Carriages:</strong> " + String.join(", ", carriageSummaries);
+            compMap.put("summary", summary);
+            enrichedCompositions.add(compMap);
+        }
+        return enrichedCompositions;
     }
 
     private void handleError(HttpServletResponse response, Exception e, boolean isApiRequest)
