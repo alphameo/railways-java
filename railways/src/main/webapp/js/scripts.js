@@ -21,7 +21,7 @@ async function loadPosCount(count) {
     positionCount = count;
 }
 
-function addPosition() {
+function addStationPosition() {
     const container = document.getElementById('stationOrder');
     const div = document.createElement('div');
     div.className = 'position';
@@ -38,7 +38,7 @@ function addPosition() {
     positionCount++;
 }
 
-function removePosition(index) {
+function removeStationPosition(index) {
     const container = document.getElementById('stationOrder');
     const positions = container.querySelectorAll('.position');
     if (positions.length > 0) {
@@ -53,12 +53,44 @@ function removePosition(index) {
         positionCount--;
     }
 }
+function addCompositionPosition() {
+    const container = document.getElementById('carriageOrder');
+    const div = document.createElement('div');
+    div.className = 'position';
+    const options = document.getElementById('carriageOptions').innerHTML;
+    div.innerHTML = `
+                <label>Position ${positionCount + 1}:</label>
+                <select name="position${positionCount}">
+                    <option value="">-- Select Carriage --</option>
+                    ${options}
+                </select>
+                <button type="button" onclick="removePosition(${positionCount})">Remove</button>
+            `;
+    container.appendChild(div);
+    positionCount++;
+}
+
+function removeCompositionPosition(index) {
+    const container = document.getElementById('carriageOrder');
+    const positions = container.querySelectorAll('.position');
+    if (positions.length > 0) {
+        positions[index].remove();
+        const remaining = container.querySelectorAll('.position');
+        remaining.forEach((pos, i) => {
+            pos.querySelector('label').textContent = `Position ${i + 1}:`;
+            pos.querySelector('select').name = `position${i}`;
+            pos.querySelector('button').onclick = () => removePosition(i);
+        });
+        positionCount--;
+    }
+}
 
 function updateSummary() {
     var select = document.getElementById('trainCompositionId');
     var selectedOption = select.options[select.selectedIndex];
     var summary = selectedOption.getAttribute('data-summary');
-    document.getElementById('compositionSummary').innerHTML = `${summary}` || '';
+    document.getElementById('compositionSummary').innerHTML =
+        `${summary}` || '';
 }
 
 function addListenerToTrainCompoSummary() {

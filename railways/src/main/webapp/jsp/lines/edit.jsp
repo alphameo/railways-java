@@ -30,11 +30,11 @@
                             <option value="${station.id}" ${station.id == stationId ? 'selected' : ''}>${station.name} (${station.id})</option>
                         </c:forEach>
                     </select>
-                    <button type="button" onclick="removePosition(${status.index})">Remove</button>
+                    <button type="button" onclick="removeStationPosition(${status.index})">Remove</button>
                 </div>
             </c:forEach>
         </div>
-        <button type="button" onclick="addPosition()">Add Position</button>
+        <button type="button" onclick="addStationPosition()">Add Position</button>
         <p>Note: Select stations for each position. Use Add/Remove to adjust the number of positions.</p>
 
         <button type="submit">Update Line</button>
