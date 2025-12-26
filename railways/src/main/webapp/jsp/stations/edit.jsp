@@ -23,6 +23,8 @@
 
 
     <form action="${pageContext.request.contextPath}/stations" method="post">
+        Station ID: ${station.id}
+
         <input type="hidden" name="id" value="${station.id}">
 
         <label for="name">Name:</label>

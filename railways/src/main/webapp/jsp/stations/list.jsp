@@ -19,7 +19,6 @@
     <table>
         <thead>
             <tr>
-                <th>ID</th>
                 <th>Name</th>
                 <th>Location</th>
                 <th>Actions</th>
@@ -28,7 +27,6 @@
         <tbody>
             <c:forEach var="station" items="${stations}">
                 <tr>
-                    <td>${station.id}</td>
                     <td>${station.name}</td>
                     <td>${station.location}</td>
                     <td class="actions">

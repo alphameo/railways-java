@@ -19,7 +19,6 @@
     <table>
         <thead>
             <tr>
-                <th>ID</th>
                 <th>Number</th>
                 <th>Train Composition ID</th>
                 <th>Actions</th>
@@ -28,7 +27,6 @@
         <tbody>
             <c:forEach var="train" items="${trains}">
                 <tr>
-                    <td>${train.id}</td>
                     <td>${train.number}</td>
                     <td>${train.trainCompositionId}</td>
                     <td class="actions">

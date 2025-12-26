@@ -19,7 +19,6 @@
     <table>
         <thead>
             <tr>
-                <th>ID</th>
                 <th>Number</th>
                 <th>Content Type</th>
                 <th>Capacity</th>
@@ -29,7 +28,6 @@
         <tbody>
             <c:forEach var="carriage" items="${carriages}">
                 <tr>
-                    <td>${carriage.id}</td>
                     <td>${carriage.number}</td>
                     <td>${carriage.contentType}</td>
                     <td>${carriage.capacity}</td>

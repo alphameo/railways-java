@@ -12,6 +12,8 @@
     <jsp:include page="/WEB-INF/jspf/navbar.jspf"/>
 
     <form action="${pageContext.request.contextPath}/lines" method="post">
+        Line ID: ${line.id}
+
         <input type="hidden" name="id" value="${line.id}">
 
         <label for="name">Name:</label>

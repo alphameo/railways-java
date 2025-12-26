@@ -13,6 +13,7 @@
 
 
     <form action="${pageContext.request.contextPath}/carriages" method="post">
+        Carriage ID: ${carriage.id}
         <input type="hidden" name="id" value="${carriage.id}">
 
         <label for="number">Number:</label>
