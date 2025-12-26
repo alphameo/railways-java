@@ -16,28 +16,30 @@
         <a href="${pageContext.request.contextPath}/trains/create">Add New Train</a>
     </div>
 
-    <table>
-        <thead>
-            <tr>
-                <th>Number</th>
-                <th>Train Composition ID</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <c:forEach var="train" items="${trains}">
-                <tr>
-                    <td>${train.number}</td>
-                    <td>${train.trainCompositionId}</td>
-                    <td class="actions">
-                        <a href="${pageContext.request.contextPath}/trains/${train.id}">View</a>
-                        <a href="${pageContext.request.contextPath}/trains/${train.id}/edit">Edit</a>
-                        <button onclick="delFrom('${train.id}', 'trains')" >Delete</button>
-                    </td>
-                </tr>
-            </c:forEach>
-        </tbody>
-    </table>
+     <table>
+         <thead>
+             <tr>
+                 <th>Number</th>
+                 <th>Locomotive Number</th>
+                 <th>Carriage Numbers</th>
+                 <th>Actions</th>
+             </tr>
+         </thead>
+         <tbody>
+             <c:forEach var="train" items="${trains}">
+                 <tr>
+                     <td>${train.number}</td>
+                     <td>${train.locomotiveNumber}</td>
+                     <td>${train.carriageNumbers}</td>
+                     <td class="actions">
+                         <a href="${pageContext.request.contextPath}/trains/${train.id}">View</a>
+                         <a href="${pageContext.request.contextPath}/trains/${train.id}/edit">Edit</a>
+                         <button onclick="delFrom('${train.id}', 'trains')" >Delete</button>
+                     </td>
+                 </tr>
+             </c:forEach>
+         </tbody>
+     </table>
 
     <c:if test="${empty trains}">
         <p>No trains found.</p>
