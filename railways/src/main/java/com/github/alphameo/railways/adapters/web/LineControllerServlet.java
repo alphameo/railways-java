@@ -2,7 +2,9 @@ package com.github.alphameo.railways.adapters.web;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.alphameo.railways.application.dto.LineDto;
@@ -127,6 +129,23 @@ public class LineControllerServlet extends HttpServlet {
                 objectMapper.writeValue(response.getWriter(), line);
             } else {
                 request.setAttribute("line", line);
+                List<StationDto> allStations = stationService.listAllStations();
+                Map<String, StationDto> stationMap = new HashMap<>();
+                for (StationDto station : allStations) {
+                    stationMap.put(station.id(), station);
+                }
+                List<Map<String, String>> stationsInOrder = new ArrayList<>();
+                for (String stationId : line.stationIdOrder()) {
+                    StationDto station = stationMap.get(stationId);
+                    if (station != null) {
+                        Map<String, String> stationInfo = new HashMap<>();
+                        stationInfo.put("id", station.id());
+                        stationInfo.put("name", station.name());
+                        stationsInOrder.add(stationInfo);
+                    }
+                    // Skip if not found
+                }
+                request.setAttribute("stationsInOrder", stationsInOrder);
                 request.getRequestDispatcher("/jsp/lines/detail.jsp").forward(request, response);
             }
         } catch (Exception e) {
