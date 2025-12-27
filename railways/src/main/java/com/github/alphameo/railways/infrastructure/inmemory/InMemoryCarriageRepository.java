@@ -1,6 +1,7 @@
 package com.github.alphameo.railways.infrastructure.inmemory;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -83,5 +84,19 @@ public class InMemoryCarriageRepository implements CarriageRepository {
         final var id = uniqueNumberIds.get(number);
         final var carriage = storage.get(id);
         return Optional.ofNullable(carriage);
+    }
+
+    @Override
+    public List<Carriage> listCarriages(int offset, int limit) {
+        List<Carriage> list = new ArrayList<>(storage.values());
+        // TODO: sort by number
+        int start = Math.min(offset, list.size());
+        int end = Math.min(offset + limit, list.size());
+        return list.subList(start, end);
+    }
+
+    @Override
+    public int countCarriages() {
+        return storage.size();
     }
 }

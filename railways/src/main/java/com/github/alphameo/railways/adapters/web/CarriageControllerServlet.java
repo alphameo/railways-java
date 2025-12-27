@@ -91,14 +91,29 @@ public class CarriageControllerServlet extends HttpServlet {
             throws ServletException, IOException {
 
         try {
-            List<CarriageDto> carriages = carriageService.listAllCarriages();
-
             if (isApiRequest) {
+                List<CarriageDto> carriages = carriageService.listAllCarriages();
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");
                 objectMapper.writeValue(response.getWriter(), carriages);
             } else {
+                int page = Integer.parseInt(request.getParameter("page") != null ? request.getParameter("page") : "0");
+                int size = Integer.parseInt(request.getParameter("size") != null ? request.getParameter("size") : "10");
+                // Validate size
+                if (size != 10 && size != 20 && size != 50) {
+                    size = 10;
+                }
+                int totalElements = carriageService.countCarriages();
+                int totalPages = (int) Math.ceil((double) totalElements / size);
+                // Clamp page
+                if (page < 0) page = 0;
+                if (page >= totalPages && totalPages > 0) page = totalPages - 1;
+                List<CarriageDto> carriages = carriageService.listCarriages(page, size);
                 request.setAttribute("carriages", carriages);
+                request.setAttribute("currentPage", page);
+                request.setAttribute("totalPages", totalPages);
+                request.setAttribute("pageSize", size);
+                request.setAttribute("totalElements", totalElements);
                 request.getRequestDispatcher("/jsp/carriages/list.jsp").forward(request, response);
             }
         } catch (Exception e) {

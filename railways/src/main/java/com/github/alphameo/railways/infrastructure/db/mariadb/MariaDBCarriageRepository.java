@@ -21,7 +21,9 @@ public class MariaDBCarriageRepository implements CarriageRepository {
     private static String CREATE_CARRIAGE_SQL = "INSERT INTO carriage (id, number, content_type, capacity) VALUES(?, ?, ?, ?)";
     private static String FIND_CARRIAGE_BY_ID = "SELECT id, number, content_type, capacity FROM carriage WHERE id = ?";
     private static String FIND_CARRIAGE_BY_NUMBER = "SELECT id, number, content_type, capacity FROM carriage WHERE number = ?";
-    private static String FIND_ALL_CARRIAGES = "SELECT id, number, content_type, capacity FROM carriage";
+    private static String FIND_ALL_CARRIAGES = "SELECT id, number, content_type, capacity FROM carriage ORDER BY number";
+    private static String LIST_CARRIAGES_SQL = "SELECT id, number, content_type, capacity FROM carriage ORDER BY number LIMIT ? OFFSET ?";
+    private static String COUNT_CARRIAGES_SQL = "SELECT COUNT(*) FROM carriage";
     private static String UPDATE_CARRIAGE_SQL = "UPDATE carriage SET number = ?, content_type = ?, capacity = ? WHERE id = ?";
     private static String DELETE_CARRIAGE_BY_ID = "DELETE FROM carriage WHERE id = ?";
 
@@ -141,6 +143,36 @@ public class MariaDBCarriageRepository implements CarriageRepository {
             throw new InfrastructureException(e);
         }
         return Optional.empty();
+    }
+
+    @Override
+    public List<Carriage> listCarriages(int offset, int limit) {
+        final List<Carriage> carriages = new ArrayList<>();
+        try (PreparedStatement stmt = connection.prepareStatement(LIST_CARRIAGES_SQL)) {
+            stmt.setInt(1, limit);
+            stmt.setInt(2, offset);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    carriages.add(mapResultSetToCarriage(rs));
+                }
+            }
+        } catch (final Exception e) {
+            throw new InfrastructureException(e);
+        }
+        return carriages;
+    }
+
+    @Override
+    public int countCarriages() {
+        try (PreparedStatement stmt = connection.prepareStatement(COUNT_CARRIAGES_SQL);
+             ResultSet rs = stmt.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (final Exception e) {
+            throw new InfrastructureException(e);
+        }
+        return 0;
     }
 
     private Carriage mapResultSetToCarriage(final ResultSet rs) throws Exception {

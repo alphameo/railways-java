@@ -16,5 +16,9 @@ public interface CarriageService {
 
     public List<CarriageDto> listAllCarriages();
 
+    public List<CarriageDto> listCarriages(int page, int size);
+
+    public int countCarriages();
+
     public void unregisterCarriage(String id);
 }

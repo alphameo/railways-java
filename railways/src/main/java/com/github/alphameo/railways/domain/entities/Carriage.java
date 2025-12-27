@@ -56,4 +56,20 @@ public class Carriage {
     public void changeContentType(final CarriageContentType contentType) {
         this.contentType = contentType;
     }
+
+    public Id getId() {
+        return id;
+    }
+
+    public MachineNumber getNumber() {
+        return number;
+    }
+
+    public CarriageContentType getContentType() {
+        return contentType;
+    }
+
+    public Long getCapacity() {
+        return capacity;
+    }
 }

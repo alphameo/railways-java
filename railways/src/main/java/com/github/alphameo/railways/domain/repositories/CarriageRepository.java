@@ -9,4 +9,8 @@ import com.github.alphameo.railways.domain.valueobjects.MachineNumber;
 public interface CarriageRepository extends Repository<Carriage, Id> {
 
     public Optional<Carriage> findByNumber(MachineNumber number);
+
+    public java.util.List<Carriage> listCarriages(int offset, int limit);
+
+    public int countCarriages();
 }
