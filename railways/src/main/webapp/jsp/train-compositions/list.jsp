@@ -20,17 +20,17 @@
         <thead>
             <tr>
                 <th>ID</th>
-                <th>Locomotive ID</th>
-                <th>Carriage IDs</th>
+                <th>Locomotive</th>
+                <th>Carriages</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
-            <c:forEach var="trainComposition" items="${trainCompositions}">
+            <c:forEach var="trainComposition" items="${enrichedCompositions}">
                 <tr>
                     <td>${trainComposition.id}</td>
-                    <td>${trainComposition.locomotiveId}</td>
-                    <td>${trainComposition.carriageIds}</td>
+                    <td>${trainComposition.locomotiveInfo}</td>
+                    <td>${trainComposition.carriagesInfo}</td>
                     <td class="actions">
                         <a href="${pageContext.request.contextPath}/train-compositions/${trainComposition.id}">View</a>
                         <a href="${pageContext.request.contextPath}/train-compositions/${trainComposition.id}/edit">Edit</a>

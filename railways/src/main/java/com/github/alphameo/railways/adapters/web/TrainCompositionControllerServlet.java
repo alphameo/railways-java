@@ -2,7 +2,9 @@ package com.github.alphameo.railways.adapters.web;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.alphameo.railways.application.dto.CarriageDto;
@@ -104,7 +106,33 @@ public class TrainCompositionControllerServlet extends HttpServlet {
                 response.setCharacterEncoding("UTF-8");
                 objectMapper.writeValue(response.getWriter(), trainCompositions);
             } else {
-                request.setAttribute("trainCompositions", trainCompositions);
+                List<Map<String, Object>> enrichedCompositions = new ArrayList<>();
+                for (TrainCompositionDto comp : trainCompositions) {
+                    Map<String, Object> enriched = new HashMap<>();
+                    enriched.put("id", comp.id());
+                    enriched.put("locomotiveId", comp.locomotiveId());
+                    enriched.put("carriageIds", comp.carriageIds());
+                    String locoInfo = "N/A";
+                    try {
+                        LocomotiveDto loco = locomotiveService.findLocomotiveById(comp.locomotiveId());
+                        locoInfo = loco.number();
+                    } catch (Exception e) {
+                    }
+                    enriched.put("locomotiveInfo", locoInfo);
+                    List<String> carriageNumbers = new ArrayList<>();
+                    for (String carriageId : comp.carriageIds()) {
+                        try {
+                            CarriageDto carriage = carriageService.findCarriageById(carriageId);
+                            carriageNumbers.add(carriage.number());
+                        } catch (Exception e) {
+                            carriageNumbers.add("N/A");
+                        }
+                    }
+                    String carriagesInfo = String.join(", ", carriageNumbers);
+                    enriched.put("carriagesInfo", carriagesInfo);
+                    enrichedCompositions.add(enriched);
+                }
+                request.setAttribute("enrichedCompositions", enrichedCompositions);
                 request.getRequestDispatcher("/jsp/train-compositions/list.jsp").forward(request, response);
             }
         } catch (Exception e) {
