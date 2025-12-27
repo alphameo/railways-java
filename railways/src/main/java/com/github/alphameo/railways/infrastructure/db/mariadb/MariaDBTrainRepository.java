@@ -147,6 +147,11 @@ public class MariaDBTrainRepository implements TrainRepository {
         return Optional.empty();
     }
 
+    @Override
+    public List<ScheduleEntry> getScheduleForTrain(Id trainId) {
+        return findScheduleEntriesByTrainId(trainId);
+    }
+
     private List<ScheduleEntry> findScheduleEntriesByTrainId(final Id trainId) {
         final List<ScheduleEntry> entries = new ArrayList<>();
         try (PreparedStatement stmt = connection.prepareStatement(

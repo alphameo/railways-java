@@ -9,11 +9,14 @@ import java.util.Map;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.alphameo.railways.application.dto.CarriageDto;
 import com.github.alphameo.railways.application.dto.LocomotiveDto;
+import com.github.alphameo.railways.application.dto.ScheduleEntryDto;
+import com.github.alphameo.railways.application.dto.StationDto;
 import com.github.alphameo.railways.application.dto.TrainCompositionDto;
 import com.github.alphameo.railways.application.dto.TrainDto;
 import com.github.alphameo.railways.application.services.CarriageService;
 import com.github.alphameo.railways.application.services.LocomotiveService;
 import com.github.alphameo.railways.application.services.ServiceProvider;
+import com.github.alphameo.railways.application.services.StationService;
 import com.github.alphameo.railways.application.services.TrainCompositionService;
 import com.github.alphameo.railways.application.services.TrainService;
 
@@ -28,6 +31,7 @@ public class TrainControllerServlet extends HttpServlet {
     private final TrainCompositionService trainCompositionService;
     private final LocomotiveService locomotiveService;
     private final CarriageService carriageService;
+    private final StationService stationService;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     public TrainControllerServlet(ServiceProvider serviceProvider) {
@@ -35,6 +39,7 @@ public class TrainControllerServlet extends HttpServlet {
         this.trainCompositionService = serviceProvider.getTrainCompositionService();
         this.locomotiveService = serviceProvider.getLocomotiveService();
         this.carriageService = serviceProvider.getCarriageService();
+        this.stationService = serviceProvider.getStationService();
     }
 
     @Override
@@ -170,6 +175,26 @@ public class TrainControllerServlet extends HttpServlet {
                 } catch (Exception e) {
                     // Composition not found, leave attribute unset
                 }
+                List<ScheduleEntryDto> schedule = trainService.getScheduleForTrain(id);
+                List<Map<String, Object>> enrichedSchedule = new ArrayList<>();
+                int order = 1;
+                for (ScheduleEntryDto entry : schedule) {
+                    Map<String, Object> enriched = new HashMap<>();
+                    enriched.put("order", order++);
+                    enriched.put("stationId", entry.stationId());
+                    enriched.put("stationName", "Unknown"); // default
+                    try {
+                        StationDto station = stationService.findStationById(entry.stationId());
+                        enriched.put("station", entry.stationId() + " - " + station.name());
+                        enriched.put("stationName", station.name());
+                    } catch (Exception e) {
+                        enriched.put("station", entry.stationId() + " - Unknown");
+                    }
+                    enriched.put("arrival", entry.arrivalTime() != null ? entry.arrivalTime().toString() : "N/A");
+                    enriched.put("departure", entry.departureTime() != null ? entry.departureTime().toString() : "N/A");
+                    enrichedSchedule.add(enriched);
+                }
+                request.setAttribute("schedule", enrichedSchedule);
                 request.getRequestDispatcher("/jsp/trains/detail.jsp").forward(request, response);
             }
         } catch (Exception e) {

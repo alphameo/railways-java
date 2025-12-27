@@ -27,9 +27,33 @@
                  </c:forEach>
              </ul>
          </div>
-     </c:if>
+      </c:if>
 
-     <div class="actions">
+      <c:if test="${not empty schedule}">
+          <h2>Schedule</h2>
+          <table>
+              <thead>
+                  <tr>
+                      <th>Order</th>
+                      <th>Station</th>
+                      <th>Arrival Time</th>
+                      <th>Departure Time</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <c:forEach var="entry" items="${schedule}">
+                      <tr>
+                          <td>${entry.order}</td>
+                          <td>${entry.station}</td>
+                          <td>${entry.arrival}</td>
+                          <td>${entry.departure}</td>
+                      </tr>
+                  </c:forEach>
+              </tbody>
+          </table>
+      </c:if>
+
+      <div class="actions">
         <a href="${pageContext.request.contextPath}/trains/${train.id}/edit">Edit</a>
         <a href="${pageContext.request.contextPath}/trains/${train.id}/delete" onclick="return confirm('Are you sure you want to delete this train?')">Delete</a>
     </div>
