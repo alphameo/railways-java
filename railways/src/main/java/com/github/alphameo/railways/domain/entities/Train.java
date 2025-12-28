@@ -107,6 +107,18 @@ public class Train {
         return this.schedule.size();
     }
 
+    public Id getId() {
+        return id;
+    }
+
+    public MachineNumber getNumber() {
+        return number;
+    }
+
+    public Id getTrainCompositionId() {
+        return trainCompositionId;
+    }
+
     private void validateCloseScheduleEntries(final ScheduleEntry prev, final ScheduleEntry past) {
         if (prev.getDepartureTime() == null) {
             if (past.getArrivalTime() != null) {

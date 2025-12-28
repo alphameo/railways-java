@@ -39,6 +39,43 @@ INSERT INTO carriage (id, number, train_composition_id, position, content_type, 
 (UUID(), 'C005', (SELECT id FROM train_composition LIMIT 1 OFFSET 2), 2, 'passenger', 60);
 
 -- ==========================================
+-- GENERATE 1000 CARRIAGES (OFFSET FOR UNIQUENESS)
+-- ==========================================
+-- Find the max existing number (extract numeric part)
+SET @max_num := (
+  SELECT COALESCE(MAX(CAST(SUBSTRING_INDEX(number, 'C', -1) AS UNSIGNED)), 0)
+  FROM carriage
+  WHERE number LIKE 'C%'
+);
+-- Generate sequence 1..1000, offset by max_num
+DROP TEMPORARY TABLE IF EXISTS seq;
+CREATE TEMPORARY TABLE seq (n INT PRIMARY KEY);
+SET @i := 0;
+INSERT INTO seq (n)
+SELECT @i := @i + 1
+FROM information_schema.columns c1
+CROSS JOIN information_schema.columns c2
+LIMIT 1000;
+-- Insert carriages with offset unique numbers, NULL composition/position
+INSERT INTO carriage (id, number, train_composition_id, position, content_type, capacity)
+SELECT
+  UUID(),
+  CONCAT('C', LPAD(n + @max_num, 5, '0')),  -- Offset to avoid duplicates
+  NULL,  -- train_composition_id
+  NULL,  -- position
+  CASE MOD(n-1, 2)
+    WHEN 0 THEN 'passenger'
+    ELSE 'cargo'
+  END,
+  CASE MOD(n-1, 2)
+    WHEN 0 THEN FLOOR(RAND() * 51) + 50  -- 50-100 for passenger
+    ELSE FLOOR(RAND() * 15001) + 5000  -- 5000-20000 for cargo
+  END
+FROM seq;
+-- Cleanup
+DROP TEMPORARY TABLE seq;
+
+-- ==========================================
 -- STATIONS
 -- ==========================================
 INSERT INTO station (id, name, location) VALUES

@@ -9,4 +9,6 @@ import com.github.alphameo.railways.domain.valueobjects.MachineNumber;
 public interface TrainRepository extends Repository<Train, Id> {
 
     public Optional<Train> findByNumber(MachineNumber number);
+
+    public java.util.List<com.github.alphameo.railways.domain.valueobjects.ScheduleEntry> getScheduleForTrain(Id trainId);
 }

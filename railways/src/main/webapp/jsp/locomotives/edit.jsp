@@ -12,6 +12,8 @@
     <jsp:include page="/WEB-INF/jspf/navbar.jspf"/>
 
     <form action="${pageContext.request.contextPath}/locomotives" method="post">
+        Locomotive ID: ${locomotive.id}
+
         <input type="hidden" name="id" value="${locomotive.id}">
 
         <label for="number">Number:</label>

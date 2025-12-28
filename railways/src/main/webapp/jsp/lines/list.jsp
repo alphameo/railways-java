@@ -19,25 +19,31 @@
     <table>
         <thead>
             <tr>
-                <th>ID</th>
                 <th>Name</th>
                 <th>Station ID Order</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
-            <c:forEach var="line" items="${lines}">
-                <tr>
-                    <td>${line.id}</td>
-                    <td>${line.name}</td>
-                    <td>${line.stationIdOrder}</td>
-                    <td class="actions">
-                        <a href="${pageContext.request.contextPath}/lines/${line.id}">View</a>
-                        <a href="${pageContext.request.contextPath}/lines/${line.id}/edit">Edit</a>
-                        <button onclick="delFrom('${line.id}', 'lines')" >Delete</button>
-                    </td>
-                </tr>
-            </c:forEach>
+             <c:forEach var="line" items="${lines}">
+                 <tr>
+                     <td>${line.name}</td>
+                     <td>
+                         <c:forEach var="stationId" items="${line.stationIdOrder}" varStatus="status">
+                             <c:forEach var="station" items="${stations}">
+                                 <c:if test="${station.id == stationId}">
+                                     ${station.name}<c:if test="${!status.last}">, </c:if>
+                                 </c:if>
+                             </c:forEach>
+                         </c:forEach>
+                     </td>
+                     <td class="actions">
+                         <a href="${pageContext.request.contextPath}/lines/${line.id}">View</a>
+                         <a href="${pageContext.request.contextPath}/lines/${line.id}/edit">Edit</a>
+                         <button onclick="delFrom('${line.id}', 'lines')" >Delete</button>
+                     </td>
+                 </tr>
+             </c:forEach>
         </tbody>
     </table>
 

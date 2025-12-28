@@ -37,4 +37,16 @@ public class ScheduleEntry {
             throw new ValidationException("scheduleEntry: arrivalTime must be <= departureTime");
         }
     }
+
+    public Id getStationId() {
+        return stationId;
+    }
+
+    public LocalDateTime getArrivalTime() {
+        return arrivalTime;
+    }
+
+    public LocalDateTime getDepartureTime() {
+        return departureTime;
+    }
 }

@@ -19,6 +19,8 @@ public interface TrainService {
 
     void unregisterTrain(String id);
 
+    List<ScheduleEntryDto> getScheduleForTrain(String trainId);
+
     void insertScheduleEntry(String trainId, ScheduleEntryDto scheduleEntry, int orderIndex);
 
     void removeScheduleEntry(String trainId, int orderIndex);

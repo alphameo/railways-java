@@ -15,7 +15,12 @@
     <div class="details">
         <p><strong>ID:</strong> ${line.id}</p>
         <p><strong>Name:</strong> ${line.name}</p>
-        <p><strong>Station ID Order:</strong> ${line.stationIdOrder}</p>
+        <p><strong>Stations in Order:</strong></p>
+        <ul>
+            <c:forEach var="station" items="${stationsInOrder}">
+                <li>${station.name} (${station.id})</li>
+            </c:forEach>
+        </ul>
     </div>
 
     <div class="actions">

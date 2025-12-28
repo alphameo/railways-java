@@ -78,6 +78,26 @@ public class DefaultCarriageService implements CarriageService {
     }
 
     @Override
+    public List<CarriageDto> listCarriages(int page, int size) {
+        try {
+            int offset = page * size;
+            final var carriages = repository.listCarriages(offset, size);
+            return CarriageMapper.toDtoList(carriages);
+        } catch (final RuntimeException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public int countCarriages() {
+        try {
+            return repository.countCarriages();
+        } catch (final RuntimeException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
     public void updateCarriage(@NonNull final CarriageDto carriage) {
         try {
             final var valCarriage = CarriageMapper.toEntity(carriage);

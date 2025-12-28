@@ -12,15 +12,29 @@
     <jsp:include page="/WEB-INF/jspf/navbar.jspf"/>
 
     <form action="${pageContext.request.contextPath}/trains" method="post">
+        Train ID: ${train.id}
+
         <input type="hidden" name="id" value="${train.id}">
 
         <label for="number">Number:</label>
         <input type="text" id="number" name="number" value="${train.number}" required>
 
         <label for="trainCompositionId">Train Composition ID:</label>
-        <input type="text" id="trainCompositionId" name="trainCompositionId" value="${train.trainCompositionId}" required>
+        <select id="trainCompositionId" name="trainCompositionId" required>
+            <option value="">-- Select Composition --</option>
+            <c:forEach var="comp" items="${compositions}">
+                <option value="${comp.id}" data-summary="${comp.summary}" ${comp.id == train.trainCompositionId ? 'selected' : ''}>${comp.id}</option>
+            </c:forEach>
+        </select>
+        <div class="details" id="compositionSummary">No data</div>
 
         <button type="submit">Update Train</button>
     </form>
+
+    <script src="${pageContext.request.contextPath}/js/scripts.js"></script>
+    <script>
+        addListenerToTrainCompoSummary();
+        updateSummary();
+    </script>
 </body>
 </html>

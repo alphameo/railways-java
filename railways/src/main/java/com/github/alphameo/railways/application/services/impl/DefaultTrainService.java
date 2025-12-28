@@ -114,6 +114,17 @@ public class DefaultTrainService implements TrainService {
     }
 
     @Override
+    public List<ScheduleEntryDto> getScheduleForTrain(@NonNull final String trainId) {
+        try {
+            final var valId = Id.fromString(trainId);
+            final var schedule = trainRepo.getScheduleForTrain(valId);
+            return ScheduleEntryMapper.toDtoList(schedule);
+        } catch (final RuntimeException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
     public void insertScheduleEntry(
             @NonNull final String trainId,
             @NonNull final ScheduleEntryDto scheduleEntry,

@@ -13,3 +13,88 @@ async function delFrom(id, entities) {
     }
     window.location.href = `${window.location.origin}/${entities}`;
 }
+
+let positionCount;
+
+async function loadPosCount(count) {
+    console.log(count);
+    positionCount = count;
+}
+
+function addStationPosition() {
+    const container = document.getElementById('stationOrder');
+    const div = document.createElement('div');
+    div.className = 'position';
+    const options = document.getElementById('stationOptions').innerHTML;
+    div.innerHTML = `
+        <label>Position ${positionCount + 1}:</label>
+        <select name="position${positionCount}">
+            <option value="">-- Select Station --</option>
+            ${options}
+        </select>
+        <button type="button" onclick="removePosition(${positionCount})">Remove</button>
+    `;
+    container.appendChild(div);
+    positionCount++;
+}
+
+function removeStationPosition(index) {
+    const container = document.getElementById('stationOrder');
+    const positions = container.querySelectorAll('.position');
+    if (positions.length > 0) {
+        positions[index].remove();
+        // Renumber the remaining positions
+        const remaining = container.querySelectorAll('.position');
+        remaining.forEach((pos, i) => {
+            pos.querySelector('label').textContent = `Position ${i + 1}:`;
+            pos.querySelector('select').name = `position${i}`;
+            pos.querySelector('button').onclick = () => removePosition(i);
+        });
+        positionCount--;
+    }
+}
+function addCompositionPosition() {
+    const container = document.getElementById('carriageOrder');
+    const div = document.createElement('div');
+    div.className = 'position';
+    const options = document.getElementById('carriageOptions').innerHTML;
+    div.innerHTML = `
+                <label>Position ${positionCount + 1}:</label>
+                <select name="position${positionCount}">
+                    <option value="">-- Select Carriage --</option>
+                    ${options}
+                </select>
+                <button type="button" onclick="removePosition(${positionCount})">Remove</button>
+            `;
+    container.appendChild(div);
+    positionCount++;
+}
+
+function removeCompositionPosition(index) {
+    const container = document.getElementById('carriageOrder');
+    const positions = container.querySelectorAll('.position');
+    if (positions.length > 0) {
+        positions[index].remove();
+        const remaining = container.querySelectorAll('.position');
+        remaining.forEach((pos, i) => {
+            pos.querySelector('label').textContent = `Position ${i + 1}:`;
+            pos.querySelector('select').name = `position${i}`;
+            pos.querySelector('button').onclick = () => removePosition(i);
+        });
+        positionCount--;
+    }
+}
+
+function updateSummary() {
+    var select = document.getElementById('trainCompositionId');
+    var selectedOption = select.options[select.selectedIndex];
+    var summary = selectedOption.getAttribute('data-summary');
+    document.getElementById('compositionSummary').innerHTML =
+        `${summary}` || '';
+}
+
+function addListenerToTrainCompoSummary() {
+    document
+        .getElementById('trainCompositionId')
+        .addEventListener('change', updateSummary);
+}

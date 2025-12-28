@@ -98,6 +98,12 @@ public class InMemoryTrainRepository implements TrainRepository {
         return Optional.ofNullable(train);
     }
 
+    @Override
+    public List<com.github.alphameo.railways.domain.valueobjects.ScheduleEntry> getScheduleForTrain(Id trainId) {
+        Train train = storage.get(trainId);
+        return train != null ? train.getSchedule() : new ArrayList<>();
+    }
+
     private void validate(final Train train) {
         final var trainCompoId = train.getTrainCompositionId();
         if (trainCompoStorage.get(trainCompoId) == null) {
